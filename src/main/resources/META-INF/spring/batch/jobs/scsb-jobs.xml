@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+    <mvc:annotation-driven/>
+    <context:annotation-config/>
+
+    <!-- This is the XML way to define jobs but it will be very handy if you already have jobs like this -->
+
+    <batch:job id="PurgeExceptionRequests" restartable="true">
+        <batch:step id="PurgeExceptionRequestsStep" allow-start-if-complete="true" next="EmailProcessingStep1">
+            <batch:tasklet ref="purgeExceptionRequestsTasklet"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep1" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="purgeExceptionRequestsTasklet" class="org.main.recap.batch.job.PurgeExceptionRequestTasklet"/>
+
+    <batch:job id="PurgeEmailAddress" restartable="true">
+        <batch:step id="PurgeEmailAddressStep" allow-start-if-complete="true" next="EmailProcessingStep2">
+            <batch:tasklet ref="purgeEmailAddressTasklet"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep2" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="purgeEmailAddressTasklet" class="org.main.recap.batch.job.PurgeEmailAddressTasklet"/>
+
+    <batch:job id="MatchingAlgorithm" restartable="true">
+        <batch:step id="MatchingAlgorithmStep" allow-start-if-complete="true" next="EmailProcessingStep3">
+            <batch:tasklet ref="matchingAlgorithmTasklet"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep3" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="matchingAlgorithmTasklet" class="org.main.recap.batch.job.MatchingAlgorithmTasklet"/>
+
+    <bean id="emailProcessingTasklet" class="org.main.recap.batch.job.EmailProcessingTasklet"/>
+
+</beans>
