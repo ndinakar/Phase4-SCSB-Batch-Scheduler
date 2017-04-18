@@ -1,5 +1,6 @@
 package org.main.recap.batch.job;
 
+import org.main.recap.batch.service.PurgeEmailAddressService;
 import org.main.recap.batch.service.UpdateJobDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,12 @@ public class PurgeEmailAddressTasklet implements Tasklet {
     @Value("${scsb.solr.client.url}")
     String solrClientUrl;
 
+    @Value("${scsb.circ.url}")
+    String scsbCircUrl;
+
+    @Autowired
+    private PurgeEmailAddressService purgeEmailAddressService;
+
     @Autowired
     private UpdateJobDetailsService updateJobDetailsService;
 
@@ -35,6 +42,8 @@ public class PurgeEmailAddressTasklet implements Tasklet {
         Date createdDate = chunkContext.getStepContext().getStepExecution().getJobExecution().getCreateTime();
         updateJobDetailsService.updateJob(serverProtocol, solrClientUrl, jobName, createdDate);
 
+        String status = purgeEmailAddressService.purgeEmailAddress(serverProtocol, scsbCircUrl);
+        logger.info("Purge Email Address status : " + status);
         return RepeatStatus.FINISHED;
     }
 }
