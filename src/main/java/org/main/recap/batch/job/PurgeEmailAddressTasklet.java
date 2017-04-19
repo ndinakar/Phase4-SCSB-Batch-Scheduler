@@ -43,7 +43,7 @@ public class PurgeEmailAddressTasklet implements Tasklet {
         updateJobDetailsService.updateJob(serverProtocol, solrClientUrl, jobName, createdDate);
 
         String status = purgeEmailAddressService.purgeEmailAddress(serverProtocol, scsbCircUrl);
-        logger.info("Purge Email Address status : " + status);
+        logger.info("Purge Email Address status : {}", status);
         return RepeatStatus.FINISHED;
     }
 }

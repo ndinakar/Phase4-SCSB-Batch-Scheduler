@@ -40,7 +40,7 @@ public class EmailProcessingTasklet implements Tasklet {
         emailPayLoad.setStartDate(createdDate);
         emailPayLoad.setStatus("Successfully");
         String result = emailService.sendEmail(serverProtocol, solrClientUrl, emailPayLoad);
-        logger.info("Email sending - " + result);
+        logger.info("Email sending - {}", result);
         return RepeatStatus.FINISHED;
     }
 }
