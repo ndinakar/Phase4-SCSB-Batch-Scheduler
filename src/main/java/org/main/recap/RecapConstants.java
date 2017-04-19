@@ -24,7 +24,6 @@ public class RecapConstants {
     public static final String JOB_SUCCESS_UNSCHEDULING = "Job successfully unscheduled.";
     public static final String LOG_ERROR = "error-->";
 
-    public static final String EMAIL_Q = "scsbactivemq:queue:scsbSchedulerEmailQ";
-    public static final String EMAIL_ROUTE_ID = "scsbSchedulerEmailQ";
-    public static final String MATCHING_ALGORITHM_JOB_STATUS = "matchingAlgorithmJobStatus";
+    public static final String PURGE_EMAIL_URL = "purge/purgeEmailAddress";
+    public static final String PURGE_EXCEPTION_REQUEST_URL = "purge/purgeExceptionRequests";
 }

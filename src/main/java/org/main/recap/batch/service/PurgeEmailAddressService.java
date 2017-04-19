@@ -28,7 +28,7 @@ public class PurgeEmailAddressService {
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity httpEntity = new HttpEntity<>(headers);
 
-            ResponseEntity<String> responseEntity = restTemplate.exchange(serverProtocol + scsbCircUrl + "purge/purgeEmailAddress", HttpMethod.GET, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = restTemplate.exchange(serverProtocol + scsbCircUrl + RecapConstants.PURGE_EMAIL_URL, HttpMethod.GET, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
             return resultStatus;
         } catch (Exception ex) {
