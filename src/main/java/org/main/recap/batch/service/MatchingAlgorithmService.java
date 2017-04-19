@@ -32,7 +32,7 @@ public class MatchingAlgorithmService {
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(solrIndexRequest, headers);
 
-            ResponseEntity<String> responseEntity = restTemplate.exchange(serverProtocol + solrClientUrl + "ongoingMatchingJob", HttpMethod.POST, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = restTemplate.exchange(serverProtocol + solrClientUrl + RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
             return resultStatus;
         } catch (Exception ex) {
