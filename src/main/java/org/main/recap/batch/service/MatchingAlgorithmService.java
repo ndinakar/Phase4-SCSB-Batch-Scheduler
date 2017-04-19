@@ -24,6 +24,7 @@ public class MatchingAlgorithmService {
     public String initiateMatchingAlgorithm(String serverProtocol, String solrClientUrl) {
         String resultStatus = null;
         SolrIndexRequest solrIndexRequest = new SolrIndexRequest();
+        solrIndexRequest.setProcessType(RecapConstants.ONGOING_MATCHING_ALGORITHM_JOB);
         solrIndexRequest.setCreatedDate(new Date());
         try {
             RestTemplate restTemplate = new RestTemplate();
