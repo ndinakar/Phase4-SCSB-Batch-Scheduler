@@ -40,7 +40,7 @@ public class MatchingAlgorithmTasklet implements Tasklet {
         updateJobDetailsService.updateJob(serverProtocol, solrClientUrl, jobName, createdDate);
 
         String status = matchingAlgorithmService.initiateMatchingAlgorithm(serverProtocol, solrClientUrl);
-        logger.info("Matching algorithm status : " + status);
+        logger.info("Matching algorithm status : {}", status);
         return RepeatStatus.FINISHED;
     }
 }
