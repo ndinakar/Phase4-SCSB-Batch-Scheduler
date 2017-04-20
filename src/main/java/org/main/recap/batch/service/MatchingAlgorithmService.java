@@ -21,24 +21,31 @@ public class MatchingAlgorithmService {
 
     private static final Logger logger = LoggerFactory.getLogger(MatchingAlgorithmService.class);
 
+    public RestTemplate getRestTemplate() {
+        return new RestTemplate();
+    }
+
     public String initiateMatchingAlgorithm(String serverProtocol, String solrClientUrl) {
         String resultStatus = null;
-        SolrIndexRequest solrIndexRequest = new SolrIndexRequest();
-        solrIndexRequest.setProcessType(RecapConstants.ONGOING_MATCHING_ALGORITHM_JOB);
-        solrIndexRequest.setCreatedDate(new Date());
         try {
-            RestTemplate restTemplate = new RestTemplate();
-
+            SolrIndexRequest solrIndexRequest = getSolrIndexRequest();
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(solrIndexRequest, headers);
 
-            ResponseEntity<String> responseEntity = restTemplate.exchange(serverProtocol + solrClientUrl + RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + solrClientUrl + RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
-            return resultStatus;
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ex);
-            return resultStatus;
+            resultStatus = ex.getMessage();
         }
+        return resultStatus;
+    }
+
+    public SolrIndexRequest getSolrIndexRequest() {
+        SolrIndexRequest solrIndexRequest = new SolrIndexRequest();
+        solrIndexRequest.setProcessType(RecapConstants.ONGOING_MATCHING_ALGORITHM_JOB);
+        solrIndexRequest.setCreatedDate(new Date());
+        return solrIndexRequest;
     }
 }

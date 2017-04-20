@@ -1,5 +1,6 @@
 package org.main.recap.quartz;
 
+import org.main.recap.RecapConstants;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -53,8 +54,7 @@ public class QuartzJobLauncher extends QuartzJobBean {
             JobExecution jobExecution = jobLauncher.run(job, new JobParameters());
             logger.info("{}_{} was completed successfully. Status : {}", job.getName(), jobExecution.getId(), jobExecution.getStatus());
         } catch (Exception exception) {
-            exception.printStackTrace();
-            logger.error(exception.getMessage());
+            logger.error(RecapConstants.LOG_ERROR, exception);
         }
     }
 }
