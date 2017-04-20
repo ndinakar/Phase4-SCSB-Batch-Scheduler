@@ -46,47 +46,43 @@ public class QuartzJobsInitializer {
     /**
      * This method reads the jobs from database and initializes them with the quartz scheduler.
      */
-    private void initializeJobs() {
+    public void initializeJobs() {
         logger.info("Initializing jobs");
-        try {
-            List<JobEntity> jobEntities = jobDetailsRepository.findAll();
-            if (CollectionUtils.isNotEmpty(jobEntities)) {
-                for (JobEntity jobEntity : jobEntities) {
-                    String jobName = jobEntity.getJobName();
-                    String cronExpression = jobEntity.getCronExpression();
-                    try {
-                        JobDetailImpl jobDetailImpl = new JobDetailImpl();
-                        jobDetailImpl.setName(jobName);
-                        jobDetailImpl.setJobClass(QuartzJobLauncher.class);
-                        JobDataMap jobDataMap = new JobDataMap();
-                        jobDataMap.put(RecapConstants.JOB_NAME, jobName);
-                        jobDataMap.put(RecapConstants.JOB_LAUNCHER, jobLauncher);
-                        jobDataMap.put(RecapConstants.JOB_LOCATOR, jobLocator);
-                        jobDetailImpl.setJobDataMap(jobDataMap);
-                        if (StringUtils.isNotBlank(cronExpression) && isValidExpression(cronExpression)) {
-                            JobKey jobKey = new JobKey(jobName);
-                            jobDetailImpl.setKey(jobKey);
-                            CronTriggerImpl trigger = new CronTriggerImpl();
-                            trigger.setName(jobName + RecapConstants.TRIGGER_SUFFIX);
-                            trigger.setJobKey(jobKey);
-                            trigger.setCronExpression(cronExpression);
-                            scheduler.scheduleJob(jobDetailImpl, trigger);
-                            logger.info("Job {} is initialized.", jobName);
-                        } else {
-                            logger.info("Job {} has invalid cron expression.", jobName);
-                            JobKey jobKey = new JobKey(jobName);
-                            jobDetailImpl.setKey(jobKey);
-                            jobDetailImpl.setDurability(true);
-                            scheduler.addJob(jobDetailImpl, true);
-                        }
-                    } catch(Exception ex) {
-                        logger.error("Initializing job " + jobName + " Failed.");
-                        logger.error(RecapConstants.LOG_ERROR, ex);
+        List<JobEntity> jobEntities = jobDetailsRepository.findAll();
+        if (CollectionUtils.isNotEmpty(jobEntities)) {
+            for (JobEntity jobEntity : jobEntities) {
+                String jobName = jobEntity.getJobName();
+                String cronExpression = jobEntity.getCronExpression();
+                try {
+                    JobDetailImpl jobDetailImpl = new JobDetailImpl();
+                    jobDetailImpl.setName(jobName);
+                    jobDetailImpl.setJobClass(QuartzJobLauncher.class);
+                    JobDataMap jobDataMap = new JobDataMap();
+                    jobDataMap.put(RecapConstants.JOB_NAME, jobName);
+                    jobDataMap.put(RecapConstants.JOB_LAUNCHER, jobLauncher);
+                    jobDataMap.put(RecapConstants.JOB_LOCATOR, jobLocator);
+                    jobDetailImpl.setJobDataMap(jobDataMap);
+                    if (StringUtils.isNotBlank(cronExpression) && isValidExpression(cronExpression)) {
+                        JobKey jobKey = new JobKey(jobName);
+                        jobDetailImpl.setKey(jobKey);
+                        CronTriggerImpl trigger = new CronTriggerImpl();
+                        trigger.setName(jobName + RecapConstants.TRIGGER_SUFFIX);
+                        trigger.setJobKey(jobKey);
+                        trigger.setCronExpression(cronExpression);
+                        scheduler.scheduleJob(jobDetailImpl, trigger);
+                        logger.info("Job {} is initialized.", jobName);
+                    } else {
+                        logger.info("Job {} has invalid cron expression.", jobName);
+                        JobKey jobKey = new JobKey(jobName);
+                        jobDetailImpl.setKey(jobKey);
+                        jobDetailImpl.setDurability(true);
+                        scheduler.addJob(jobDetailImpl, true);
                     }
+                } catch (Exception ex) {
+                    logger.error("Initializing job {} Failed.", jobName);
+                    logger.error(RecapConstants.LOG_ERROR, ex);
                 }
             }
-        } catch (Exception ex) {
-            logger.error(RecapConstants.LOG_ERROR, ex);
         }
     }
 }

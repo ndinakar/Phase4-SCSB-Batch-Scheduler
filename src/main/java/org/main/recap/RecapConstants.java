@@ -29,4 +29,7 @@ public class RecapConstants {
     public static final String PURGE_EXCEPTION_REQUEST_URL = "purge/purgeExceptionRequests";
     public static final String MATCHING_ALGORITHM_URL = "ongoingMatchingJob";
     public static final String BATCH_JOB_EMAIL_URL = "batchJobEmailService/batchJobEmail";
+    public static final String UPDATE_JOB_URL = "updateJobService/updateJob";
+
+    public static final String PURGE_EXCEPTION_REQUESTS = "PurgeExceptionRequests";
 }
