@@ -71,9 +71,9 @@ public class QuartzJobsInitializer {
                             trigger.setJobKey(jobKey);
                             trigger.setCronExpression(cronExpression);
                             scheduler.scheduleJob(jobDetailImpl, trigger);
-                            logger.info("Job " + jobName + " is initialized.");
+                            logger.info("Job {} is initialized.", jobName);
                         } else {
-                            logger.info("Job " + jobName + " has invalid cron expression.");
+                            logger.info("Job {} has invalid cron expression.", jobName);
                             JobKey jobKey = new JobKey(jobName);
                             jobDetailImpl.setKey(jobKey);
                             jobDetailImpl.setDurability(true);

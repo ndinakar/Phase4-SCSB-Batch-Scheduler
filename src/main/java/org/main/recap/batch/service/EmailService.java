@@ -28,7 +28,7 @@ public class EmailService {
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity<EmailPayLoad> httpEntity = new HttpEntity<>(emailPayLoad, headers);
 
-            ResponseEntity<String> responseEntity = restTemplate.exchange(serverProtocol + solrClientUrl + "batchJobEmailService/batchJobEmail", HttpMethod.POST, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = restTemplate.exchange(serverProtocol + solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
             return resultStatus;
         } catch (Exception ex) {

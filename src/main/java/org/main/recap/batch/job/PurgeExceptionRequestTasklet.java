@@ -43,7 +43,7 @@ public class PurgeExceptionRequestTasklet implements Tasklet {
         updateJobDetailsService.updateJob(serverProtocol, solrClientUrl, jobName, createdDate);
 
         String status = purgeExceptionRequestsService.purgeExceptionRequests(serverProtocol, scsbCircUrl);
-        logger.info("Purge Exception Requests status : " + status);
+        logger.info("Purge Exception Requests status : {}", status);
         return RepeatStatus.FINISHED;
     }
 }
