@@ -19,21 +19,23 @@ public class EmailService {
 
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
+    public RestTemplate getRestTemplate() {
+        return new RestTemplate();
+    }
+
     public String sendEmail(String serverProtocol, String solrClientUrl, EmailPayLoad emailPayLoad) {
         String resultStatus = null;
         try {
-            RestTemplate restTemplate = new RestTemplate();
-
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity<EmailPayLoad> httpEntity = new HttpEntity<>(emailPayLoad, headers);
 
-            ResponseEntity<String> responseEntity = restTemplate.exchange(serverProtocol + solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
-            return resultStatus;
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ex);
-            return resultStatus;
+            resultStatus = ex.getMessage();
         }
+        return resultStatus;
     }
 }

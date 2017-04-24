@@ -12,7 +12,6 @@ public class QuartzSchedulerConfig {
 
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean() {
-        SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
-        return schedulerFactoryBean;
+        return new SchedulerFactoryBean();
     }
 }

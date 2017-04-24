@@ -19,21 +19,23 @@ public class PurgeEmailAddressService {
 
     private static final Logger logger = LoggerFactory.getLogger(PurgeEmailAddressService.class);
 
+    public RestTemplate getRestTemplate() {
+        return new RestTemplate();
+    }
+
     public String purgeEmailAddress(String serverProtocol, String scsbCircUrl) {
         String resultStatus = null;
         try {
-            RestTemplate restTemplate = new RestTemplate();
-
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity httpEntity = new HttpEntity<>(headers);
 
-            ResponseEntity<String> responseEntity = restTemplate.exchange(serverProtocol + scsbCircUrl + RecapConstants.PURGE_EMAIL_URL, HttpMethod.GET, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + scsbCircUrl + RecapConstants.PURGE_EMAIL_URL, HttpMethod.GET, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
-            return resultStatus;
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ex);
-            return resultStatus;
+            resultStatus = ex.getMessage();
         }
+        return resultStatus;
     }
 }
