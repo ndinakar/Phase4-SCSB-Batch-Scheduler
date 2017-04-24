@@ -9,6 +9,7 @@ import java.util.Date;
 public class EmailPayLoad implements Serializable {
 
     private String jobName;
+    private String jobDescription;
     private Date startDate;
     private String status;
 
@@ -18,6 +19,14 @@ public class EmailPayLoad implements Serializable {
 
     public void setJobName(String jobName) {
         this.jobName = jobName;
+    }
+
+    public String getJobDescription() {
+        return jobDescription;
+    }
+
+    public void setJobDescription(String jobDescription) {
+        this.jobDescription = jobDescription;
     }
 
     public Date getStartDate() {
