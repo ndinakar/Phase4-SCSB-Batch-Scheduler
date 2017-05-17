@@ -41,8 +41,17 @@
         </batch:step>
     </batch:job>
 
+    <batch:job id="DailyReconcilation" restartable="true">
+        <batch:step id="DailyReconcilationStep" allow-start-if-complete="true">
+            <batch:tasklet ref="DailyReconcilationTasklet"/>
+        </batch:step>
+    </batch:job>
+
+
     <bean id="matchingAlgorithmTasklet" class="org.main.recap.batch.job.MatchingAlgorithmTasklet"/>
 
     <bean id="emailProcessingTasklet" class="org.main.recap.batch.job.EmailProcessingTasklet"/>
+
+    <bean id="DailyReconcilationTasklet" class="org.main.recap.batch.job.DailyReconcilationTasklet"/>
 
 </beans>
