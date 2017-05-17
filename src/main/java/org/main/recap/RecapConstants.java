@@ -32,4 +32,5 @@ public class RecapConstants {
     public static final String UPDATE_JOB_URL = "updateJobService/updateJob";
 
     public static final String PURGE_EXCEPTION_REQUESTS = "PurgeExceptionRequests";
+    public static final String DAILY_RECONCILATION_URL = "/dailyReconcilation/startDailyReconcilation";
 }
