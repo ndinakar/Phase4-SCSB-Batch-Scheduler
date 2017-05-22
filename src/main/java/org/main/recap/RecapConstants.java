@@ -12,6 +12,7 @@ public class RecapConstants {
     public static final String RESCHEDULE = "Reschedule";
     public static final String UNSCHEDULE = "Unschedule";
     public static final String JOB_NAME = "jobName";
+    public static final String JOB_CREATED_DATE = "jobCreatedDate";
     public static final String JOB_LAUNCHER = "jobLauncher";
     public static final String JOB_LOCATOR = "jobLocator";
     public static final String TRIGGER_SUFFIX = "_Trigger";
@@ -28,9 +29,13 @@ public class RecapConstants {
     public static final String PURGE_EMAIL_URL = "purge/purgeEmailAddress";
     public static final String PURGE_EXCEPTION_REQUEST_URL = "purge/purgeExceptionRequests";
     public static final String MATCHING_ALGORITHM_URL = "ongoingMatchingAlgorithmService/ongoingMatchingAlgorithmJob";
+    public static final String GENERATE_REPORT_URL = "generateReportService/generateReports";
+    public static final String ACCESSION_URL = "sharedCollection/ongoingAccessionJob";
     public static final String BATCH_JOB_EMAIL_URL = "batchJobEmailService/batchJobEmail";
     public static final String UPDATE_JOB_URL = "updateJobService/updateJob";
 
     public static final String PURGE_EXCEPTION_REQUESTS = "PurgeExceptionRequests";
     public static final String DAILY_RECONCILATION_URL = "/dailyReconcilation/startDailyReconcilation";
+
+    private RecapConstants(){}
 }
