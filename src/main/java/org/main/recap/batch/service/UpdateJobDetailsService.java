@@ -1,5 +1,6 @@
 package org.main.recap.batch.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.main.recap.RecapConstants;
 import org.main.recap.jpa.JobDetailsRepository;
 import org.main.recap.model.jpa.JobEntity;
@@ -40,8 +41,10 @@ public class UpdateJobDetailsService {
         try {
             JobEntity jobEntity = getJobDetailsRepository().findByJobName(jobName);
             jobEntity.setLastExecutedTime(lastExecutedTime);
-            CronExpression cronExpression = new CronExpression(jobEntity.getCronExpression());
-            jobEntity.setNextRunTime(cronExpression.getNextValidTimeAfter(lastExecutedTime));
+            if (StringUtils.isNotBlank(jobEntity.getCronExpression())) {
+                CronExpression cronExpression = new CronExpression(jobEntity.getCronExpression());
+                jobEntity.setNextRunTime(cronExpression.getNextValidTimeAfter(lastExecutedTime));
+            }
 
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);

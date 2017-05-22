@@ -93,6 +93,17 @@
 
     <bean id="jobSequenceTasklet" class="org.main.recap.batch.job.JobSequenceTasklet"/>
 
+    <batch:job id="PurgeAccessionRequests" restartable="true">
+        <batch:step id="PurgeAccessionRequestsStep" allow-start-if-complete="true" next="EmailProcessingStep6">
+            <batch:tasklet ref="purgeAccessionRequestsTasklet"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep6" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="purgeAccessionRequestsTasklet" class="org.main.recap.batch.job.PurgeAccessionRequestTasklet"/>
+
     <bean id="emailProcessingTasklet" class="org.main.recap.batch.job.EmailProcessingTasklet"/>
 
 </beans>
