@@ -1,9 +1,9 @@
 package org.main.recap.batch.job;
 
 import org.main.recap.RecapConstants;
-import org.main.recap.batch.service.EmailService;
+import org.main.recap.batch.service.GenerateReportsService;
+import org.main.recap.batch.service.UpdateJobDetailsService;
 import org.main.recap.jpa.JobDetailsRepository;
-import org.main.recap.model.EmailPayLoad;
 import org.main.recap.model.jpa.JobEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,14 +15,15 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by rajeshbabuk on 10/4/17.
+ * Created by angelind on 2/5/17.
  */
-public class EmailProcessingTasklet implements Tasklet, StepExecutionListener {
+public class AccessionReportsTasklet implements Tasklet, StepExecutionListener{
 
-    private static final Logger logger = LoggerFactory.getLogger(EmailProcessingTasklet.class);
+    private static final Logger logger = LoggerFactory.getLogger(AccessionReportsTasklet.class);
 
     @Value("${server.protocol}")
     private String serverProtocol;
@@ -31,29 +32,38 @@ public class EmailProcessingTasklet implements Tasklet, StepExecutionListener {
     private String solrClientUrl;
 
     @Autowired
-    private EmailService emailService;
+    private UpdateJobDetailsService updateJobDetailsService;
 
     @Autowired
-    private JobDetailsRepository jobDetailsRepository;
+    private GenerateReportsService generateReportsService;
 
     private Date jobCreatedDate;
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        logger.info("Sending Email");
-        String jobName = chunkContext.getStepContext().getStepExecution().getJobExecution().getJobInstance().getJobName();
-        Date createdDate = chunkContext.getStepContext().getStepExecution().getJobExecution().getCreateTime();
+        logger.info("Executing AccessionReportsTasklet");
+        JobExecution jobExecution = chunkContext.getStepContext().getStepExecution().getJobExecution();
+        String jobName = jobExecution.getJobInstance().getJobName();
+        Date createdDate = jobExecution.getCreateTime();
+        if(jobCreatedDate != null) {
+            logger.info("Job Created Date : " + jobCreatedDate);
+            createdDate = jobCreatedDate;
+        } else {
+            updateJobDetailsService.updateJob(serverProtocol, solrClientUrl, jobName, createdDate);
+        }
 
-        JobEntity jobEntity = jobDetailsRepository.findByJobName(jobName);
-
-        EmailPayLoad emailPayLoad = new EmailPayLoad();
-        emailPayLoad.setJobName(jobName);
-        emailPayLoad.setJobDescription(jobEntity.getJobDescription());
-        emailPayLoad.setStartDate(createdDate);
-        emailPayLoad.setStatus("Successfully");
-        String result = emailService.sendEmail(serverProtocol, solrClientUrl, emailPayLoad);
-        logger.info("Email sending - {}", result);
+        String status = generateReportsService.generateReport(serverProtocol, solrClientUrl, getFromDate(createdDate), jobName);
+        logger.info("Accession Report status : {}", status);
         return RepeatStatus.FINISHED;
+    }
+
+    public Date getFromDate(Date createdDate) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(createdDate);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        return cal.getTime();
     }
 
     @Override

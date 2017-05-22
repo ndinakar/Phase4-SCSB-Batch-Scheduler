@@ -41,17 +41,58 @@
         </batch:step>
     </batch:job>
 
+    <bean id="matchingAlgorithmTasklet" class="org.main.recap.batch.job.MatchingAlgorithmTasklet"/>
+
     <batch:job id="DailyReconcilation" restartable="true">
         <batch:step id="DailyReconcilationStep" allow-start-if-complete="true">
             <batch:tasklet ref="DailyReconcilationTasklet"/>
         </batch:step>
     </batch:job>
 
+    <bean id="DailyReconcilationTasklet" class="org.main.recap.batch.job.DailyReconcilationTasklet"/>
 
-    <bean id="matchingAlgorithmTasklet" class="org.main.recap.batch.job.MatchingAlgorithmTasklet"/>
+    <batch:job id="GenerateAccessionReport" restartable="true">
+        <batch:step id="AccessionReportsStep" allow-start-if-complete="true" next="EmailProcessingStep4">
+            <batch:tasklet ref="accessionReportsTasklet"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep4" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="accessionReportsTasklet" class="org.main.recap.batch.job.AccessionReportsTasklet"/>
+
+    <batch:job id="Accession" restartable="true">
+        <batch:step id="AccessionStep" allow-start-if-complete="true" next="EmailProcessingStep5">
+            <batch:tasklet ref="accessionTasklet"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep5" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="accessionTasklet" class="org.main.recap.batch.job.AccessionTasklet"/>
+
+    <batch:job id="RunJobSequentially" restartable="true">
+        <batch:step id="ScheduledJob1" allow-start-if-complete="true" next="ScheduledJob2">
+            <batch:tasklet ref="jobSequenceTasklet"/>
+        </batch:step>
+        <batch:step id="ScheduledJob2" allow-start-if-complete="true" next="ScheduledJob3">
+            <batch:job ref="Accession"/>
+        </batch:step>
+        <batch:step id="ScheduledJob3" allow-start-if-complete="true" next="ScheduledJob4">
+            <batch:job ref="GenerateAccessionReport"/>
+        </batch:step>
+        <batch:step id="ScheduledJob4" allow-start-if-complete="true" next="EmailProcessingStep">
+            <batch:job ref="MatchingAlgorithm"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="jobSequenceTasklet" class="org.main.recap.batch.job.JobSequenceTasklet"/>
 
     <bean id="emailProcessingTasklet" class="org.main.recap.batch.job.EmailProcessingTasklet"/>
-
-    <bean id="DailyReconcilationTasklet" class="org.main.recap.batch.job.DailyReconcilationTasklet"/>
 
 </beans>
