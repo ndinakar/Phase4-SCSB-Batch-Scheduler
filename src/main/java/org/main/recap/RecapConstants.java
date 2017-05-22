@@ -28,6 +28,7 @@ public class RecapConstants {
 
     public static final String PURGE_EMAIL_URL = "purge/purgeEmailAddress";
     public static final String PURGE_EXCEPTION_REQUEST_URL = "purge/purgeExceptionRequests";
+    public static final String PURGE_ACCESSION_REQUEST_URL = "purge/purgeAccessionRequests";
     public static final String MATCHING_ALGORITHM_URL = "ongoingMatchingAlgorithmService/ongoingMatchingAlgorithmJob";
     public static final String GENERATE_REPORT_URL = "generateReportService/generateReports";
     public static final String ACCESSION_URL = "sharedCollection/ongoingAccessionJob";
