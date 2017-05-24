@@ -78,13 +78,13 @@
             <batch:tasklet ref="jobSequenceTasklet"/>
         </batch:step>
         <batch:step id="ScheduledJob2" allow-start-if-complete="true" next="ScheduledJob3">
-            <batch:job ref="Accession"/>
+            <batch:tasklet ref="accessionTasklet"/>
         </batch:step>
         <batch:step id="ScheduledJob3" allow-start-if-complete="true" next="ScheduledJob4">
-            <batch:job ref="GenerateAccessionReport"/>
+            <batch:tasklet ref="accessionReportsTasklet"/>
         </batch:step>
         <batch:step id="ScheduledJob4" allow-start-if-complete="true" next="EmailProcessingStep">
-            <batch:job ref="MatchingAlgorithm"/>
+            <batch:tasklet ref="matchingAlgorithmTasklet"/>
         </batch:step>
         <batch:step id="EmailProcessingStep" allow-start-if-complete="true">
             <batch:tasklet ref="emailProcessingTasklet"/>
