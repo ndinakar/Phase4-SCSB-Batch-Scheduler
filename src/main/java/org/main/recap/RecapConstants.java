@@ -12,7 +12,6 @@ public class RecapConstants {
     public static final String RESCHEDULE = "Reschedule";
     public static final String UNSCHEDULE = "Unschedule";
     public static final String JOB_NAME = "jobName";
-    public static final String JOB_CREATED_DATE = "jobCreatedDate";
     public static final String JOB_LAUNCHER = "jobLauncher";
     public static final String JOB_LOCATOR = "jobLocator";
     public static final String TRIGGER_SUFFIX = "_Trigger";
@@ -25,6 +24,7 @@ public class RecapConstants {
     public static final String JOB_SUCCESS_UNSCHEDULING = "Job successfully unscheduled.";
     public static final String LOG_ERROR = "error-->";
     public static final String ONGOING_MATCHING_ALGORITHM_JOB = "ongoingMatchingAlgorithmJob";
+    public static final String GENERATE_ACCESSION_REPORT_JOB = "GenerateAccessionReport";
 
     public static final String PURGE_EMAIL_URL = "purge/purgeEmailAddress";
     public static final String PURGE_EXCEPTION_REQUEST_URL = "purge/purgeExceptionRequests";

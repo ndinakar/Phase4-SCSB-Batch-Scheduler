@@ -18,7 +18,7 @@ import java.util.Date;
 /**
  * Created by rajeshbabuk on 3/4/17.
  */
-public class MatchingAlgorithmTasklet implements Tasklet, StepExecutionListener{
+public class MatchingAlgorithmTasklet implements Tasklet{
 
     private static final Logger logger = LoggerFactory.getLogger(MatchingAlgorithmTasklet.class);
 
@@ -34,40 +34,20 @@ public class MatchingAlgorithmTasklet implements Tasklet, StepExecutionListener{
     @Autowired
     private UpdateJobDetailsService updateJobDetailsService;
 
-    private Date jobCreatedDate;
-
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         logger.info("Executing MatchingAlgorithmTasklet");
         JobExecution jobExecution = chunkContext.getStepContext().getStepExecution().getJobExecution();
         String jobName = jobExecution.getJobInstance().getJobName();
         Date createdDate = jobExecution.getCreateTime();
-        if(jobCreatedDate != null) {
-            logger.info("Job Created Date : " + jobCreatedDate);
-            createdDate = jobCreatedDate;
-        } else {
+        String jobNameParam = (String) jobExecution.getExecutionContext().get(RecapConstants.JOB_NAME);
+        logger.info("Job Parameter in Matching Algorithm Tasklet : {}", jobNameParam);
+        if(!jobName.equalsIgnoreCase(jobNameParam)) {
             updateJobDetailsService.updateJob(serverProtocol, solrClientUrl, jobName, createdDate);
         }
 
         String status = matchingAlgorithmService.initiateMatchingAlgorithm(serverProtocol, solrClientUrl, createdDate);
         logger.info("Matching algorithm status : {}", status);
         return RepeatStatus.FINISHED;
-    }
-
-    @Override
-    public void beforeStep(StepExecution stepExecution) {
-        ExecutionContext executionContext = stepExecution.getJobExecution().getExecutionContext();
-        jobCreatedDate = (Date) executionContext.get(RecapConstants.JOB_CREATED_DATE);
-        logger.info("Date Before Execution: {}", jobCreatedDate);
-    }
-
-    @Override
-    public ExitStatus afterStep(StepExecution stepExecution) {
-        ExecutionContext executionContext = stepExecution.getJobExecution().getExecutionContext();
-        if(jobCreatedDate != null) {
-            logger.info("Date After Execution : {}",jobCreatedDate);
-            executionContext.put(RecapConstants.JOB_CREATED_DATE, jobCreatedDate);
-        }
-        return null;
     }
 }

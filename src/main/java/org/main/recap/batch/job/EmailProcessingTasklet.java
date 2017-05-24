@@ -20,7 +20,7 @@ import java.util.Date;
 /**
  * Created by rajeshbabuk on 10/4/17.
  */
-public class EmailProcessingTasklet implements Tasklet, StepExecutionListener {
+public class EmailProcessingTasklet implements Tasklet {
 
     private static final Logger logger = LoggerFactory.getLogger(EmailProcessingTasklet.class);
 
@@ -35,8 +35,6 @@ public class EmailProcessingTasklet implements Tasklet, StepExecutionListener {
 
     @Autowired
     private JobDetailsRepository jobDetailsRepository;
-
-    private Date jobCreatedDate;
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
@@ -54,22 +52,5 @@ public class EmailProcessingTasklet implements Tasklet, StepExecutionListener {
         String result = emailService.sendEmail(serverProtocol, solrClientUrl, emailPayLoad);
         logger.info("Email sending - {}", result);
         return RepeatStatus.FINISHED;
-    }
-
-    @Override
-    public void beforeStep(StepExecution stepExecution) {
-        ExecutionContext executionContext = stepExecution.getJobExecution().getExecutionContext();
-        jobCreatedDate = (Date) executionContext.get(RecapConstants.JOB_CREATED_DATE);
-        logger.info("Date Before Execution: {}", jobCreatedDate);
-    }
-
-    @Override
-    public ExitStatus afterStep(StepExecution stepExecution) {
-        ExecutionContext executionContext = stepExecution.getJobExecution().getExecutionContext();
-        if(jobCreatedDate != null) {
-            logger.info("Date After Execution : {}",jobCreatedDate);
-            executionContext.put(RecapConstants.JOB_CREATED_DATE, jobCreatedDate);
-        }
-        return null;
     }
 }
