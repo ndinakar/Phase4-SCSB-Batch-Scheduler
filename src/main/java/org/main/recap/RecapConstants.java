@@ -37,6 +37,7 @@ public class RecapConstants {
 
     public static final String PURGE_EXCEPTION_REQUESTS = "PurgeExceptionRequests";
     public static final String DAILY_RECONCILATION_URL = "/dailyReconcilation/startDailyReconcilation";
+    public static final String ACCESSION_RECOCILATION_URL = "/accessionReconcilation/startAccessionReconcilation";
 
     private RecapConstants(){}
 }
