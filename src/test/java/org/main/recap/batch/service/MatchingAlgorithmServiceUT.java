@@ -36,17 +36,18 @@ public class MatchingAlgorithmServiceUT extends BaseTestCase {
     public void testMatchingAlgorithmService() {
         SolrIndexRequest solrIndexRequest = new SolrIndexRequest();
         solrIndexRequest.setProcessType(RecapConstants.ONGOING_MATCHING_ALGORITHM_JOB);
-        solrIndexRequest.setCreatedDate(new Date());
+        Date createdDate = new Date();
+        solrIndexRequest.setCreatedDate(createdDate);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
         HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(solrIndexRequest, headers);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
         Mockito.when(matchingAlgorithmService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(matchingAlgorithmService.getSolrIndexRequest()).thenReturn(solrIndexRequest);
+        Mockito.when(matchingAlgorithmService.getSolrIndexRequest(createdDate)).thenReturn(solrIndexRequest);
         Mockito.when(matchingAlgorithmService.getRestTemplate().exchange(serverProtocol + solrClientUrl + RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
-        Mockito.when(matchingAlgorithmService.initiateMatchingAlgorithm(serverProtocol, solrClientUrl)).thenCallRealMethod();
-        String status = matchingAlgorithmService.initiateMatchingAlgorithm(serverProtocol, solrClientUrl);
+        Mockito.when(matchingAlgorithmService.initiateMatchingAlgorithm(serverProtocol, solrClientUrl, createdDate)).thenCallRealMethod();
+        String status = matchingAlgorithmService.initiateMatchingAlgorithm(serverProtocol, solrClientUrl, createdDate);
         assertNotNull(status);
         assertEquals(status, RecapConstants.SUCCESS);
     }

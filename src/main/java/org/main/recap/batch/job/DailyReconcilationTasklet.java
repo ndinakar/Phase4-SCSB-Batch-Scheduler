@@ -16,15 +16,18 @@ import java.util.Date;
 /**
  * Created by akulak on 10/5/17.
  */
-public class DailyReconcilationTasklet implements Tasklet{
+public class DailyReconcilationTasklet implements Tasklet {
 
-    private static final Logger logger = LoggerFactory.getLogger(EmailProcessingTasklet.class);
+    private static final Logger logger = LoggerFactory.getLogger(DailyReconcilationTasklet.class);
 
     @Value("${server.protocol}")
     String serverProtocol;
 
+    @Value("${scsb.solr.client.url}")
+    String solrClientUrl;
+
     @Value("${scsb.circ.url}")
-    String solrCircUrl;
+    String scsbCircUrl;
 
     @Autowired
     private DailyReconcilationService dailyReconcilationService;
@@ -37,8 +40,10 @@ public class DailyReconcilationTasklet implements Tasklet{
         logger.info("Executing DailyReconcilation");
         String jobName = chunkContext.getStepContext().getStepExecution().getJobExecution().getJobInstance().getJobName();
         Date createdDate = chunkContext.getStepContext().getStepExecution().getJobExecution().getCreateTime();
-        updateJobDetailsService.updateJob(serverProtocol, solrCircUrl, jobName, createdDate);
-        dailyReconcilationService.dailyReconcilation(serverProtocol, solrCircUrl,jobName,createdDate);
+        updateJobDetailsService.updateJob(serverProtocol, solrClientUrl, jobName, createdDate);
+
+        String status = dailyReconcilationService.dailyReconcilation(serverProtocol, scsbCircUrl);
+        logger.info("Daily Reconciliation Job status : {}", status);
         return RepeatStatus.FINISHED;
     }
 }
