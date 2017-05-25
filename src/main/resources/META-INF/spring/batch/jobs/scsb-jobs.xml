@@ -106,4 +106,12 @@
 
     <bean id="emailProcessingTasklet" class="org.main.recap.batch.job.EmailProcessingTasklet"/>
 
+    <batch:job id="AccessionReconcilation" restartable="true">
+        <batch:step id="AccessionReconcilationStep" allow-start-if-complete="true">
+            <batch:tasklet ref="AccessionReconcilationTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="AccessionReconcilationTasklet" class="org.main.recap.batch.job.AccessionReconcilationTasklet"/>
+
 </beans>
