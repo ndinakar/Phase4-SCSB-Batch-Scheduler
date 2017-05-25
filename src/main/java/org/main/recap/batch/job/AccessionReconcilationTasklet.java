@@ -41,7 +41,7 @@ public class AccessionReconcilationTasklet implements Tasklet {
         String jobName = chunkContext.getStepContext().getStepExecution().getJobExecution().getJobInstance().getJobName();
         Date createdDate = chunkContext.getStepContext().getStepExecution().getJobExecution().getCreateTime();
         updateJobDetailsService.updateJob(serverProtocol, solrClientUrl, jobName, createdDate);
-        accessionReconcilationService.accessionReconcilation(serverProtocol, scsbCircUrl,jobName,createdDate);
+        accessionReconcilationService.accessionReconcilation(serverProtocol, scsbCircUrl);
         return RepeatStatus.FINISHED;
     }
 }
