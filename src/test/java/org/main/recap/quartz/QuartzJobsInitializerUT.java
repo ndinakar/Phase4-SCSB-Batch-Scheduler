@@ -23,9 +23,29 @@ public class QuartzJobsInitializerUT extends BaseTestCase {
     @Test
     public void testInitializeJobs() throws Exception {
         quartzJobsInitializer.initializeJobs();
-        JobKey jobKey = new JobKey(RecapConstants.PURGE_EXCEPTION_REQUESTS);
-        boolean exists = scheduler.checkExists(jobKey);
-        assertTrue(exists);
-
+        JobKey purgeExceptionRequestsJobKey = new JobKey(RecapConstants.PURGE_EXCEPTION_REQUESTS);
+        JobKey purgeEmailAddressJobKey = new JobKey(RecapConstants.PURGE_EMAIL_ADDRESS);
+        JobKey matchingAlgorithmJobKey = new JobKey(RecapConstants.MATCHING_ALGORITHM);
+        JobKey dailyReconciliationJobKey = new JobKey(RecapConstants.DAILY_RECONCILIATION);
+        JobKey generateAccessionReportJobKey = new JobKey(RecapConstants.GENERATE_ACCESSION_REPORT);
+        JobKey accessionJobKey = new JobKey(RecapConstants.ACCESSION);
+        JobKey runJobSequentiallyJobKey = new JobKey(RecapConstants.RUN_JOB_SEQUENTIALLY);
+        JobKey purgeAccessionRequestsJobKey = new JobKey(RecapConstants.PURGE_ACCESSION_REQUESTS);
+        boolean isPurgeExceptionRequestsJobKeyExists = scheduler.checkExists(purgeExceptionRequestsJobKey);
+        boolean isPurgeEmailAddressJobKeyExists = scheduler.checkExists(purgeEmailAddressJobKey);
+        boolean isMatchingAlgorithmJobKeyExists = scheduler.checkExists(matchingAlgorithmJobKey);
+        boolean isDailyReconciliationJobKeyExists = scheduler.checkExists(dailyReconciliationJobKey);
+        boolean isGenerateAccessionReportJobKeyExists = scheduler.checkExists(generateAccessionReportJobKey);
+        boolean isAccessionJobKeyExists = scheduler.checkExists(accessionJobKey);
+        boolean isRunJobSequentiallyJobKeyExists = scheduler.checkExists(runJobSequentiallyJobKey);
+        boolean isPurgeAccessionRequestsJobKeyExists = scheduler.checkExists(purgeAccessionRequestsJobKey);
+        assertTrue(isPurgeExceptionRequestsJobKeyExists);
+        assertTrue(isPurgeEmailAddressJobKeyExists);
+        assertTrue(isMatchingAlgorithmJobKeyExists);
+        assertTrue(isDailyReconciliationJobKeyExists);
+        assertTrue(isGenerateAccessionReportJobKeyExists);
+        assertTrue(isAccessionJobKeyExists);
+        assertTrue(isRunJobSequentiallyJobKeyExists);
+        assertTrue(isPurgeAccessionRequestsJobKeyExists);
     }
 }
