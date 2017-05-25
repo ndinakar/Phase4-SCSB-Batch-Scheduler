@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Date;
-
 /**
  * Created by akulak on 19/5/17.
  */
@@ -26,13 +24,13 @@ public class AccessionReconcilationService {
         return new RestTemplate();
     }
 
-    public String accessionReconcilation(String serverProtocol, String solrCircUrl, String jobName, Date createdDate) {
+    public String accessionReconcilation(String serverProtocol, String scsbCircUrl) {
         String resultStatus = null;
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity<JobEntity> httpEntity = new HttpEntity<>(headers);
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + solrCircUrl +RecapConstants.ACCESSION_RECOCILATION_URL, HttpMethod.POST, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + scsbCircUrl +RecapConstants.ACCESSION_RECOCILATION_URL, HttpMethod.POST, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
         } catch (RestClientException e) {
             logger.error(RecapConstants.LOG_ERROR,e);
