@@ -34,10 +34,17 @@ public class RecapConstants {
     public static final String ACCESSION_URL = "sharedCollection/ongoingAccessionJob";
     public static final String BATCH_JOB_EMAIL_URL = "batchJobEmailService/batchJobEmail";
     public static final String UPDATE_JOB_URL = "updateJobService/updateJob";
-
-    public static final String PURGE_EXCEPTION_REQUESTS = "PurgeExceptionRequests";
     public static final String DAILY_RECONCILATION_URL = "/dailyReconcilation/startDailyReconcilation";
     public static final String ACCESSION_RECOCILATION_URL = "/accessionReconcilation/startAccessionReconcilation";
+
+    public static final String PURGE_EXCEPTION_REQUESTS = "PurgeExceptionRequests";
+    public static final String PURGE_EMAIL_ADDRESS = "PurgeEmailAddress";
+    public static final String MATCHING_ALGORITHM = "MatchingAlgorithm";
+    public static final String DAILY_RECONCILIATION = "DailyReconcilation";
+    public static final String GENERATE_ACCESSION_REPORT = "GenerateAccessionReport";
+    public static final String ACCESSION = "Accession";
+    public static final String RUN_JOB_SEQUENTIALLY = "RunJobSequentially";
+    public static final String PURGE_ACCESSION_REQUESTS = "PurgeAccessionRequests";
 
     private RecapConstants(){}
 }
