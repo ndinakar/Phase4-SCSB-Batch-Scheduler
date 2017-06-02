@@ -19,7 +19,6 @@ import java.util.Date;
 /**
  * Created by rajeshbabuk on 5/4/17.
  */
-
 @RestController
 @RequestMapping("/scheduleService")
 public class ScheduleJobsController {
@@ -29,6 +28,12 @@ public class ScheduleJobsController {
     @Autowired
     private SchedulerService schedulerService;
 
+    /**
+     * This method is exposed as scheduler service for other micro services to schedule or reschedule or unschedule a job,
+     *
+     * @param scheduleJobRequest the schedule job request
+     * @return the schedule job response with the status message and next execution time.
+     */
     @RequestMapping(value = "/scheduleJob", method = RequestMethod.POST)
     public ScheduleJobResponse scheduleJob(@RequestBody ScheduleJobRequest scheduleJobRequest) {
         ScheduleJobResponse scheduleJobResponse = new ScheduleJobResponse();

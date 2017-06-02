@@ -13,16 +13,27 @@ import org.springframework.web.client.RestTemplate;
 /**
  * Created by rajeshbabuk on 18/4/17.
  */
-
 @Service
 public class PurgeEmailAddressService {
 
     private static final Logger logger = LoggerFactory.getLogger(PurgeEmailAddressService.class);
 
+    /**
+     * Gets rest template.
+     *
+     * @return the rest template
+     */
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
 
+    /**
+     * This method makes a rest call to Scsb Circ micro service to initiate the process of purging email addresses.
+     *
+     * @param serverProtocol the server protocol
+     * @param scsbCircUrl    the scsb circ url
+     * @return status of purging email addresses process
+     */
     public String purgeEmailAddress(String serverProtocol, String scsbCircUrl) {
         String resultStatus = null;
         try {

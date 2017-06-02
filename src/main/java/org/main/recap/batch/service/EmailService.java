@@ -19,10 +19,23 @@ public class EmailService {
 
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
+    /**
+     * Gets rest template.
+     *
+     * @return the rest template
+     */
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
 
+    /**
+     * This method makes a rest call to Solr Client micro service to send an email with the job execution information.
+     *
+     * @param serverProtocol the server protocol
+     * @param solrClientUrl  the solr client url
+     * @param emailPayLoad   the email pay load
+     * @return status of sending email
+     */
     public String sendEmail(String serverProtocol, String solrClientUrl, EmailPayLoad emailPayLoad) {
         String resultStatus = null;
         try {

@@ -34,6 +34,13 @@ public class EmailProcessingTasklet implements Tasklet {
     @Autowired
     private JobDetailsRepository jobDetailsRepository;
 
+    /**
+     * This method starts the execution of the email processing job.
+     * @param contribution
+     * @param chunkContext
+     * @return
+     * @throws Exception
+     */
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         logger.info("Sending Email");
