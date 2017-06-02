@@ -17,9 +17,6 @@ import static org.junit.Assert.assertNotNull;
  */
 public class PurgeAccessionRequestsServiceUT extends BaseTestCase {
 
-    @Value("${server.protocol}")
-    String serverProtocol;
-
     @Value("${scsb.circ.url}")
     String scsbCircUrl;
 
@@ -36,9 +33,9 @@ public class PurgeAccessionRequestsServiceUT extends BaseTestCase {
         HttpEntity httpEntity = new HttpEntity<>(headers);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
         Mockito.when(purgeAccessionRequestsService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(purgeAccessionRequestsService.getRestTemplate().exchange(serverProtocol + scsbCircUrl + RecapConstants.PURGE_ACCESSION_REQUEST_URL, HttpMethod.GET, httpEntity, String.class)).thenReturn(responseEntity);
-        Mockito.when(purgeAccessionRequestsService.purgeAccessionRequests(serverProtocol, scsbCircUrl)).thenCallRealMethod();
-        String status = purgeAccessionRequestsService.purgeAccessionRequests(serverProtocol, scsbCircUrl);
+        Mockito.when(purgeAccessionRequestsService.getRestTemplate().exchange(scsbCircUrl + RecapConstants.PURGE_ACCESSION_REQUEST_URL, HttpMethod.GET, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(purgeAccessionRequestsService.purgeAccessionRequests(scsbCircUrl)).thenCallRealMethod();
+        String status = purgeAccessionRequestsService.purgeAccessionRequests(scsbCircUrl);
         assertNotNull(status);
         assertEquals(status, RecapConstants.SUCCESS);
     }

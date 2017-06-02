@@ -20,9 +20,6 @@ import static org.junit.Assert.assertNotNull;
  */
 public class EmailServiceUT extends BaseTestCase {
 
-    @Value("${server.protocol}")
-    String serverProtocol;
-
     @Value("${scsb.solr.client.url}")
     String solrClientUrl;
 
@@ -44,9 +41,9 @@ public class EmailServiceUT extends BaseTestCase {
         HttpEntity<EmailPayLoad> httpEntity = new HttpEntity<>(emailPayLoad, headers);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
         Mockito.when(emailService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(emailService.getRestTemplate().exchange(serverProtocol + solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
-        Mockito.when(emailService.sendEmail(serverProtocol, solrClientUrl, emailPayLoad)).thenCallRealMethod();
-        String status = emailService.sendEmail(serverProtocol, solrClientUrl, emailPayLoad);
+        Mockito.when(emailService.getRestTemplate().exchange(solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(emailService.sendEmail(solrClientUrl, emailPayLoad)).thenCallRealMethod();
+        String status = emailService.sendEmail(solrClientUrl, emailPayLoad);
         assertNotNull(status);
         assertEquals(status, RecapConstants.SUCCESS);
     }

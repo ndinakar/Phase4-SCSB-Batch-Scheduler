@@ -23,14 +23,14 @@ public class DailyReconcilationService {
         return new RestTemplate();
     }
 
-    public String dailyReconcilation(String serverProtocol, String solrCircUrl) {
+    public String dailyReconcilation(String solrCircUrl) {
         String resultStatus = null;
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity httpEntity = new HttpEntity<>(headers);
 
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + solrCircUrl + RecapConstants.DAILY_RECONCILATION_URL, HttpMethod.POST, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrCircUrl + RecapConstants.DAILY_RECONCILATION_URL, HttpMethod.POST, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ex);

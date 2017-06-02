@@ -25,7 +25,7 @@ public class MatchingAlgorithmService {
         return new RestTemplate();
     }
 
-    public String initiateMatchingAlgorithm(String serverProtocol, String solrClientUrl, Date createdDate) {
+    public String initiateMatchingAlgorithm(String solrClientUrl, Date createdDate) {
         String resultStatus = null;
         try {
             SolrIndexRequest solrIndexRequest = getSolrIndexRequest(createdDate);
@@ -33,7 +33,7 @@ public class MatchingAlgorithmService {
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(solrIndexRequest, headers);
 
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + solrClientUrl + RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ex);

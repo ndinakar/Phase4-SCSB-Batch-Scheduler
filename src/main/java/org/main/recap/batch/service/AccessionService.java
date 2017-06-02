@@ -24,13 +24,13 @@ public class AccessionService {
         return new RestTemplate();
     }
 
-    public String processAccession(String serverProtocol, String solrClientUrl, Date reportCreatedDate) {
+    public String processAccession(String solrClientUrl, Date reportCreatedDate) {
         String resultStatus = null;
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity<Date> httpEntity = new HttpEntity<>(reportCreatedDate, headers);
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + solrClientUrl + RecapConstants.ACCESSION_URL, HttpMethod.POST, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.ACCESSION_URL, HttpMethod.POST, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
         } catch (Exception e) {
             logger.error(RecapConstants.LOG_ERROR, e);
