@@ -30,7 +30,7 @@ public class AccessionService {
     }
 
     /**
-     * This method makes a rest call to Solr Client micro service to initiate the accession process.
+     * This method makes a rest call to solr client microservice to initiate the accession process.
      *
      * @param serverProtocol    the server protocol
      * @param solrClientUrl     the solr client url
