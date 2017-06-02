@@ -23,9 +23,6 @@ public class AccessionTasklet implements Tasklet{
 
     private static final Logger logger = LoggerFactory.getLogger(AccessionTasklet.class);
 
-    @Value("${server.protocol}")
-    private String serverProtocol;
-
     @Value("${scsb.solr.client.url}")
     private String solrClientUrl;
 
@@ -44,10 +41,10 @@ public class AccessionTasklet implements Tasklet{
         String jobNameParam = (String) jobExecution.getExecutionContext().get(RecapConstants.JOB_NAME);
         logger.info("Job Parameter in Accession Tasklet : {}", jobNameParam);
         if(!jobName.equalsIgnoreCase(jobNameParam)) {
-            updateJobDetailsService.updateJob(serverProtocol, solrClientUrl, jobName, createdDate);
+            updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate);
         }
 
-        String status = accessionService.processAccession(serverProtocol, solrClientUrl, createdDate);
+        String status = accessionService.processAccession(solrClientUrl, createdDate);
         logger.info("Accession status : {}", status);
         return RepeatStatus.FINISHED;
     }

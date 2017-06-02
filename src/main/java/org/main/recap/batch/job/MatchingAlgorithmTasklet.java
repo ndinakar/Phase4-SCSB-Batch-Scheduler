@@ -22,9 +22,6 @@ public class MatchingAlgorithmTasklet implements Tasklet{
 
     private static final Logger logger = LoggerFactory.getLogger(MatchingAlgorithmTasklet.class);
 
-    @Value("${server.protocol}")
-    private String serverProtocol;
-
     @Value("${scsb.solr.client.url}")
     private String solrClientUrl;
 
@@ -43,10 +40,10 @@ public class MatchingAlgorithmTasklet implements Tasklet{
         String jobNameParam = (String) jobExecution.getExecutionContext().get(RecapConstants.JOB_NAME);
         logger.info("Job Parameter in Matching Algorithm Tasklet : {}", jobNameParam);
         if(!jobName.equalsIgnoreCase(jobNameParam)) {
-            updateJobDetailsService.updateJob(serverProtocol, solrClientUrl, jobName, createdDate);
+            updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate);
         }
 
-        String status = matchingAlgorithmService.initiateMatchingAlgorithm(serverProtocol, solrClientUrl, createdDate);
+        String status = matchingAlgorithmService.initiateMatchingAlgorithm(solrClientUrl, createdDate);
         logger.info("Matching algorithm status : {}", status);
         return RepeatStatus.FINISHED;
     }

@@ -36,7 +36,7 @@ public class UpdateJobDetailsService {
         return jobDetailsRepository;
     }
 
-    public String updateJob(String serverProtocol, String solrClientUrl, String jobName, Date lastExecutedTime) {
+    public String updateJob(String solrClientUrl, String jobName, Date lastExecutedTime) {
         String resultStatus = null;
         try {
             JobEntity jobEntity = getJobDetailsRepository().findByJobName(jobName);
@@ -50,7 +50,7 @@ public class UpdateJobDetailsService {
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity<JobEntity> httpEntity = new HttpEntity<>(jobEntity, headers);
 
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + solrClientUrl + RecapConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ex);

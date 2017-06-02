@@ -23,9 +23,6 @@ import static org.junit.Assert.assertNotNull;
  */
 public class UpdateJobDetailsServiceUT extends BaseTestCase {
 
-    @Value("${server.protocol}")
-    String serverProtocol;
-
     @Value("${scsb.solr.client.url}")
     String solrClientUrl;
 
@@ -53,9 +50,9 @@ public class UpdateJobDetailsServiceUT extends BaseTestCase {
         Mockito.when(updateJobDetailsService.getRestTemplate()).thenReturn(restTemplate);
         Mockito.when(updateJobDetailsService.getJobDetailsRepository()).thenReturn(jobDetailsRepository);
         Mockito.when(updateJobDetailsService.getJobDetailsRepository().findByJobName(jobName)).thenReturn(jobEntity);
-        Mockito.when(updateJobDetailsService.getRestTemplate().exchange(serverProtocol + solrClientUrl + RecapConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
-        Mockito.when(updateJobDetailsService.updateJob(serverProtocol, solrClientUrl, jobName, lastExecutedTime)).thenCallRealMethod();
-        String status = updateJobDetailsService.updateJob(serverProtocol, solrClientUrl, jobName, lastExecutedTime);
+        Mockito.when(updateJobDetailsService.getRestTemplate().exchange(solrClientUrl + RecapConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(updateJobDetailsService.updateJob(solrClientUrl, jobName, lastExecutedTime)).thenCallRealMethod();
+        String status = updateJobDetailsService.updateJob(solrClientUrl, jobName, lastExecutedTime);
         assertNotNull(status);
         assertEquals(status, RecapConstants.SUCCESS);
     }

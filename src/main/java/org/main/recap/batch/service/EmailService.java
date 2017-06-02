@@ -23,14 +23,14 @@ public class EmailService {
         return new RestTemplate();
     }
 
-    public String sendEmail(String serverProtocol, String solrClientUrl, EmailPayLoad emailPayLoad) {
+    public String sendEmail(String solrClientUrl, EmailPayLoad emailPayLoad) {
         String resultStatus = null;
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity<EmailPayLoad> httpEntity = new HttpEntity<>(emailPayLoad, headers);
 
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ex);

@@ -25,7 +25,7 @@ public class GenerateReportsService {
         return new RestTemplate();
     }
 
-    public String generateReport(String serverProtocol, String solrClientUrl, Date reportCreatedDate, String jobName) {
+    public String generateReport(String solrClientUrl, Date reportCreatedDate, String jobName) {
         String resultStatus = null;
         try {
             SolrIndexRequest solrIndexRequest = getSolrIndexRequest(reportCreatedDate, jobName);
@@ -33,7 +33,7 @@ public class GenerateReportsService {
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(solrIndexRequest, headers);
 
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + solrClientUrl + RecapConstants.GENERATE_REPORT_URL, HttpMethod.POST, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.GENERATE_REPORT_URL, HttpMethod.POST, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
         } catch (Exception e) {
             logger.error(RecapConstants.LOG_ERROR, e);
