@@ -35,6 +35,13 @@ public class AccessionReconcilationTasklet implements Tasklet {
     @Autowired
     private UpdateJobDetailsService updateJobDetailsService;
 
+    /**
+     * This method starts the execution of the accession reconciliation job..
+     * @param contribution
+     * @param chunkContext
+     * @return
+     * @throws Exception
+     */
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         logger.info("Executing Accession Reconcilation");

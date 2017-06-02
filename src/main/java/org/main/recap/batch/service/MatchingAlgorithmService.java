@@ -21,10 +21,23 @@ public class MatchingAlgorithmService {
 
     private static final Logger logger = LoggerFactory.getLogger(MatchingAlgorithmService.class);
 
+    /**
+     * Gets rest template.
+     *
+     * @return the rest template
+     */
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
 
+    /**
+     * This method makes a rest call to Solr Client micro service to initiate the matching algorithm process.
+     *
+     * @param serverProtocol the server protocol
+     * @param solrClientUrl  the solr client url
+     * @param createdDate    the created date
+     * @return status of the matching algorithm process.
+     */
     public String initiateMatchingAlgorithm(String serverProtocol, String solrClientUrl, Date createdDate) {
         String resultStatus = null;
         try {
@@ -42,6 +55,12 @@ public class MatchingAlgorithmService {
         return resultStatus;
     }
 
+    /**
+     * Gets solr index request.
+     *
+     * @param createdDate the created date
+     * @return the solr index request
+     */
     public SolrIndexRequest getSolrIndexRequest(Date createdDate) {
         SolrIndexRequest solrIndexRequest = new SolrIndexRequest();
         solrIndexRequest.setProcessType(RecapConstants.ONGOING_MATCHING_ALGORITHM_JOB);
