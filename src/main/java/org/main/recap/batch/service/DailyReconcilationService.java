@@ -29,7 +29,7 @@ public class DailyReconcilationService {
     }
 
     /**
-     * This method makes a rest call to Scsb Circ micro service to initiate the daily reconciliation process.
+     * This method makes a rest call to scsb circ microservice to initiate the daily reconciliation process.
      *
      * @param serverProtocol the server protocol
      * @param scsbCircUrl    the scsb circ url

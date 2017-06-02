@@ -31,7 +31,7 @@ public class MatchingAlgorithmService {
     }
 
     /**
-     * This method makes a rest call to Solr Client micro service to initiate the matching algorithm process.
+     * This method makes a rest call to solr client microservice to initiate the matching algorithm process.
      *
      * @param serverProtocol the server protocol
      * @param solrClientUrl  the solr client url

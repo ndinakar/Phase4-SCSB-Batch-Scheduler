@@ -47,7 +47,7 @@ public class UpdateJobDetailsService {
     }
 
     /**
-     * This method makes a rest call to Solr Client micro service to update the job with next execution time.
+     * This method makes a rest call to solr client microservice to update the job with next execution time.
      *
      * @param serverProtocol   the server protocol
      * @param solrClientUrl    the solr client url
