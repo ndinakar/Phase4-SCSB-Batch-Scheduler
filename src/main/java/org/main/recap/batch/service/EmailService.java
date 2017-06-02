@@ -29,7 +29,7 @@ public class EmailService {
     }
 
     /**
-     * This method makes a rest call to Solr Client micro service to send an email with the job execution information.
+     * This method makes a rest call to solr client microservice to send an email with the job execution information.
      *
      * @param serverProtocol the server protocol
      * @param solrClientUrl  the solr client url

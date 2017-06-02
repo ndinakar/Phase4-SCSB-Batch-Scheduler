@@ -30,7 +30,7 @@ public class AccessionReconcilationService {
     }
 
     /**
-     * This method makes a rest call to Scsb Circ micro service to initiate the accession reconciliation process.
+     * This method makes a rest call to scsb circ microservice to initiate the accession reconciliation process.
      *
      * @param serverProtocol the server protocol
      * @param scsbCircUrl    the scsb circ url

@@ -28,7 +28,7 @@ public class PurgeEmailAddressService {
     }
 
     /**
-     * This method makes a rest call to Scsb Circ micro service to initiate the process of purging email addresses.
+     * This method makes a rest call to scsb circ microservice to initiate the process of purging email addresses.
      *
      * @param serverProtocol the server protocol
      * @param scsbCircUrl    the scsb circ url
