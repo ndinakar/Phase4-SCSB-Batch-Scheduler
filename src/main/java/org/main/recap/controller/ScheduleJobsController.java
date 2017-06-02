@@ -29,7 +29,7 @@ public class ScheduleJobsController {
     private SchedulerService schedulerService;
 
     /**
-     * This method is exposed as scheduler service for other micro services to schedule or reschedule or unschedule a job,
+     * This method is exposed as scheduler service for other microservices to schedule or reschedule or unschedule a job,
      *
      * @param scheduleJobRequest the schedule job request
      * @return the schedule job response with the status message and next execution time.
