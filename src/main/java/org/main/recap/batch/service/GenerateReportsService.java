@@ -21,10 +21,24 @@ public class GenerateReportsService {
 
     private static final Logger logger = LoggerFactory.getLogger(GenerateReportsService.class);
 
+    /**
+     * Gets rest template.
+     *
+     * @return the rest template
+     */
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
 
+    /**
+     * This method makes a rest call to Solr Client micro service to generate report for given process type.
+     *
+     * @param serverProtocol    the server protocol
+     * @param solrClientUrl     the solr client url
+     * @param reportCreatedDate the report created date
+     * @param jobName           the job name
+     * @return status of the generated report
+     */
     public String generateReport(String serverProtocol, String solrClientUrl, Date reportCreatedDate, String jobName) {
         String resultStatus = null;
         try {
@@ -42,6 +56,13 @@ public class GenerateReportsService {
         return resultStatus;
     }
 
+    /**
+     * Gets solr index request.
+     *
+     * @param reportCreatedDate the report created date
+     * @param reportType        the report type
+     * @return the solr index request
+     */
     public SolrIndexRequest getSolrIndexRequest(Date reportCreatedDate, String reportType) {
         SolrIndexRequest solrIndexRequest = new SolrIndexRequest();
         solrIndexRequest.setProcessType(reportType);

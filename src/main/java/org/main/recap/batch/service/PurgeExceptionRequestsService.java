@@ -13,16 +13,27 @@ import org.springframework.web.client.RestTemplate;
 /**
  * Created by rajeshbabuk on 18/4/17.
  */
-
 @Service
 public class PurgeExceptionRequestsService {
 
     private static final Logger logger = LoggerFactory.getLogger(PurgeExceptionRequestsService.class);
 
+    /**
+     * Gets rest template.
+     *
+     * @return the rest template
+     */
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
 
+    /**
+     * This method makes a rest call to Scsb Circ micro service to initiate the process of purging exception requests.
+     *
+     * @param serverProtocol the server protocol
+     * @param scsbCircUrl    the scsb circ url
+     * @return status of purging exception requests process
+     */
     public String purgeExceptionRequests(String serverProtocol, String scsbCircUrl) {
         String resultStatus = null;
         try {
