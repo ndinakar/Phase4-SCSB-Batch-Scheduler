@@ -19,18 +19,30 @@ public class DailyReconcilationService {
 
     private static final Logger logger = LoggerFactory.getLogger(DailyReconcilationService.class);
 
+    /**
+     * Gets rest template.
+     *
+     * @return the rest template
+     */
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
 
-    public String dailyReconcilation(String serverProtocol, String solrCircUrl) {
+    /**
+     * This method makes a rest call to Scsb Circ micro service to initiate the daily reconciliation process.
+     *
+     * @param serverProtocol the server protocol
+     * @param scsbCircUrl    the scsb circ url
+     * @return status of the daily reconciliation process
+     */
+    public String dailyReconcilation(String serverProtocol, String scsbCircUrl) {
         String resultStatus = null;
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity httpEntity = new HttpEntity<>(headers);
 
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + solrCircUrl + RecapConstants.DAILY_RECONCILATION_URL, HttpMethod.POST, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + scsbCircUrl + RecapConstants.DAILY_RECONCILATION_URL, HttpMethod.POST, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ex);
