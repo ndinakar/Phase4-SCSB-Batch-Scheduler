@@ -8,7 +8,6 @@
             <list>
                 <value>classpath:/org/springframework/batch/admin/bootstrap/batch.properties</value>
                 <value>classpath:application.properties</value>
-                <value>classpath:batch-${environment}.properties</value>
                 <value>file:/data/config/external-application.properties</value>
                 <value>file:/recap-vol/config/external-application.properties</value>
             </list>
