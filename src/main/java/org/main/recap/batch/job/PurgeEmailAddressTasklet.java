@@ -32,6 +32,13 @@ public class PurgeEmailAddressTasklet implements Tasklet {
     @Autowired
     private UpdateJobDetailsService updateJobDetailsService;
 
+    /**
+     * This method starts the execution of purging email addresses job.
+     * @param contribution
+     * @param chunkContext
+     * @return
+     * @throws Exception
+     */
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         logger.info("Executing PurgeEmailAddressTasklet");

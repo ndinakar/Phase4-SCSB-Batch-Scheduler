@@ -18,10 +18,21 @@ public class PurgeAccessionRequestsService {
 
     private static final Logger logger = LoggerFactory.getLogger(PurgeAccessionRequestsService.class);
 
+    /**
+     * Gets rest template.
+     *
+     * @return the rest template
+     */
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
 
+    /**
+     * This method makes a rest call to scsb circ microservice to initiate the process of purging accession requests.
+     *
+     * @param scsbCircUrl    the scsb circ url
+     * @return status of purging accession requests process
+     */
     public String purgeAccessionRequests(String scsbCircUrl) {
         String resultStatus = null;
         try {

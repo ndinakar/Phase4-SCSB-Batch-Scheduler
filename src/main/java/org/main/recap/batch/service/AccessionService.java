@@ -20,11 +20,24 @@ public class AccessionService {
 
     private static final Logger logger = LoggerFactory.getLogger(AccessionService.class);
 
+    /**
+     * Gets rest template.
+     *
+     * @return the rest template
+     */
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
 
-    public String processAccession(String solrClientUrl, Date reportCreatedDate) {
+    /**
+     * This method makes a rest call to solr client microservice to initiate the accession process.
+     *
+     * @param serverProtocol    the server protocol
+     * @param solrClientUrl     the solr client url
+     * @param reportCreatedDate the report created date
+     * @return status of the accession process
+     */
+    public String processAccession(String serverProtocol, String solrClientUrl, Date reportCreatedDate) {
         String resultStatus = null;
         try {
             HttpHeaders headers = new HttpHeaders();

@@ -10,6 +10,11 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 @Configuration
 public class QuartzSchedulerConfig {
 
+    /**
+     * This method is a annotated bean definition for scheduler object.
+     *
+     * @return the scheduler factory bean
+     */
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean() {
         return new SchedulerFactoryBean();

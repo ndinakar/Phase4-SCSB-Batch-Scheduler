@@ -31,6 +31,13 @@ public class AccessionTasklet implements Tasklet{
     @Autowired
     private AccessionService accessionService;
 
+    /**
+     * This method starts the execution of the accession job.
+     * @param contribution
+     * @param chunkContext
+     * @return
+     * @throws Exception
+     */
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         logger.info("Executing AccessionReportsTasklet");

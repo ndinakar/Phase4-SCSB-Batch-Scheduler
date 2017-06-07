@@ -28,14 +28,32 @@ public class UpdateJobDetailsService {
     @Autowired
     private JobDetailsRepository jobDetailsRepository;
 
+    /**
+     * Gets rest template.
+     *
+     * @return the rest template
+     */
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
 
+    /**
+     * Gets job details repository.
+     *
+     * @return the job details repository
+     */
     public JobDetailsRepository getJobDetailsRepository() {
         return jobDetailsRepository;
     }
 
+    /**
+     * This method makes a rest call to solr client microservice to update the job with next execution time.
+     *
+     * @param solrClientUrl    the solr client url
+     * @param jobName          the job name
+     * @param lastExecutedTime the last executed time
+     * @return status of updating the job
+     */
     public String updateJob(String solrClientUrl, String jobName, Date lastExecutedTime) {
         String resultStatus = null;
         try {
