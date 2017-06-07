@@ -29,15 +29,13 @@ public class AccessionReconcilationService {
         return new RestTemplate();
     }
 
-    public String accessionReconcilation(String scsbCircUrl) {
     /**
      * This method makes a rest call to scsb circ microservice to initiate the accession reconciliation process.
      *
-     * @param serverProtocol the server protocol
      * @param scsbCircUrl    the scsb circ url
      * @return status of the accession reconciliation process
      */
-    public String accessionReconcilation(String serverProtocol, String scsbCircUrl) {
+    public String accessionReconcilation(String scsbCircUrl) {
         String resultStatus = null;
         try {
             HttpHeaders headers = new HttpHeaders();
