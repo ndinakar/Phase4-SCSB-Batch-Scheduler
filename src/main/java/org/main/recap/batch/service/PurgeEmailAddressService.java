@@ -19,10 +19,21 @@ public class PurgeEmailAddressService {
 
     private static final Logger logger = LoggerFactory.getLogger(PurgeEmailAddressService.class);
 
+    /**
+     * Gets rest template.
+     *
+     * @return the rest template
+     */
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
 
+    /**
+     * This method makes a rest call to scsb circ microservice to initiate the process of purging email addresses.
+     *
+     * @param scsbCircUrl    the scsb circ url
+     * @return status of purging email addresses process
+     */
     public String purgeEmailAddress(String scsbCircUrl) {
         String resultStatus = null;
         try {

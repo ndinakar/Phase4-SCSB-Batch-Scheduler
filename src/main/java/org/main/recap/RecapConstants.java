@@ -25,7 +25,6 @@ public class RecapConstants {
     public static final String LOG_ERROR = "error-->";
     public static final String ONGOING_MATCHING_ALGORITHM_JOB = "ongoingMatchingAlgorithmJob";
     public static final String GENERATE_ACCESSION_REPORT_JOB = "GenerateAccessionReport";
-
     public static final String PURGE_EMAIL_URL = "purge/purgeEmailAddress";
     public static final String PURGE_EXCEPTION_REQUEST_URL = "purge/purgeExceptionRequests";
     public static final String PURGE_ACCESSION_REQUEST_URL = "purge/purgeAccessionRequests";
@@ -36,7 +35,6 @@ public class RecapConstants {
     public static final String UPDATE_JOB_URL = "updateJobService/updateJob";
     public static final String DAILY_RECONCILATION_URL = "/dailyReconcilation/startDailyReconcilation";
     public static final String ACCESSION_RECOCILATION_URL = "/accessionReconcilation/startAccessionReconcilation";
-
     public static final String PURGE_EXCEPTION_REQUESTS = "PurgeExceptionRequests";
     public static final String PURGE_EMAIL_ADDRESS = "PurgeEmailAddress";
     public static final String MATCHING_ALGORITHM = "MatchingAlgorithm";

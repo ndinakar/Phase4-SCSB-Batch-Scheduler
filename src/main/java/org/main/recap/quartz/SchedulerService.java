@@ -16,7 +16,6 @@ import static org.quartz.CronExpression.isValidExpression;
 /**
  * Created by rajeshbabuk on 3/4/17.
  */
-
 @Service
 public class SchedulerService {
 
@@ -31,6 +30,13 @@ public class SchedulerService {
     @Autowired
     private JobLocator jobLocator;
 
+    /**
+     * This method is used to schedule a job with the given job name and add a trigger with the given cron expression.
+     *
+     * @param jobName        the job name
+     * @param cronExpression the cron expression
+     * @return the string
+     */
     public String scheduleJob(String jobName, String cronExpression) {
         try {
             boolean validCronExpression = isValidExpression(cronExpression);
@@ -66,6 +72,13 @@ public class SchedulerService {
         return RecapConstants.JOB_SUCCESS_SCHEDULING;
     }
 
+    /**
+     * This method is used to reschedule a job with the given job name and modify the trigger with the given cron expression.
+     *
+     * @param jobName        the job name
+     * @param cronExpression the cron expression
+     * @return the string
+     */
     public String rescheduleJob(String jobName, String cronExpression) {
         try {
             boolean validCronExpression = isValidExpression(cronExpression);
@@ -84,6 +97,12 @@ public class SchedulerService {
         return RecapConstants.JOB_SUCCESS_RESCHEDULING;
     }
 
+    /**
+     * This method is used to unschedule the job with the given job name.
+     *
+     * @param jobName the job name
+     * @return the string
+     */
     public String unscheduleJob(String jobName) {
         try {
             TriggerKey triggerKey = new TriggerKey(jobName + RecapConstants.TRIGGER_SUFFIX);

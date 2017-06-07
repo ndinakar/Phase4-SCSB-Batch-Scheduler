@@ -19,10 +19,21 @@ public class DailyReconcilationService {
 
     private static final Logger logger = LoggerFactory.getLogger(DailyReconcilationService.class);
 
+    /**
+     * Gets rest template.
+     *
+     * @return the rest template
+     */
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
 
+    /**
+     * This method makes a rest call to scsb circ microservice to initiate the daily reconciliation process.
+     *
+     * @param scsbCircUrl    the scsb circ url
+     * @return status of the daily reconciliation process
+     */
     public String dailyReconcilation(String solrCircUrl) {
         String resultStatus = null;
         try {

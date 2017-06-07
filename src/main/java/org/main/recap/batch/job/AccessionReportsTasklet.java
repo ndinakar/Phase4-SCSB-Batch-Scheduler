@@ -32,6 +32,13 @@ public class AccessionReportsTasklet implements Tasklet {
     @Autowired
     private GenerateReportsService generateReportsService;
 
+    /**
+     * This method starts the execution of the accession reports job.
+     * @param contribution
+     * @param chunkContext
+     * @return
+     * @throws Exception
+     */
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         logger.info("Executing AccessionReportsTasklet");
@@ -48,6 +55,12 @@ public class AccessionReportsTasklet implements Tasklet {
         return RepeatStatus.FINISHED;
     }
 
+    /**
+     * This method builds the from date using the current date whose time would be 00:00:00
+     *
+     * @param createdDate the created date
+     * @return the from date
+     */
     public Date getFromDate(Date createdDate) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(createdDate);
