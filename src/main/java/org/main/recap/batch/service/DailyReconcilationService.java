@@ -31,7 +31,7 @@ public class DailyReconcilationService {
     /**
      * This method makes a rest call to scsb circ microservice to initiate the daily reconciliation process.
      *
-     * @param scsbCircUrl    the scsb circ url
+     * @param solrCircUrl    the scsb circ url
      * @return status of the daily reconciliation process
      */
     public String dailyReconcilation(String solrCircUrl) {

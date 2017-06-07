@@ -33,7 +33,6 @@ public class GenerateReportsService {
     /**
      * This method makes a rest call to solr client microservice to generate report for given process type.
      *
-     * @param serverProtocol    the server protocol
      * @param solrClientUrl     the solr client url
      * @param reportCreatedDate the report created date
      * @param jobName           the job name

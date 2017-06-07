@@ -32,12 +32,11 @@ public class AccessionService {
     /**
      * This method makes a rest call to solr client microservice to initiate the accession process.
      *
-     * @param serverProtocol    the server protocol
      * @param solrClientUrl     the solr client url
      * @param reportCreatedDate the report created date
      * @return status of the accession process
      */
-    public String processAccession(String serverProtocol, String solrClientUrl, Date reportCreatedDate) {
+    public String processAccession(String solrClientUrl, Date reportCreatedDate) {
         String resultStatus = null;
         try {
             HttpHeaders headers = new HttpHeaders();
