@@ -23,9 +23,6 @@ public class JobSequenceTasklet implements Tasklet {
 
     private static final Logger logger = LoggerFactory.getLogger(JobSequenceTasklet.class);
 
-    @Value("${server.protocol}")
-    private String serverProtocol;
-
     @Value("${scsb.solr.client.url}")
     private String solrClientUrl;
 
@@ -48,7 +45,7 @@ public class JobSequenceTasklet implements Tasklet {
         Date createdDate = jobExecution.getCreateTime();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         executionContext.put(RecapConstants.JOB_NAME, jobName);
-        updateJobDetailsService.updateJob(serverProtocol, solrClientUrl, jobName, createdDate);
+        updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate);
         return RepeatStatus.FINISHED;
     }
 }

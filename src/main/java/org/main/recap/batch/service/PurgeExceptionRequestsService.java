@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * Created by rajeshbabuk on 18/4/17.
  */
+
 @Service
 public class PurgeExceptionRequestsService {
 
@@ -30,18 +31,17 @@ public class PurgeExceptionRequestsService {
     /**
      * This method makes a rest call to scsb circ microservice to initiate the process of purging exception requests.
      *
-     * @param serverProtocol the server protocol
      * @param scsbCircUrl    the scsb circ url
      * @return status of purging exception requests process
      */
-    public String purgeExceptionRequests(String serverProtocol, String scsbCircUrl) {
+    public String purgeExceptionRequests(String scsbCircUrl) {
         String resultStatus = null;
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity httpEntity = new HttpEntity<>(headers);
 
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + scsbCircUrl + RecapConstants.PURGE_EXCEPTION_REQUEST_URL, HttpMethod.GET, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbCircUrl + RecapConstants.PURGE_EXCEPTION_REQUEST_URL, HttpMethod.GET, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ex);

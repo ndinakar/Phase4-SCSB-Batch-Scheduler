@@ -17,9 +17,6 @@ import static org.junit.Assert.assertNotNull;
  */
 public class PurgeEmailAddressServiceUT extends BaseTestCase {
 
-    @Value("${server.protocol}")
-    String serverProtocol;
-
     @Value("${scsb.circ.url}")
     String scsbCircUrl;
 
@@ -36,9 +33,9 @@ public class PurgeEmailAddressServiceUT extends BaseTestCase {
         HttpEntity httpEntity = new HttpEntity<>(headers);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
         Mockito.when(purgeEmailAddressService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(purgeEmailAddressService.getRestTemplate().exchange(serverProtocol + scsbCircUrl + RecapConstants.PURGE_EMAIL_URL, HttpMethod.GET, httpEntity, String.class)).thenReturn(responseEntity);
-        Mockito.when(purgeEmailAddressService.purgeEmailAddress(serverProtocol, scsbCircUrl)).thenCallRealMethod();
-        String status = purgeEmailAddressService.purgeEmailAddress(serverProtocol, scsbCircUrl);
+        Mockito.when(purgeEmailAddressService.getRestTemplate().exchange(scsbCircUrl + RecapConstants.PURGE_EMAIL_URL, HttpMethod.GET, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(purgeEmailAddressService.purgeEmailAddress(scsbCircUrl)).thenCallRealMethod();
+        String status = purgeEmailAddressService.purgeEmailAddress(scsbCircUrl);
         assertNotNull(status);
         assertEquals(status, RecapConstants.SUCCESS);
     }

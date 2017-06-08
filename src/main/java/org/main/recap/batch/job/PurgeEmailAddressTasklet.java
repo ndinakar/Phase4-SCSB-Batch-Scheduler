@@ -20,9 +20,6 @@ public class PurgeEmailAddressTasklet implements Tasklet {
 
     private static final Logger logger = LoggerFactory.getLogger(PurgeEmailAddressTasklet.class);
 
-    @Value("${server.protocol}")
-    String serverProtocol;
-
     @Value("${scsb.solr.client.url}")
     String solrClientUrl;
 
@@ -47,9 +44,9 @@ public class PurgeEmailAddressTasklet implements Tasklet {
         logger.info("Executing PurgeEmailAddressTasklet");
         String jobName = chunkContext.getStepContext().getStepExecution().getJobExecution().getJobInstance().getJobName();
         Date createdDate = chunkContext.getStepContext().getStepExecution().getJobExecution().getCreateTime();
-        updateJobDetailsService.updateJob(serverProtocol, solrClientUrl, jobName, createdDate);
+        updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate);
 
-        String status = purgeEmailAddressService.purgeEmailAddress(serverProtocol, scsbCircUrl);
+        String status = purgeEmailAddressService.purgeEmailAddress(scsbCircUrl);
         logger.info("Purge Email Address status : {}", status);
         return RepeatStatus.FINISHED;
     }

@@ -20,9 +20,6 @@ public class PurgeAccessionRequestTasklet implements Tasklet {
 
     private static final Logger logger = LoggerFactory.getLogger(PurgeAccessionRequestTasklet.class);
 
-    @Value("${server.protocol}")
-    String serverProtocol;
-
     @Value("${scsb.solr.client.url}")
     String solrClientUrl;
 
@@ -47,9 +44,9 @@ public class PurgeAccessionRequestTasklet implements Tasklet {
         logger.info("Executing PurgeAccessionRequestTasklet");
         String jobName = chunkContext.getStepContext().getStepExecution().getJobExecution().getJobInstance().getJobName();
         Date createdDate = chunkContext.getStepContext().getStepExecution().getJobExecution().getCreateTime();
-        updateJobDetailsService.updateJob(serverProtocol, solrClientUrl, jobName, createdDate);
+        updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate);
 
-        String status = purgeAccessionRequestsService.purgeAccessionRequests(serverProtocol, scsbCircUrl);
+        String status = purgeAccessionRequestsService.purgeAccessionRequests(scsbCircUrl);
         logger.info("Purge Accession Requests status : {}", status);
         return RepeatStatus.FINISHED;
     }

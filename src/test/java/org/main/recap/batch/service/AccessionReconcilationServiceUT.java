@@ -17,9 +17,6 @@ import static org.junit.Assert.assertNotNull;
  */
 public class AccessionReconcilationServiceUT extends BaseTestCase{
 
-    @Value("${server.protocol}")
-    String serverProtocol;
-
     @Value("${scsb.circ.url}")
     String scsbCircUrl;
 
@@ -36,9 +33,9 @@ public class AccessionReconcilationServiceUT extends BaseTestCase{
         HttpEntity httpEntity = new HttpEntity<>(headers);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
         Mockito.when(accessionReconcilationService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(accessionReconcilationService.getRestTemplate().exchange(serverProtocol + scsbCircUrl + RecapConstants.ACCESSION_RECOCILATION_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
-        Mockito.when(accessionReconcilationService.accessionReconcilation(serverProtocol, scsbCircUrl)).thenCallRealMethod();
-        String status = accessionReconcilationService.accessionReconcilation(serverProtocol, scsbCircUrl);
+        Mockito.when(accessionReconcilationService.getRestTemplate().exchange(scsbCircUrl + RecapConstants.ACCESSION_RECOCILATION_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(accessionReconcilationService.accessionReconcilation(scsbCircUrl)).thenCallRealMethod();
+        String status = accessionReconcilationService.accessionReconcilation(scsbCircUrl);
         assertNotNull(status);
         assertEquals(status, RecapConstants.SUCCESS);
     }

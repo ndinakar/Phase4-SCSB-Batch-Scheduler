@@ -20,9 +20,6 @@ public class DailyReconcilationTasklet implements Tasklet {
 
     private static final Logger logger = LoggerFactory.getLogger(DailyReconcilationTasklet.class);
 
-    @Value("${server.protocol}")
-    String serverProtocol;
-
     @Value("${scsb.solr.client.url}")
     String solrClientUrl;
 
@@ -47,9 +44,9 @@ public class DailyReconcilationTasklet implements Tasklet {
         logger.info("Executing DailyReconcilation");
         String jobName = chunkContext.getStepContext().getStepExecution().getJobExecution().getJobInstance().getJobName();
         Date createdDate = chunkContext.getStepContext().getStepExecution().getJobExecution().getCreateTime();
-        updateJobDetailsService.updateJob(serverProtocol, solrClientUrl, jobName, createdDate);
+        updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate);
 
-        String status = dailyReconcilationService.dailyReconcilation(serverProtocol, scsbCircUrl);
+        String status = dailyReconcilationService.dailyReconcilation(scsbCircUrl);
         logger.info("Daily Reconciliation Job status : {}", status);
         return RepeatStatus.FINISHED;
     }
