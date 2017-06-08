@@ -22,9 +22,6 @@ public class EmailProcessingTasklet implements Tasklet {
 
     private static final Logger logger = LoggerFactory.getLogger(EmailProcessingTasklet.class);
 
-    @Value("${server.protocol}")
-    private String serverProtocol;
-
     @Value("${scsb.solr.client.url}")
     private String solrClientUrl;
 
@@ -54,7 +51,7 @@ public class EmailProcessingTasklet implements Tasklet {
         emailPayLoad.setJobDescription(jobEntity.getJobDescription());
         emailPayLoad.setStartDate(createdDate);
         emailPayLoad.setStatus("Successfully");
-        String result = emailService.sendEmail(serverProtocol, solrClientUrl, emailPayLoad);
+        String result = emailService.sendEmail(solrClientUrl, emailPayLoad);
         logger.info("Email sending - {}", result);
         return RepeatStatus.FINISHED;
     }

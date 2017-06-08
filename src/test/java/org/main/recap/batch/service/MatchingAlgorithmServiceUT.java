@@ -20,9 +20,6 @@ import static org.junit.Assert.assertNotNull;
  */
 public class MatchingAlgorithmServiceUT extends BaseTestCase {
 
-    @Value("${server.protocol}")
-    String serverProtocol;
-
     @Value("${scsb.solr.client.url}")
     String solrClientUrl;
 
@@ -45,9 +42,9 @@ public class MatchingAlgorithmServiceUT extends BaseTestCase {
         ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
         Mockito.when(matchingAlgorithmService.getRestTemplate()).thenReturn(restTemplate);
         Mockito.when(matchingAlgorithmService.getSolrIndexRequest(createdDate)).thenReturn(solrIndexRequest);
-        Mockito.when(matchingAlgorithmService.getRestTemplate().exchange(serverProtocol + solrClientUrl + RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
-        Mockito.when(matchingAlgorithmService.initiateMatchingAlgorithm(serverProtocol, solrClientUrl, createdDate)).thenCallRealMethod();
-        String status = matchingAlgorithmService.initiateMatchingAlgorithm(serverProtocol, solrClientUrl, createdDate);
+        Mockito.when(matchingAlgorithmService.getRestTemplate().exchange(solrClientUrl + RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(matchingAlgorithmService.initiateMatchingAlgorithm(solrClientUrl, createdDate)).thenCallRealMethod();
+        String status = matchingAlgorithmService.initiateMatchingAlgorithm(solrClientUrl, createdDate);
         assertNotNull(status);
         assertEquals(status, RecapConstants.SUCCESS);
     }

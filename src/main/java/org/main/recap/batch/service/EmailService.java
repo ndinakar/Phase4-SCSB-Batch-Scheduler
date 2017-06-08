@@ -31,19 +31,18 @@ public class EmailService {
     /**
      * This method makes a rest call to solr client microservice to send an email with the job execution information.
      *
-     * @param serverProtocol the server protocol
      * @param solrClientUrl  the solr client url
      * @param emailPayLoad   the email pay load
      * @return status of sending email
      */
-    public String sendEmail(String serverProtocol, String solrClientUrl, EmailPayLoad emailPayLoad) {
+    public String sendEmail(String solrClientUrl, EmailPayLoad emailPayLoad) {
         String resultStatus = null;
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity<EmailPayLoad> httpEntity = new HttpEntity<>(emailPayLoad, headers);
 
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ex);

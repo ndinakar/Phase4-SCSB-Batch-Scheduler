@@ -30,18 +30,17 @@ public class PurgeAccessionRequestsService {
     /**
      * This method makes a rest call to scsb circ microservice to initiate the process of purging accession requests.
      *
-     * @param serverProtocol the server protocol
      * @param scsbCircUrl    the scsb circ url
      * @return status of purging accession requests process
      */
-    public String purgeAccessionRequests(String serverProtocol, String scsbCircUrl) {
+    public String purgeAccessionRequests(String scsbCircUrl) {
         String resultStatus = null;
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity httpEntity = new HttpEntity<>(headers);
 
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + scsbCircUrl + RecapConstants.PURGE_ACCESSION_REQUEST_URL, HttpMethod.GET, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbCircUrl + RecapConstants.PURGE_ACCESSION_REQUEST_URL, HttpMethod.GET, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ex);

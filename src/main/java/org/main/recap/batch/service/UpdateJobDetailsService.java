@@ -49,13 +49,12 @@ public class UpdateJobDetailsService {
     /**
      * This method makes a rest call to solr client microservice to update the job with next execution time.
      *
-     * @param serverProtocol   the server protocol
      * @param solrClientUrl    the solr client url
      * @param jobName          the job name
      * @param lastExecutedTime the last executed time
      * @return status of updating the job
      */
-    public String updateJob(String serverProtocol, String solrClientUrl, String jobName, Date lastExecutedTime) {
+    public String updateJob(String solrClientUrl, String jobName, Date lastExecutedTime) {
         String resultStatus = null;
         try {
             JobEntity jobEntity = getJobDetailsRepository().findByJobName(jobName);
@@ -69,7 +68,7 @@ public class UpdateJobDetailsService {
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity<JobEntity> httpEntity = new HttpEntity<>(jobEntity, headers);
 
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + solrClientUrl + RecapConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ex);

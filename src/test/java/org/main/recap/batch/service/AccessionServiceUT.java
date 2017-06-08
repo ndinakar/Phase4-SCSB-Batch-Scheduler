@@ -20,9 +20,6 @@ import static org.junit.Assert.assertNotNull;
  */
 public class AccessionServiceUT extends BaseTestCase{
 
-    @Value("${server.protocol}")
-    String serverProtocol;
-
     @Value("${scsb.solr.client.url}")
     String solrClientUrl;
 
@@ -40,9 +37,9 @@ public class AccessionServiceUT extends BaseTestCase{
         HttpEntity<Date> httpEntity = new HttpEntity<>(createdDate, headers);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
         Mockito.when(accessionService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(accessionService.getRestTemplate().exchange(serverProtocol + solrClientUrl + RecapConstants.ACCESSION_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
-        Mockito.when(accessionService.processAccession(serverProtocol, solrClientUrl, createdDate)).thenCallRealMethod();
-        String status = accessionService.processAccession(serverProtocol, solrClientUrl, createdDate);
+        Mockito.when(accessionService.getRestTemplate().exchange(solrClientUrl + RecapConstants.ACCESSION_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(accessionService.processAccession(solrClientUrl, createdDate)).thenCallRealMethod();
+        String status = accessionService.processAccession(solrClientUrl, createdDate);
         assertNotNull(status);
         assertEquals(status, RecapConstants.SUCCESS);
     }
