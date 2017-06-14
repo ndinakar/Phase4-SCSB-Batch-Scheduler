@@ -114,4 +114,14 @@
 
     <bean id="AccessionReconcilationTasklet" class="org.main.recap.batch.job.AccessionReconcilationTasklet"/>
 
+    <batch:job id="DeletedRecords" restartable="true">
+        <batch:step id="ReportDeletedRecordsStep" allow-start-if-complete="true" next="DeletedRecordsProcessingStep2">
+            <batch:tasklet ref="deletedRecordsTasklet"/>
+        </batch:step>
+        <batch:step id="DeletedRecordsProcessingStep2" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="deletedRecordsTasklet" class="org.main.recap.batch.job.DeletedRecordsTasklet"/>
 </beans>
