@@ -30,6 +30,9 @@ public class RecapConstants {
     public static final String PURGE_ACCESSION_REQUEST_URL = "purge/purgeAccessionRequests";
     public static final String MATCHING_ALGORITHM_URL = "ongoingMatchingAlgorithmService/ongoingMatchingAlgorithmJob";
     public static final String GENERATE_REPORT_URL = "generateReportService/generateReports";
+    public static final String REPORT_DELETED_RECORDS_URL = "reportDeleted/records";
+
+
     public static final String ACCESSION_URL = "sharedCollection/ongoingAccessionJob";
     public static final String BATCH_JOB_EMAIL_URL = "batchJobEmailService/batchJobEmail";
     public static final String UPDATE_JOB_URL = "updateJobService/updateJob";
