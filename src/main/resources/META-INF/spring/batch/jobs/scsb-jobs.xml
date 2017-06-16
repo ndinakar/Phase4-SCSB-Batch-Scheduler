@@ -124,4 +124,12 @@
     </batch:job>
 
     <bean id="deletedRecordsTasklet" class="org.main.recap.batch.job.DeletedRecordsTasklet"/>
+    <batch:job id="StatusReconcilation" restartable="true">
+        <batch:step id="StatusReconcilationStep" allow-start-if-complete="true">
+            <batch:tasklet ref="StatusReconcilationTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="StatusReconcilationTasklet" class="org.main.recap.batch.job.StatusReconcilationTasklet"/>
+
 </beans>
