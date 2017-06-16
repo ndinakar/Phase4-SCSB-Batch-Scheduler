@@ -24,13 +24,13 @@ public class StatusReconciliationService {
         return new RestTemplate();
     }
 
-    public String statusReconcilation(String serverProtocol, String scsbCircUrl) {
+    public String statusReconcilation(String scsbCircUrl) {
         String resultStatus = null;
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity<JobEntity> httpEntity = new HttpEntity<>(headers);
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(serverProtocol + scsbCircUrl +RecapConstants.STATUS_RECOCILATION_URL, HttpMethod.GET, httpEntity, String.class);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbCircUrl +RecapConstants.STATUS_RECOCILATION_URL, HttpMethod.GET, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
         } catch (RestClientException e) {
             logger.error(RecapConstants.LOG_ERROR,e);
