@@ -50,7 +50,7 @@ public class AccessionTasklet implements Tasklet{
             updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate);
         }
 
-        String status = accessionService.processAccession(solrClientUrl, createdDate);
+        String status = accessionService.processAccession(solrClientUrl);
         logger.info("Accession status : {}", status);
         return RepeatStatus.FINISHED;
     }

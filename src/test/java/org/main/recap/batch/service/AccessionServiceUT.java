@@ -38,8 +38,8 @@ public class AccessionServiceUT extends BaseTestCase{
         ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
         Mockito.when(accessionService.getRestTemplate()).thenReturn(restTemplate);
         Mockito.when(accessionService.getRestTemplate().exchange(solrClientUrl + RecapConstants.ACCESSION_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
-        Mockito.when(accessionService.processAccession(solrClientUrl, createdDate)).thenCallRealMethod();
-        String status = accessionService.processAccession(solrClientUrl, createdDate);
+        Mockito.when(accessionService.processAccession(solrClientUrl)).thenCallRealMethod();
+        String status = accessionService.processAccession(solrClientUrl);
         assertNotNull(status);
         assertEquals(status, RecapConstants.SUCCESS);
     }
