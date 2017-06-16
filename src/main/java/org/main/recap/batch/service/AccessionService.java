@@ -33,16 +33,15 @@ public class AccessionService {
      * This method makes a rest call to solr client microservice to initiate the accession process.
      *
      * @param solrClientUrl     the solr client url
-     * @param reportCreatedDate the report created date
      * @return status of the accession process
      */
-    public String processAccession(String solrClientUrl, Date reportCreatedDate) {
+    public String processAccession(String solrClientUrl) {
         String resultStatus = null;
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
-            HttpEntity<Date> httpEntity = new HttpEntity<>(reportCreatedDate, headers);
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.ACCESSION_URL, HttpMethod.POST, httpEntity, String.class);
+            HttpEntity<Date> httpEntity = new HttpEntity<>(headers);
+            ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.ACCESSION_URL, HttpMethod.GET, httpEntity, String.class);
             resultStatus = responseEntity.getBody();
         } catch (Exception e) {
             logger.error(RecapConstants.LOG_ERROR, e);
