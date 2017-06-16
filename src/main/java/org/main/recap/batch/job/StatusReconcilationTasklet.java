@@ -20,8 +20,6 @@ public class StatusReconcilationTasklet implements Tasklet {
 
     private static final Logger logger = LoggerFactory.getLogger(AccessionReconcilationTasklet.class);
 
-    @Value("${server.protocol}")
-    String serverProtocol;
 
     @Value("${scsb.circ.url}")
     String scsbCircUrl;
@@ -41,7 +39,7 @@ public class StatusReconcilationTasklet implements Tasklet {
         String jobName = chunkContext.getStepContext().getStepExecution().getJobExecution().getJobInstance().getJobName();
         Date createdDate = chunkContext.getStepContext().getStepExecution().getJobExecution().getCreateTime();
         updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate);
-        statusReconciliationService.statusReconcilation(serverProtocol, scsbCircUrl);
+        statusReconciliationService.statusReconcilation(scsbCircUrl);
         return RepeatStatus.FINISHED;
     }
 }
