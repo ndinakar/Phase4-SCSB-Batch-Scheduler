@@ -41,11 +41,12 @@ public class JobSequenceTasklet implements Tasklet {
         logger.info("Executing JobSequenceTasklet");
         StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
         JobExecution jobExecution = stepExecution.getJobExecution();
+        long jobInstanceId = jobExecution.getJobInstance().getInstanceId();
         String jobName = jobExecution.getJobInstance().getJobName();
         Date createdDate = jobExecution.getCreateTime();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         executionContext.put(RecapConstants.JOB_NAME, jobName);
-        updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate);
+        updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
         return RepeatStatus.FINISHED;
     }
 }

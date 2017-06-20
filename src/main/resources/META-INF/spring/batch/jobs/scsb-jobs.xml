@@ -32,7 +32,7 @@
 
     <bean id="purgeEmailAddressTasklet" class="org.main.recap.batch.job.PurgeEmailAddressTasklet"/>
 
-    <batch:job id="MatchingAlgorithm" restartable="true">
+    <batch:job id="OngoingMatchingAlgorithm" restartable="true">
         <batch:step id="MatchingAlgorithmStep" allow-start-if-complete="true" next="EmailProcessingStep3">
             <batch:tasklet ref="matchingAlgorithmTasklet"/>
         </batch:step>
@@ -43,7 +43,7 @@
 
     <bean id="matchingAlgorithmTasklet" class="org.main.recap.batch.job.MatchingAlgorithmTasklet"/>
 
-    <batch:job id="DailyReconcilation" restartable="true">
+    <batch:job id="DailyLASTransactionReconciliation" restartable="true">
         <batch:step id="DailyReconcilationStep" allow-start-if-complete="true">
             <batch:tasklet ref="DailyReconcilationTasklet"/>
         </batch:step>
@@ -73,7 +73,7 @@
 
     <bean id="accessionTasklet" class="org.main.recap.batch.job.AccessionTasklet"/>
 
-    <batch:job id="RunJobSequentially" restartable="true">
+    <batch:job id="AccessionAndMatchingJobsInSequence" restartable="true">
         <batch:step id="ScheduledJob1" allow-start-if-complete="true" next="ScheduledJob2">
             <batch:tasklet ref="jobSequenceTasklet"/>
         </batch:step>
@@ -106,7 +106,7 @@
 
     <bean id="emailProcessingTasklet" class="org.main.recap.batch.job.EmailProcessingTasklet"/>
 
-    <batch:job id="AccessionReconcilation" restartable="true">
+    <batch:job id="PeriodicLASBarcodeReconciliation" restartable="true">
         <batch:step id="AccessionReconcilationStep" allow-start-if-complete="true">
             <batch:tasklet ref="AccessionReconcilationTasklet"/>
         </batch:step>
@@ -124,7 +124,8 @@
     </batch:job>
 
     <bean id="deletedRecordsTasklet" class="org.main.recap.batch.job.DeletedRecordsTasklet"/>
-    <batch:job id="StatusReconcilation" restartable="true">
+
+    <batch:job id="PeriodicLASItemStatusReconciliation" restartable="true">
         <batch:step id="StatusReconcilationStep" allow-start-if-complete="true">
             <batch:tasklet ref="StatusReconcilationTasklet"/>
         </batch:step>
