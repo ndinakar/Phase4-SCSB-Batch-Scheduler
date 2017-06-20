@@ -62,6 +62,7 @@ public class QuartzJobsInitializer {
         if (CollectionUtils.isNotEmpty(jobEntities)) {
             for (JobEntity jobEntity : jobEntities) {
                 String jobName = jobEntity.getJobName();
+                String jobStatus = jobEntity.getStatus();
                 String cronExpression = jobEntity.getCronExpression();
                 try {
                     JobDetailImpl jobDetailImpl = new JobDetailImpl();
@@ -72,7 +73,7 @@ public class QuartzJobsInitializer {
                     jobDataMap.put(RecapConstants.JOB_LAUNCHER, jobLauncher);
                     jobDataMap.put(RecapConstants.JOB_LOCATOR, jobLocator);
                     jobDetailImpl.setJobDataMap(jobDataMap);
-                    if (StringUtils.isNotBlank(cronExpression) && isValidExpression(cronExpression)) {
+                    if (StringUtils.isNotBlank(cronExpression) && isValidExpression(cronExpression) && !RecapConstants.UNSCHEDULED.equalsIgnoreCase(jobStatus)) {
                         JobKey jobKey = new JobKey(jobName);
                         jobDetailImpl.setKey(jobKey);
                         CronTriggerImpl trigger = new CronTriggerImpl();
@@ -82,7 +83,7 @@ public class QuartzJobsInitializer {
                         scheduler.scheduleJob(jobDetailImpl, trigger);
                         logger.info("Job {} is initialized.", jobName);
                     } else {
-                        logger.info("Job {} has invalid cron expression.", jobName);
+                        logger.info("Job {} has invalid cron expression and unscheduled state.", jobName);
                         JobKey jobKey = new JobKey(jobName);
                         jobDetailImpl.setKey(jobKey);
                         jobDetailImpl.setDurability(true);
