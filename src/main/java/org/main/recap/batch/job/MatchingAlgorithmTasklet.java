@@ -42,12 +42,13 @@ public class MatchingAlgorithmTasklet implements Tasklet{
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         logger.info("Executing MatchingAlgorithmTasklet");
         JobExecution jobExecution = chunkContext.getStepContext().getStepExecution().getJobExecution();
+        long jobInstanceId = jobExecution.getJobInstance().getInstanceId();
         String jobName = jobExecution.getJobInstance().getJobName();
         Date createdDate = jobExecution.getCreateTime();
         String jobNameParam = (String) jobExecution.getExecutionContext().get(RecapConstants.JOB_NAME);
         logger.info("Job Parameter in Matching Algorithm Tasklet : {}", jobNameParam);
         if(!jobName.equalsIgnoreCase(jobNameParam)) {
-            updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate);
+            updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
         }
 
         String status = matchingAlgorithmService.initiateMatchingAlgorithm(solrClientUrl, createdDate);
