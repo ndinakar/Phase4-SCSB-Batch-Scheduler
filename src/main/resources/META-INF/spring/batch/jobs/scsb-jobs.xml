@@ -133,4 +133,12 @@
 
     <bean id="StatusReconcilationTasklet" class="org.main.recap.batch.job.StatusReconcilationTasklet"/>
 
+    <batch:job id="RequestInitialLoad" restartable="true">
+        <batch:step id="RequestInitialLoadStep" allow-start-if-complete="true">
+            <batch:tasklet ref="RequestInitialLoadTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="RequestInitialLoadTasklet" class="org.main.recap.batch.job.RequestInitialLoadTasklet"/>
+
 </beans>
