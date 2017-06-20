@@ -25,11 +25,11 @@ public class QuartzJobsInitializerUT extends BaseTestCase {
         quartzJobsInitializer.initializeJobs();
         JobKey purgeExceptionRequestsJobKey = new JobKey(RecapConstants.PURGE_EXCEPTION_REQUESTS);
         JobKey purgeEmailAddressJobKey = new JobKey(RecapConstants.PURGE_EMAIL_ADDRESS);
-        JobKey matchingAlgorithmJobKey = new JobKey(RecapConstants.MATCHING_ALGORITHM);
-        JobKey dailyReconciliationJobKey = new JobKey(RecapConstants.DAILY_RECONCILIATION);
+        JobKey matchingAlgorithmJobKey = new JobKey(RecapConstants.ONGOING_MATCHING_ALGORITHM);
+        JobKey dailyReconciliationJobKey = new JobKey(RecapConstants.DAILY_LAS_TRANSACTION_RECONCILIATION);
         JobKey generateAccessionReportJobKey = new JobKey(RecapConstants.GENERATE_ACCESSION_REPORT);
         JobKey accessionJobKey = new JobKey(RecapConstants.ACCESSION);
-        JobKey runJobSequentiallyJobKey = new JobKey(RecapConstants.RUN_JOB_SEQUENTIALLY);
+        JobKey runJobSequentiallyJobKey = new JobKey(RecapConstants.ACCESSION_MATCHING_JOBS_SEQUENCE);
         JobKey purgeAccessionRequestsJobKey = new JobKey(RecapConstants.PURGE_ACCESSION_REQUESTS);
         boolean isPurgeExceptionRequestsJobKeyExists = scheduler.checkExists(purgeExceptionRequestsJobKey);
         boolean isPurgeEmailAddressJobKeyExists = scheduler.checkExists(purgeEmailAddressJobKey);
