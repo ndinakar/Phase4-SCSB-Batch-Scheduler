@@ -54,11 +54,12 @@ public class UpdateJobDetailsService {
      * @param lastExecutedTime the last executed time
      * @return status of updating the job
      */
-    public String updateJob(String solrClientUrl, String jobName, Date lastExecutedTime) {
+    public String updateJob(String solrClientUrl, String jobName, Date lastExecutedTime, Long jobInstanceId) {
         String resultStatus = null;
         try {
             JobEntity jobEntity = getJobDetailsRepository().findByJobName(jobName);
             jobEntity.setLastExecutedTime(lastExecutedTime);
+            jobEntity.setJobInstanceId(jobInstanceId.intValue());
             if (StringUtils.isNotBlank(jobEntity.getCronExpression())) {
                 CronExpression cronExpression = new CronExpression(jobEntity.getCronExpression());
                 jobEntity.setNextRunTime(cronExpression.getNextValidTimeAfter(lastExecutedTime));

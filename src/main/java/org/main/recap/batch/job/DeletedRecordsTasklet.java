@@ -4,6 +4,7 @@ import org.main.recap.batch.service.ReportDeletedRecordsService;
 import org.main.recap.batch.service.UpdateJobDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -46,9 +47,11 @@ public class DeletedRecordsTasklet implements Tasklet {
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         logger.info("Executing DeletedRecords ");
-        String jobName = chunkContext.getStepContext().getStepExecution().getJobExecution().getJobInstance().getJobName();
-        Date createdDate = chunkContext.getStepContext().getStepExecution().getJobExecution().getCreateTime();
-        updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate);
+        JobExecution jobExecution = chunkContext.getStepContext().getStepExecution().getJobExecution();
+        long jobInstanceId = jobExecution.getJobInstance().getInstanceId();
+        String jobName = jobExecution.getJobInstance().getJobName();
+        Date createdDate = jobExecution.getCreateTime();
+        updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
 
         reportDeletedRecordsService.reportDeletedRecords(scsbCircUrl);
         logger.info("Completed");

@@ -11,6 +11,7 @@ public class RecapConstants {
     public static final String SCHEDULE = "Schedule";
     public static final String RESCHEDULE = "Reschedule";
     public static final String UNSCHEDULE = "Unschedule";
+    public static final String UNSCHEDULED = "Unscheduled";
     public static final String JOB_NAME = "jobName";
     public static final String JOB_LAUNCHER = "jobLauncher";
     public static final String JOB_LOCATOR = "jobLocator";
@@ -42,11 +43,11 @@ public class RecapConstants {
 
     public static final String PURGE_EXCEPTION_REQUESTS = "PurgeExceptionRequests";
     public static final String PURGE_EMAIL_ADDRESS = "PurgeEmailAddress";
-    public static final String MATCHING_ALGORITHM = "MatchingAlgorithm";
-    public static final String DAILY_RECONCILIATION = "DailyReconcilation";
+    public static final String ONGOING_MATCHING_ALGORITHM = "OngoingMatchingAlgorithm";
+    public static final String DAILY_LAS_TRANSACTION_RECONCILIATION = "DailyLASTransactionReconciliation";
     public static final String GENERATE_ACCESSION_REPORT = "GenerateAccessionReport";
     public static final String ACCESSION = "Accession";
-    public static final String RUN_JOB_SEQUENTIALLY = "RunJobSequentially";
+    public static final String ACCESSION_MATCHING_JOBS_SEQUENCE = "AccessionAndMatchingJobsInSequence";
     public static final String PURGE_ACCESSION_REQUESTS = "PurgeAccessionRequests";
 
     private RecapConstants(){}
