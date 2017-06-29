@@ -38,6 +38,7 @@ public class UpdateJobDetailsServiceUT extends BaseTestCase {
     @Test
     public void testUpdateJobDetailsService() {
         String jobName  = RecapConstants.PURGE_EXCEPTION_REQUESTS;
+        Long jobInstanceId = Long.valueOf(1);
         Date lastExecutedTime = new Date();
         JobEntity jobEntity = new JobEntity();
         jobEntity.setJobName(jobName);
@@ -51,8 +52,8 @@ public class UpdateJobDetailsServiceUT extends BaseTestCase {
         Mockito.when(updateJobDetailsService.getJobDetailsRepository()).thenReturn(jobDetailsRepository);
         Mockito.when(updateJobDetailsService.getJobDetailsRepository().findByJobName(jobName)).thenReturn(jobEntity);
         Mockito.when(updateJobDetailsService.getRestTemplate().exchange(solrClientUrl + RecapConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
-        Mockito.when(updateJobDetailsService.updateJob(solrClientUrl, jobName, lastExecutedTime)).thenCallRealMethod();
-        String status = updateJobDetailsService.updateJob(solrClientUrl, jobName, lastExecutedTime);
+        Mockito.when(updateJobDetailsService.updateJob(solrClientUrl, jobName, lastExecutedTime, jobInstanceId)).thenCallRealMethod();
+        String status = updateJobDetailsService.updateJob(solrClientUrl, jobName, lastExecutedTime, jobInstanceId);
         assertNotNull(status);
         assertEquals(status, RecapConstants.SUCCESS);
     }
