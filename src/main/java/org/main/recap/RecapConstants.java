@@ -51,5 +51,7 @@ public class RecapConstants {
     public static final String ACCESSION_MATCHING_JOBS_SEQUENCE = "AccessionAndMatchingJobsInSequence";
     public static final String PURGE_ACCESSION_REQUESTS = "PurgeAccessionRequests";
 
+    public static final String SUBMIT_COLLECTION_URL = "/submitCollectionJob/startSubmitCollection";
+
     private RecapConstants(){}
 }

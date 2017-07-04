@@ -141,4 +141,12 @@
 
     <bean id="RequestInitialLoadTasklet" class="org.main.recap.batch.job.RequestInitialLoadTasklet"/>
 
+    <batch:job id="SubmitCollection" restartable="true">
+        <batch:step id="SubmitCollectionStep" allow-start-if-complete="true">
+            <batch:tasklet ref="submitCollectionStep"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="submitCollectionStep" class="org.main.recap.batch.job.SubmitCollectionTasklet"/>
+
 </beans>
