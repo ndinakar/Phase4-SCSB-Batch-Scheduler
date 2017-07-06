@@ -1,9 +1,11 @@
 package org.main.recap.batch.service;
 
+import org.main.recap.util.JobDataParameterUtil;
 import org.main.recap.RecapConstants;
 import org.main.recap.model.batch.SolrIndexRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,6 +22,9 @@ import java.util.Date;
 public class GenerateReportsService {
 
     private static final Logger logger = LoggerFactory.getLogger(GenerateReportsService.class);
+
+    @Autowired
+    JobDataParameterUtil jobDataParameterUtil;
 
     /**
      * Gets rest template.
@@ -65,7 +70,7 @@ public class GenerateReportsService {
     public SolrIndexRequest getSolrIndexRequest(Date reportCreatedDate, String reportType) {
         SolrIndexRequest solrIndexRequest = new SolrIndexRequest();
         solrIndexRequest.setProcessType(reportType);
-        solrIndexRequest.setCreatedDate(reportCreatedDate);
+        solrIndexRequest.setCreatedDate(jobDataParameterUtil.getFromDate(reportCreatedDate));
         return solrIndexRequest;
     }
 
