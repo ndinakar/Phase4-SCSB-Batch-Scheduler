@@ -1,5 +1,6 @@
 package org.main.recap.batch.job;
 
+import org.apache.commons.lang.StringUtils;
 import org.main.recap.RecapConstants;
 import org.main.recap.batch.service.GenerateReportsService;
 import org.main.recap.batch.service.UpdateJobDetailsService;
@@ -13,7 +14,7 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -43,31 +44,23 @@ public class AccessionReportsTasklet implements Tasklet {
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         logger.info("Executing AccessionReportsTasklet");
         JobExecution jobExecution = chunkContext.getStepContext().getStepExecution().getJobExecution();
+        String fromDate = jobExecution.getJobParameters().getString(RecapConstants.FROM_DATE);
+        Date createdDate;
+        if (StringUtils.isNotBlank(fromDate)) {
+            SimpleDateFormat dateFormatter = new SimpleDateFormat(RecapConstants.FROM_DATE_FORMAT);
+            createdDate = dateFormatter.parse(fromDate);
+        } else {
+            createdDate = jobExecution.getCreateTime();
+        }
         long jobInstanceId = jobExecution.getJobInstance().getInstanceId();
         String jobName = jobExecution.getJobInstance().getJobName();
-        Date createdDate = jobExecution.getCreateTime();
         String jobNameParam = (String) jobExecution.getExecutionContext().get(RecapConstants.JOB_NAME);
         logger.info("Job Parameter in Accession Reports Tasklet : {}", jobNameParam);
-        if(!jobName.equalsIgnoreCase(jobNameParam)) {
-            updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
+        if (!jobName.equalsIgnoreCase(jobNameParam)) {
+            updateJobDetailsService.updateJob(solrClientUrl, jobName, jobExecution.getCreateTime(), jobInstanceId);
         }
-        String status = generateReportsService.generateReport(solrClientUrl, getFromDate(createdDate), RecapConstants.GENERATE_ACCESSION_REPORT_JOB);
+        String status = generateReportsService.generateReport(solrClientUrl, createdDate, RecapConstants.GENERATE_ACCESSION_REPORT_JOB);
         logger.info("Accession Report status : {}", status);
         return RepeatStatus.FINISHED;
-    }
-
-    /**
-     * This method builds the from date using the current date whose time would be 00:00:00
-     *
-     * @param createdDate the created date
-     * @return the from date
-     */
-    public Date getFromDate(Date createdDate) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(createdDate);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        return cal.getTime();
     }
 }
