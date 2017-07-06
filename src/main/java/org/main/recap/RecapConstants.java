@@ -53,5 +53,10 @@ public class RecapConstants {
 
     public static final String SUBMIT_COLLECTION_URL = "/submitCollectionJob/startSubmitCollection";
 
+    public static final String EXPORT_DATE_FORMAT = "yyyy-MM-dd HH:mm";
+    public static final String FETCH_TYPE = "fetchType";
+    public static final String FROM_DATE = "fromDate";
+    public static final String FROM_DATE_FORMAT = "yyyy-MM-dd";
+
     private RecapConstants(){}
 }

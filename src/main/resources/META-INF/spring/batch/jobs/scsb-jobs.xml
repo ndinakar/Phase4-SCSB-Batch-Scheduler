@@ -80,9 +80,13 @@
         <batch:step id="ScheduledJob2" allow-start-if-complete="true" next="ScheduledJob3">
             <batch:tasklet ref="accessionTasklet"/>
         </batch:step>
-        <batch:step id="ScheduledJob3" allow-start-if-complete="true" next="ScheduledJob4">
+        <batch:step id="ScheduledJob3" allow-start-if-complete="true" next="matchingAlgorithmDecision">
             <batch:tasklet ref="accessionReportsTasklet"/>
         </batch:step>
+        <batch:decision id="matchingAlgorithmDecision" decider="matchingAlgorithmExecutionDecider">
+            <batch:next on="FAILED" to="EmailProcessingStep" />
+            <batch:next on="COMPLETED" to="ScheduledJob4" />
+        </batch:decision>
         <batch:step id="ScheduledJob4" allow-start-if-complete="true" next="EmailProcessingStep">
             <batch:tasklet ref="matchingAlgorithmTasklet"/>
         </batch:step>
@@ -90,6 +94,8 @@
             <batch:tasklet ref="emailProcessingTasklet"/>
         </batch:step>
     </batch:job>
+
+    <bean id="matchingAlgorithmExecutionDecider" class="org.main.recap.batch.flow.MatchingAlgorithmExecutionDecider"/>
 
     <bean id="jobSequenceTasklet" class="org.main.recap.batch.job.JobSequenceTasklet"/>
 
