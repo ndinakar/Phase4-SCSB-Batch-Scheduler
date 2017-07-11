@@ -1,5 +1,6 @@
 package org.main.recap.batch.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.main.recap.RecapConstants;
 import org.main.recap.util.JobDataParameterUtil;
 import org.slf4j.Logger;
@@ -42,15 +43,18 @@ public class DataExportJobSequenceService {
      * @param scsbEtlUrl the scsb etl url
      * @return status of incremental and delete data export.
      */
-    public String dataExportJobSequence(String scsbEtlUrl, Date createdDate) {
+    public String dataExportJobSequence(String scsbEtlUrl, Date createdDate, String exportStringDate) {
         String resultStatus = null;
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity httpEntity = new HttpEntity<>(headers);
             Map<String, String> requestParameterMap = new HashMap<>();
-            requestParameterMap.put(RecapConstants.DATE, jobDataParameterUtil.getDateFormatStringForExport(createdDate));
-
+            if (StringUtils.isBlank(exportStringDate)) {
+                requestParameterMap.put(RecapConstants.DATE, jobDataParameterUtil.getDateFormatStringForExport(createdDate));
+            } else {
+                requestParameterMap.put(RecapConstants.DATE, exportStringDate);
+            }
             ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbEtlUrl + RecapConstants.DATA_EXPORT_JOB_SEQUENCE_URL, HttpMethod.GET, httpEntity, String.class, requestParameterMap);
             resultStatus = responseEntity.getBody();
         } catch (Exception ex) {

@@ -50,7 +50,7 @@ public class RecapConstants {
     public static final String DAILY_LAS_TRANSACTION_RECONCILIATION = "DailyLASTransactionReconciliation";
     public static final String GENERATE_ACCESSION_REPORT = "GenerateAccessionReport";
     public static final String ACCESSION = "Accession";
-    public static final String ACCESSION_MATCHING_JOBS_SEQUENCE = "AccessionAndMatchingJobsInSequence";
+    public static final String ACCESSION_MATCHING_JOBS_SEQUENCE = "AccessionMatchingAndExportJobsInSequence";
     public static final String PURGE_ACCESSION_REQUESTS = "PurgeAccessionRequests";
 
     public static final String SUBMIT_COLLECTION_URL = "/submitCollectionJob/startSubmitCollection";
@@ -67,6 +67,15 @@ public class RecapConstants {
     public static final String FROM_DATE = "fromDate";
     public static final String FROM_DATE_FORMAT = "yyyy-MM-dd";
     public static final String EMAIL_TO_ADDRESS = "emailToAddress";
+
+    public static final String JOB_STATUS = "JobStatus";
+    public static final String JOB_STATUS_MESSAGE = "JobStatusMessage";
+    public static final String STATUS = "Status";
+    public static final String FAILURE = "Failure";
+    public static final String FAIL = "Fail";
+    public static final String MESSAGE = "Message";
+    public static final String PURGE_EDD_REQUEST = "noOfUpdatedRecordsForEddRequest";
+    public static final String PURGE_PHYSICAL_REQUEST = "noOfUpdatedRecordsForPhysicalRequest";
 
     private RecapConstants(){}
 }
