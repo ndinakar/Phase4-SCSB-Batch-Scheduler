@@ -32,6 +32,8 @@ public class RecapConstants {
     public static final String MATCHING_ALGORITHM_URL = "ongoingMatchingAlgorithmService/ongoingMatchingAlgorithmJob";
     public static final String GENERATE_REPORT_URL = "generateReportService/generateReports";
     public static final String REPORT_DELETED_RECORDS_URL = "reportDeleted/records";
+    public static final String DATA_EXPORT_ETL_URL = "dataDump/exportDataDump/?institutionCodes={institutionCodes}&requestingInstitutionCode={requestingInstitutionCode}&fetchType={fetchType}&outputFormat={outputFormat}&date={date}&emailToAddress={emailToAddress}";
+    public static final String DATA_EXPORT_JOB_SEQUENCE_URL = "dataDumpSequence/exportDataDumpSequence/?date={date}";
 
 
     public static final String ACCESSION_URL = "sharedCollection/ongoingAccessionJob";
@@ -53,10 +55,18 @@ public class RecapConstants {
 
     public static final String SUBMIT_COLLECTION_URL = "/submitCollectionJob/startSubmitCollection";
 
+    public static final String INCREMENTAL_RECORDS_EXPORT_PUL = "IncrementalRecordsExportPul";
+    public static final String INCREMENTAL_RECORDS_EXPORT_CUL = "IncrementalRecordsExportCul";
+    public static final String INCREMENTAL_RECORDS_EXPORT_NYPL = "IncrementalRecordsExportNypl";
+    public static final String DELETED_RECORDS_EXPORT_PUL = "DeletedRecordsExportPul";
+    public static final String DELETED_RECORDS_EXPORT_CUL = "DeletedRecordsExportCul";
+    public static final String DELETED_RECORDS_EXPORT_NYPL = "DeletedRecordsExportNypl";
+    public static final String DATE = "date";
     public static final String EXPORT_DATE_FORMAT = "yyyy-MM-dd HH:mm";
     public static final String FETCH_TYPE = "fetchType";
     public static final String FROM_DATE = "fromDate";
     public static final String FROM_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String EMAIL_TO_ADDRESS = "emailToAddress";
 
     private RecapConstants(){}
 }

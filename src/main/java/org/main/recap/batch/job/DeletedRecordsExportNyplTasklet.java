@@ -1,0 +1,61 @@
+package org.main.recap.batch.job;
+
+import org.main.recap.RecapConstants;
+import org.main.recap.batch.service.DeletedRecordsExportNyplService;
+import org.main.recap.batch.service.UpdateJobDetailsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.scope.context.ChunkContext;
+import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.Date;
+
+/**
+ * Created by rajeshbabuk on 29/6/17.
+ */
+public class DeletedRecordsExportNyplTasklet implements Tasklet {
+
+    private static final Logger logger = LoggerFactory.getLogger(DeletedRecordsExportNyplTasklet.class);
+
+    @Value("${scsb.solr.client.url}")
+    String solrClientUrl;
+
+    @Value("${scsb.etl.url}")
+    String scsbEtlUrl;
+
+    @Autowired
+    private DeletedRecordsExportNyplService deletedRecordsExportNyplService;
+
+    @Autowired
+    private UpdateJobDetailsService updateJobDetailsService;
+
+    /**
+     * This method starts the execution of deleted records export job for New York.
+     * @param contribution
+     * @param chunkContext
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+        logger.info("Executing DeletedRecordsExportNyplTasklet");
+        JobExecution jobExecution = chunkContext.getStepContext().getStepExecution().getJobExecution();
+        long jobInstanceId = jobExecution.getJobInstance().getInstanceId();
+        String jobName = jobExecution.getJobInstance().getJobName();
+        Date createdDate = jobExecution.getCreateTime();
+        String jobNameParam = (String) jobExecution.getExecutionContext().get(RecapConstants.JOB_NAME);
+        logger.info("Job Parameter in Deleted Records Export Nypl Tasklet : {}", jobNameParam);
+        if (!jobName.equalsIgnoreCase(jobNameParam)) {
+            updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
+        }
+
+        String status = deletedRecordsExportNyplService.deletedRecordsExportNypl(scsbEtlUrl, RecapConstants.DELETED_RECORDS_EXPORT_NYPL, createdDate);
+        logger.info("Deleted Records Export NYPL status : {}", status);
+        return RepeatStatus.FINISHED;
+    }
+}

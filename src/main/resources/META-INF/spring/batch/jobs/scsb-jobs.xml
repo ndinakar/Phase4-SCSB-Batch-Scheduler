@@ -74,21 +74,24 @@
     <bean id="accessionTasklet" class="org.main.recap.batch.job.AccessionTasklet"/>
 
     <batch:job id="AccessionAndMatchingJobsInSequence" restartable="true">
-        <batch:step id="ScheduledJob1" allow-start-if-complete="true" next="ScheduledJob2">
+        <batch:step id="AccessionAndMatchingJobsSequenceStartStep" allow-start-if-complete="true" next="AccessionJobStep">
             <batch:tasklet ref="jobSequenceTasklet"/>
         </batch:step>
-        <batch:step id="ScheduledJob2" allow-start-if-complete="true" next="ScheduledJob3">
+        <batch:step id="AccessionJobStep" allow-start-if-complete="true" next="AccessionReportsJobStep">
             <batch:tasklet ref="accessionTasklet"/>
         </batch:step>
-        <batch:step id="ScheduledJob3" allow-start-if-complete="true" next="matchingAlgorithmDecision">
+        <batch:step id="AccessionReportsJobStep" allow-start-if-complete="true" next="matchingAlgorithmDecision">
             <batch:tasklet ref="accessionReportsTasklet"/>
         </batch:step>
         <batch:decision id="matchingAlgorithmDecision" decider="matchingAlgorithmExecutionDecider">
-            <batch:next on="FAILED" to="EmailProcessingStep" />
-            <batch:next on="COMPLETED" to="ScheduledJob4" />
+            <batch:next on="FAILED" to="DataExportJobSep" />
+            <batch:next on="COMPLETED" to="MatchingAlgorithmJobStep" />
         </batch:decision>
-        <batch:step id="ScheduledJob4" allow-start-if-complete="true" next="EmailProcessingStep">
+        <batch:step id="MatchingAlgorithmJobStep" allow-start-if-complete="true" next="DataExportJobSep">
             <batch:tasklet ref="matchingAlgorithmTasklet"/>
+        </batch:step>
+        <batch:step id="DataExportJobSep" allow-start-if-complete="true" next="EmailProcessingStep">
+            <batch:tasklet ref="dataExportJobSequenceTasklet"/>
         </batch:step>
         <batch:step id="EmailProcessingStep" allow-start-if-complete="true">
             <batch:tasklet ref="emailProcessingTasklet"/>
@@ -154,5 +157,82 @@
     </batch:job>
 
     <bean id="submitCollectionStep" class="org.main.recap.batch.job.SubmitCollectionTasklet"/>
+
+    <batch:job id="IncrementalRecordsExportPul" restartable="true">
+        <batch:step id="IncrementalExportPulStep" allow-start-if-complete="true" next="EmailProcessingStep7">
+            <batch:tasklet ref="incrementalExportPulTasklet"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep7" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="incrementalExportPulTasklet" class="org.main.recap.batch.job.IncrementalExportPulTasklet"/>
+
+    <batch:job id="IncrementalRecordsExportCul" restartable="true">
+        <batch:step id="IncrementalExportCulStep" allow-start-if-complete="true" next="EmailProcessingStep8">
+            <batch:tasklet ref="incrementalExportCulTasklet"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep8" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="incrementalExportCulTasklet" class="org.main.recap.batch.job.IncrementalExportCulTasklet"/>
+
+    <batch:job id="IncrementalRecordsExportNypl" restartable="true">
+        <batch:step id="IncrementalExportNyplStep" allow-start-if-complete="true" next="EmailProcessingStep9">
+            <batch:tasklet ref="incrementalExportNyplTasklet"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep9" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="incrementalExportNyplTasklet" class="org.main.recap.batch.job.IncrementalExportNyplTasklet"/>
+
+    <batch:job id="DeletedRecordsExportPul" restartable="true">
+        <batch:step id="DeletedRecordsExportPulStep" allow-start-if-complete="true" next="EmailProcessingStep10">
+            <batch:tasklet ref="deletedRecordsExportPulTasklet"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep10" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="deletedRecordsExportPulTasklet" class="org.main.recap.batch.job.DeletedRecordsExportPulTasklet"/>
+
+    <batch:job id="DeletedRecordsExportCul" restartable="true">
+        <batch:step id="DeletedRecordsExportCulStep" allow-start-if-complete="true" next="EmailProcessingStep11">
+            <batch:tasklet ref="deletedRecordsExportCulTasklet"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep11" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="deletedRecordsExportCulTasklet" class="org.main.recap.batch.job.DeletedRecordsExportCulTasklet"/>
+
+    <batch:job id="DeletedRecordsExportNypl" restartable="true">
+        <batch:step id="DeletedRecordsExportNyplStep" allow-start-if-complete="true" next="EmailProcessingStep12">
+            <batch:tasklet ref="deletedRecordsExportNyplTasklet"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep12" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="deletedRecordsExportNyplTasklet" class="org.main.recap.batch.job.DeletedRecordsExportNyplTasklet"/>
+
+    <batch:job id="IncrementalAndDeletedExportJobInSequence" restartable="true">
+        <batch:step id="IncrementalAndDeletedDataExportStep" allow-start-if-complete="true" next="EmailProcessingStep13">
+            <batch:tasklet ref="dataExportJobSequenceTasklet"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep13" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="dataExportJobSequenceTasklet" class="org.main.recap.batch.job.DataExportJobSequenceTasklet"/>
 
 </beans>
