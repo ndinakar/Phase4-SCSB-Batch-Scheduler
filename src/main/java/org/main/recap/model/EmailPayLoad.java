@@ -12,6 +12,7 @@ public class EmailPayLoad implements Serializable {
     private String jobDescription;
     private Date startDate;
     private String status;
+    private String message;
 
     /**
      * Gets job name.
@@ -83,5 +84,23 @@ public class EmailPayLoad implements Serializable {
      */
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    /**
+     * Gets message.
+     *
+     * @return the message
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * Sets message.
+     *
+     * @param message the message
+     */
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

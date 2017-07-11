@@ -1,5 +1,6 @@
 package org.main.recap.batch.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.main.recap.util.JobDataParameterUtil;
 import org.main.recap.RecapConstants;
 import org.slf4j.Logger;
@@ -45,16 +46,19 @@ public class DeletedRecordsExportCulService {
      * @param scsbEtlUrl    the scsb etl url
      * @return status of deleted records export for CUL
      */
-    public String deletedRecordsExportCul(String scsbEtlUrl, String jobName, Date createdDate) {
+    public String deletedRecordsExportCul(String scsbEtlUrl, String jobName, Date createdDate, String exportStringDate) {
         String resultStatus = null;
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity httpEntity = new HttpEntity<>(headers);
             Map<String, String> requestParameterMap = jobDataParameterUtil.buildJobRequestParameterMap(jobName);
-            requestParameterMap.put(RecapConstants.DATE, jobDataParameterUtil.getDateFormatStringForExport(createdDate));
             requestParameterMap.put(RecapConstants.EMAIL_TO_ADDRESS, dataDumpEmailCulTo);
-
+            if (StringUtils.isBlank(exportStringDate)) {
+                requestParameterMap.put(RecapConstants.DATE, jobDataParameterUtil.getDateFormatStringForExport(createdDate));
+            } else {
+                requestParameterMap.put(RecapConstants.DATE, exportStringDate);
+            }
             ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbEtlUrl + RecapConstants.DATA_EXPORT_ETL_URL, HttpMethod.GET, httpEntity, String.class, requestParameterMap);
             resultStatus = responseEntity.getBody();
         } catch (Exception ex) {
