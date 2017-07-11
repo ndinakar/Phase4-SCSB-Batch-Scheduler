@@ -1,9 +1,11 @@
 package org.main.recap.batch.job;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.main.recap.RecapConstants;
 import org.main.recap.batch.service.UpdateJobDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
@@ -41,12 +43,19 @@ public class JobSequenceTasklet implements Tasklet {
         logger.info("Executing JobSequenceTasklet");
         StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
         JobExecution jobExecution = stepExecution.getJobExecution();
-        long jobInstanceId = jobExecution.getJobInstance().getInstanceId();
-        String jobName = jobExecution.getJobInstance().getJobName();
-        Date createdDate = jobExecution.getCreateTime();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
-        executionContext.put(RecapConstants.JOB_NAME, jobName);
-        updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
+        try {
+            long jobInstanceId = jobExecution.getJobInstance().getInstanceId();
+            String jobName = jobExecution.getJobInstance().getJobName();
+            Date createdDate = jobExecution.getCreateTime();
+            executionContext.put(RecapConstants.JOB_NAME, jobName);
+            updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
+        } catch (Exception ex) {
+            logger.error(RecapConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+            executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
+            executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, ExceptionUtils.getMessage(ex));
+            stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+        }
         return RepeatStatus.FINISHED;
     }
 }

@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Map;
+
 /**
  * Created by rajeshbabuk on 18/4/17.
  */
@@ -34,19 +36,20 @@ public class PurgeExceptionRequestsService {
      * @param scsbCircUrl    the scsb circ url
      * @return status of purging exception requests process
      */
-    public String purgeExceptionRequests(String scsbCircUrl) {
-        String resultStatus = null;
+    public Map<String, String> purgeExceptionRequests(String scsbCircUrl) {
+        Map<String, String> resultMap = null;
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity httpEntity = new HttpEntity<>(headers);
 
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbCircUrl + RecapConstants.PURGE_EXCEPTION_REQUEST_URL, HttpMethod.GET, httpEntity, String.class);
-            resultStatus = responseEntity.getBody();
+            ResponseEntity<Map> responseEntity = getRestTemplate().exchange(scsbCircUrl + RecapConstants.PURGE_EXCEPTION_REQUEST_URL, HttpMethod.GET, httpEntity, Map.class);
+            resultMap = responseEntity.getBody();
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ex);
-            resultStatus = ex.getMessage();
+            resultMap.put(RecapConstants.STATUS, RecapConstants.FAILURE);
+            resultMap.put(RecapConstants.MESSAGE, ex.getMessage());
         }
-        return resultStatus;
+        return resultMap;
     }
 }

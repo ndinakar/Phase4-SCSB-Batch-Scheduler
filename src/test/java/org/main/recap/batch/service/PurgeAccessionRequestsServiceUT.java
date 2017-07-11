@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -31,12 +34,14 @@ public class PurgeAccessionRequestsServiceUT extends BaseTestCase {
         HttpHeaders headers = new HttpHeaders();
         headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
         HttpEntity httpEntity = new HttpEntity<>(headers);
-        ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
+        Map<String, String> resultMap = new HashMap<>();
+        resultMap.put(RecapConstants.STATUS, RecapConstants.SUCCESS);
+        ResponseEntity<Map> responseEntity = new ResponseEntity<>(resultMap, HttpStatus.OK);
         Mockito.when(purgeAccessionRequestsService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(purgeAccessionRequestsService.getRestTemplate().exchange(scsbCircUrl + RecapConstants.PURGE_ACCESSION_REQUEST_URL, HttpMethod.GET, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(purgeAccessionRequestsService.getRestTemplate().exchange(scsbCircUrl + RecapConstants.PURGE_ACCESSION_REQUEST_URL, HttpMethod.GET, httpEntity, Map.class)).thenReturn(responseEntity);
         Mockito.when(purgeAccessionRequestsService.purgeAccessionRequests(scsbCircUrl)).thenCallRealMethod();
-        String status = purgeAccessionRequestsService.purgeAccessionRequests(scsbCircUrl);
-        assertNotNull(status);
-        assertEquals(status, RecapConstants.SUCCESS);
+        resultMap = purgeAccessionRequestsService.purgeAccessionRequests(scsbCircUrl);
+        assertNotNull(resultMap);
+        assertEquals(resultMap.get(RecapConstants.STATUS), RecapConstants.SUCCESS);
     }
 }
