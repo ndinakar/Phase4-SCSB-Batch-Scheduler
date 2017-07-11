@@ -44,8 +44,11 @@
     <bean id="matchingAlgorithmTasklet" class="org.main.recap.batch.job.MatchingAlgorithmTasklet"/>
 
     <batch:job id="DailyLASTransactionReconciliation" restartable="true">
-        <batch:step id="DailyReconcilationStep" allow-start-if-complete="true">
+        <batch:step id="DailyReconcilationStep" allow-start-if-complete="true" next="DailyReconcilationStep2">
             <batch:tasklet ref="DailyReconcilationTasklet"/>
+        </batch:step>
+        <batch:step id="DailyReconcilationStep2" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
         </batch:step>
     </batch:job>
 
@@ -73,7 +76,7 @@
 
     <bean id="accessionTasklet" class="org.main.recap.batch.job.AccessionTasklet"/>
 
-    <batch:job id="AccessionAndMatchingJobsInSequence" restartable="true">
+    <batch:job id="AccessionMatchingAndExportJobsInSequence" restartable="true">
         <batch:step id="AccessionAndMatchingJobsSequenceStartStep" allow-start-if-complete="true" next="AccessionJobStep">
             <batch:tasklet ref="jobSequenceTasklet"/>
         </batch:step>
@@ -116,8 +119,11 @@
     <bean id="emailProcessingTasklet" class="org.main.recap.batch.job.EmailProcessingTasklet"/>
 
     <batch:job id="PeriodicLASBarcodeReconciliation" restartable="true">
-        <batch:step id="AccessionReconcilationStep" allow-start-if-complete="true">
+        <batch:step id="AccessionReconcilationStep" allow-start-if-complete="true" next="AccessionReconcilationStep2">
             <batch:tasklet ref="AccessionReconcilationTasklet"/>
+        </batch:step>
+        <batch:step id="AccessionReconcilationStep2" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
         </batch:step>
     </batch:job>
 
@@ -135,24 +141,33 @@
     <bean id="deletedRecordsTasklet" class="org.main.recap.batch.job.DeletedRecordsTasklet"/>
 
     <batch:job id="PeriodicLASItemStatusReconciliation" restartable="true">
-        <batch:step id="StatusReconcilationStep" allow-start-if-complete="true">
+        <batch:step id="StatusReconcilationStep" allow-start-if-complete="true" next="StatusReconcilationStep2">
             <batch:tasklet ref="StatusReconcilationTasklet"/>
+        </batch:step>
+        <batch:step id="StatusReconcilationStep2" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
         </batch:step>
     </batch:job>
 
     <bean id="StatusReconcilationTasklet" class="org.main.recap.batch.job.StatusReconcilationTasklet"/>
 
     <batch:job id="RequestInitialLoad" restartable="true">
-        <batch:step id="RequestInitialLoadStep" allow-start-if-complete="true">
+        <batch:step id="RequestInitialLoadStep" allow-start-if-complete="true" next="RequestInitialLoadStep2">
             <batch:tasklet ref="RequestInitialLoadTasklet"/>
+        </batch:step>
+        <batch:step id="RequestInitialLoadStep2" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
         </batch:step>
     </batch:job>
 
     <bean id="RequestInitialLoadTasklet" class="org.main.recap.batch.job.RequestInitialLoadTasklet"/>
 
     <batch:job id="SubmitCollection" restartable="true">
-        <batch:step id="SubmitCollectionStep" allow-start-if-complete="true">
+        <batch:step id="SubmitCollectionStep" allow-start-if-complete="true" next="SubmitCollectionStep2">
             <batch:tasklet ref="submitCollectionStep"/>
+        </batch:step>
+        <batch:step id="SubmitCollectionStep2" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
         </batch:step>
     </batch:job>
 
