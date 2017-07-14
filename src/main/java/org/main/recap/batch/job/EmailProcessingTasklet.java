@@ -1,5 +1,6 @@
 package org.main.recap.batch.job;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.main.recap.RecapConstants;
 import org.main.recap.batch.service.EmailService;
 import org.main.recap.jpa.JobDetailsRepository;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,22 +46,29 @@ public class EmailProcessingTasklet implements Tasklet {
         logger.info("Sending Email");
         StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
         JobExecution jobExecution = stepExecution.getJobExecution();
-        String jobName = jobExecution.getJobInstance().getJobName();
-        Date createdDate = jobExecution.getCreateTime();
-        String jobStatus = (String) jobExecution.getExecutionContext().get(RecapConstants.JOB_STATUS);
-        String jobStatusMessage = (String) jobExecution.getExecutionContext().get(RecapConstants.JOB_STATUS_MESSAGE);
+        ExecutionContext executionContext = jobExecution.getExecutionContext();
+        try {
+            String jobName = jobExecution.getJobInstance().getJobName();
+            Date createdDate = jobExecution.getCreateTime();
+            String jobStatus = (String) executionContext.get(RecapConstants.JOB_STATUS);
+            String jobStatusMessage = (String) executionContext.get(RecapConstants.JOB_STATUS_MESSAGE);
 
-        JobEntity jobEntity = jobDetailsRepository.findByJobName(jobName);
+            JobEntity jobEntity = jobDetailsRepository.findByJobName(jobName);
 
-        EmailPayLoad emailPayLoad = new EmailPayLoad();
-        emailPayLoad.setJobName(jobName);
-        emailPayLoad.setJobDescription(jobEntity.getJobDescription());
-        emailPayLoad.setStartDate(createdDate);
-        emailPayLoad.setStatus(jobStatus);
-        emailPayLoad.setMessage(jobStatusMessage);
+            EmailPayLoad emailPayLoad = new EmailPayLoad();
+            emailPayLoad.setJobName(jobName);
+            emailPayLoad.setJobDescription(jobEntity.getJobDescription());
+            emailPayLoad.setStartDate(createdDate);
+            emailPayLoad.setStatus(jobStatus);
+            emailPayLoad.setMessage(jobStatusMessage);
 
-        String result = emailService.sendEmail(solrClientUrl, emailPayLoad);
-        logger.info("Email sending - {}", result);
+            String result = emailService.sendEmail(solrClientUrl, emailPayLoad);
+            logger.info("Email sending - {}", result);
+            stepExecution.setExitStatus(new ExitStatus(RecapConstants.SUCCESS, RecapConstants.SUCCESS));
+        } catch (Exception ex) {
+            logger.error(RecapConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+            stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+        }
         return RepeatStatus.FINISHED;
     }
 }
