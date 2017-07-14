@@ -61,17 +61,17 @@ public class SubmitCollectionTasklet implements Tasklet {
             logger.info("Submit Collection status : {}", resultStatus);
             if (StringUtils.containsIgnoreCase(resultStatus, RecapConstants.FAIL)) {
                 executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
-                executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, resultStatus);
-                stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, resultStatus));
+                executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.SUBMIT_COLLECTION_STATUS_NAME + " " + resultStatus);
+                stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE,  RecapConstants.SUBMIT_COLLECTION_STATUS_NAME + " " + resultStatus));
             } else {
                 executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.SUCCESS);
-                executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, resultStatus);
-                stepExecution.setExitStatus(new ExitStatus(RecapConstants.SUCCESS, resultStatus));
+                executionContext.put(RecapConstants.JOB_STATUS_MESSAGE,  RecapConstants.SUBMIT_COLLECTION_STATUS_NAME + " " + resultStatus);
+                stepExecution.setExitStatus(new ExitStatus(RecapConstants.SUCCESS,  RecapConstants.SUBMIT_COLLECTION_STATUS_NAME + " " + resultStatus));
             }
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
             executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
-            executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, ExceptionUtils.getMessage(ex));
+            executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.SUBMIT_COLLECTION_STATUS_NAME + " " + ExceptionUtils.getMessage(ex));
             stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
         }
         return RepeatStatus.FINISHED;
