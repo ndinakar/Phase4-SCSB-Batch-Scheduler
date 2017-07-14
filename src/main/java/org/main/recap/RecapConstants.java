@@ -5,7 +5,7 @@ package org.main.recap;
  */
 public class RecapConstants {
 
-    public static final String SUCCESS = "Success";
+    public static final String SUCCESS = "SUCCESS";
     public static final String API_KEY = "api_key";
     public static final String RECAP = "recap";
     public static final String SCHEDULE = "Schedule";
@@ -50,7 +50,7 @@ public class RecapConstants {
     public static final String DAILY_LAS_TRANSACTION_RECONCILIATION = "DailyLASTransactionReconciliation";
     public static final String GENERATE_ACCESSION_REPORT = "GenerateAccessionReport";
     public static final String ACCESSION = "Accession";
-    public static final String ACCESSION_MATCHING_JOBS_SEQUENCE = "AccessionMatchingAndExportJobsInSequence";
+    public static final String ACCESSION_MATCHING_JOBS_SEQUENCE = "AccessionToDataExportJobsInSequence";
     public static final String PURGE_ACCESSION_REQUESTS = "PurgeAccessionRequests";
 
     public static final String SUBMIT_COLLECTION_URL = "/submitCollectionJob/startSubmitCollection";
@@ -71,11 +71,17 @@ public class RecapConstants {
     public static final String JOB_STATUS = "JobStatus";
     public static final String JOB_STATUS_MESSAGE = "JobStatusMessage";
     public static final String STATUS = "Status";
-    public static final String FAILURE = "Failure";
+    public static final String FAILURE = "FAILURE";
     public static final String FAIL = "Fail";
     public static final String MESSAGE = "Message";
     public static final String PURGE_EDD_REQUEST = "noOfUpdatedRecordsForEddRequest";
     public static final String PURGE_PHYSICAL_REQUEST = "noOfUpdatedRecordsForPhysicalRequest";
+
+    public static final String ACCESSION_STATUS_NAME = "[Ongoing Accession]";
+    public static final String ACCESSION_REPORT_STATUS_NAME = "[Ongoing Accession Report]";
+    public static final String SUBMIT_COLLECTION_STATUS_NAME = "[Submit Collection]";
+    public static final String MATCHING_ALGORITHM_STATUS_NAME = "[Ongoing Matching Algorithm]";
+    public static final String DATA_EXPORT_STATUS_NAME = "[Data Export]";
 
     private RecapConstants(){}
 }

@@ -50,6 +50,7 @@ public class JobSequenceTasklet implements Tasklet {
             Date createdDate = jobExecution.getCreateTime();
             executionContext.put(RecapConstants.JOB_NAME, jobName);
             updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
+            stepExecution.setExitStatus(new ExitStatus(RecapConstants.SUCCESS, RecapConstants.SUCCESS));
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
             executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
