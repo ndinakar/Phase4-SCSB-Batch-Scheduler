@@ -71,7 +71,7 @@ public class DataExportJobSequenceTasklet implements Tasklet {
                 stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, RecapConstants.DATA_EXPORT_STATUS_NAME + " " + resultStatus));
             } else {
                 executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.SUCCESS);
-                executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, resultStatus);
+                executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.DATA_EXPORT_STATUS_NAME + " " + resultStatus);
                 stepExecution.setExitStatus(new ExitStatus(RecapConstants.SUCCESS, RecapConstants.DATA_EXPORT_STATUS_NAME + " " + resultStatus));
             }
         } catch (Exception ex) {
