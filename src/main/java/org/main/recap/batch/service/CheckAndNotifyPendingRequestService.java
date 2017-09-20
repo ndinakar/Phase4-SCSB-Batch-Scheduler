@@ -15,9 +15,9 @@ import org.springframework.web.client.RestTemplate;
  * Created by angelind on 14/9/17.
  */
 @Service
-public class CheckAndNotifyPendingQueuesService {
+public class CheckAndNotifyPendingRequestService {
 
-    private static final Logger logger = LoggerFactory.getLogger(CheckAndNotifyPendingQueuesService.class);
+    private static final Logger logger = LoggerFactory.getLogger(CheckAndNotifyPendingRequestService.class);
 
     /**
      * Gets rest template.
