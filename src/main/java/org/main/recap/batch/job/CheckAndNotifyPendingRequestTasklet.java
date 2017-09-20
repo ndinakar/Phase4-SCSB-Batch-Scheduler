@@ -2,7 +2,7 @@ package org.main.recap.batch.job;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.main.recap.RecapConstants;
-import org.main.recap.batch.service.CheckAndNotifyPendingQueuesService;
+import org.main.recap.batch.service.CheckAndNotifyPendingRequestService;
 import org.main.recap.batch.service.UpdateJobDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +22,9 @@ import java.util.Date;
 /**
  * Created by angelind on 14/9/17.
  */
-public class CheckAndNotifyPendingQueuesTasklet implements Tasklet {
+public class CheckAndNotifyPendingRequestTasklet implements Tasklet {
 
-    private static final Logger logger = LoggerFactory.getLogger(CheckAndNotifyPendingQueuesTasklet.class);
+    private static final Logger logger = LoggerFactory.getLogger(CheckAndNotifyPendingRequestTasklet.class);
 
     @Value("${scsb.solr.client.url}")
     private String solrClientUrl;
@@ -36,7 +36,7 @@ public class CheckAndNotifyPendingQueuesTasklet implements Tasklet {
     private UpdateJobDetailsService updateJobDetailsService;
 
     @Autowired
-    private CheckAndNotifyPendingQueuesService checkAndNotifyPendingQueuesService;
+    private CheckAndNotifyPendingRequestService checkAndNotifyPendingRequestService;
 
     /**
      * This method starts the execution for checking pending request in the lasOutgoingQ and notifying through sending email.
@@ -56,7 +56,7 @@ public class CheckAndNotifyPendingQueuesTasklet implements Tasklet {
             String jobName = jobExecution.getJobInstance().getJobName();
             Date createdDate = jobExecution.getCreateTime();
             updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
-            checkAndNotifyPendingQueuesService.checkPendingMsgesInQueue(scsbCircUrl);
+            checkAndNotifyPendingRequestService.checkPendingMsgesInQueue(scsbCircUrl);
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
             executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
