@@ -124,7 +124,7 @@
 
     <bean id="jobSequenceTasklet" class="org.main.recap.batch.job.JobSequenceTasklet"/>
 
-    <batch:job id="PurgeAccessionRequests" restartable="true">
+    <batch:job id="PurgeCompletedAccessions" restartable="true">
         <batch:step id="PurgeAccessionRequestsStep" allow-start-if-complete="true" next="EmailProcessingStep7">
             <batch:tasklet ref="purgeAccessionRequestsTasklet"/>
         </batch:step>
