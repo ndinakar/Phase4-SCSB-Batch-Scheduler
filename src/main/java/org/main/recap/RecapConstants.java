@@ -51,7 +51,7 @@ public class RecapConstants {
     public static final String GENERATE_ACCESSION_REPORT = "GenerateAccessionReport";
     public static final String ACCESSION = "Accession";
     public static final String ACCESSION_MATCHING_JOBS_SEQUENCE = "AccessionToDataExportJobsInSequence";
-    public static final String PURGE_ACCESSION_REQUESTS = "PurgeAccessionRequests";
+    public static final String PURGE_ACCESSION_REQUESTS = "PurgeCompletedAccessions";
 
     public static final String SUBMIT_COLLECTION_URL = "/submitCollectionJob/startSubmitCollection";
     public static final String NOTIFY_IF_PENDING_REQUEST = "/notifyPendingRequest/sendEmailForPendingRequest";
