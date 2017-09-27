@@ -38,20 +38,12 @@ public class MatchingAlgorithmService {
      * @return status of the matching algorithm process.
      */
     public String initiateMatchingAlgorithm(String solrClientUrl, Date createdDate) {
-        String resultStatus = null;
-        try {
-            SolrIndexRequest solrIndexRequest = getSolrIndexRequest(createdDate);
-            HttpHeaders headers = new HttpHeaders();
-            headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
-            HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(solrIndexRequest, headers);
-
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST, httpEntity, String.class);
-            resultStatus = responseEntity.getBody();
-        } catch (Exception ex) {
-            logger.error(RecapConstants.LOG_ERROR, ex);
-            resultStatus = ex.getMessage();
-        }
-        return resultStatus;
+        SolrIndexRequest solrIndexRequest = getSolrIndexRequest(createdDate);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(solrIndexRequest, headers);
+        ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST, httpEntity, String.class);
+        return responseEntity.getBody();
     }
 
     /**

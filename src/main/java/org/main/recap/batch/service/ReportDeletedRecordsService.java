@@ -48,19 +48,11 @@ public class ReportDeletedRecordsService {
      * @return
      */
     public String reportDeletedRecords(String scsbCircUrl){
-        String resultStatus = null;
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
-            HttpEntity httpEntity = new HttpEntity<>(headers);
-            logger.info(scsbCircUrl + RecapConstants.REPORT_DELETED_RECORDS_URL);
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbCircUrl + RecapConstants.REPORT_DELETED_RECORDS_URL, HttpMethod.GET, httpEntity, String.class);
-            resultStatus = responseEntity.getBody();
-        } catch (Exception ex) {
-            logger.error(RecapConstants.LOG_ERROR, ex);
-            resultStatus = ex.getMessage();
-        }
-        return resultStatus;
-
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        HttpEntity httpEntity = new HttpEntity<>(headers);
+        logger.info(scsbCircUrl + RecapConstants.REPORT_DELETED_RECORDS_URL);
+        ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbCircUrl + RecapConstants.REPORT_DELETED_RECORDS_URL, HttpMethod.GET, httpEntity, String.class);
+        return responseEntity.getBody();
     }
 }

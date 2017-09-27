@@ -44,20 +44,12 @@ public class GenerateReportsService {
      * @return status of the generated report
      */
     public String generateReport(String solrClientUrl, Date reportCreatedDate, String jobName) {
-        String resultStatus = null;
-        try {
-            SolrIndexRequest solrIndexRequest = getSolrIndexRequest(reportCreatedDate, jobName);
-            HttpHeaders headers = new HttpHeaders();
-            headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
-            HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(solrIndexRequest, headers);
-
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.GENERATE_REPORT_URL, HttpMethod.POST, httpEntity, String.class);
-            resultStatus = responseEntity.getBody();
-        } catch (Exception e) {
-            logger.error(RecapConstants.LOG_ERROR, e);
-            resultStatus = e.getMessage();
-        }
-        return resultStatus;
+        SolrIndexRequest solrIndexRequest = getSolrIndexRequest(reportCreatedDate, jobName);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(solrIndexRequest, headers);
+        ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.GENERATE_REPORT_URL, HttpMethod.POST, httpEntity, String.class);
+        return responseEntity.getBody();
     }
 
     /**

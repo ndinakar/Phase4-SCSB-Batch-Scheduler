@@ -36,17 +36,10 @@ public class SubmitCollectionService {
      * @return status of the submit collection process.
      */
     public String submitCollection(String scsbCircUrl) {
-        String resultStatus = null;
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
-            HttpEntity<JobEntity> httpEntity = new HttpEntity<>(headers);
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbCircUrl +RecapConstants.SUBMIT_COLLECTION_URL, HttpMethod.POST, httpEntity, String.class);
-            resultStatus = responseEntity.getBody();
-        } catch (RestClientException e) {
-            logger.error(RecapConstants.LOG_ERROR,e);
-            resultStatus = e.getMessage();
-        }
-        return resultStatus;
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        HttpEntity<JobEntity> httpEntity = new HttpEntity<>(headers);
+        ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbCircUrl + RecapConstants.SUBMIT_COLLECTION_URL, HttpMethod.POST, httpEntity, String.class);
+        return responseEntity.getBody();
     }
 }

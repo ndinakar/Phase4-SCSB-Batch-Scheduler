@@ -51,7 +51,7 @@ public class RequestInitialLoadTasklet implements Tasklet {
             updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
             String resultStatus = requestInitialLoadService.requestInitialLoad(scsbCircUrl);
             logger.info("Request Initial Load status : {}", resultStatus);
-            if (StringUtils.containsIgnoreCase(resultStatus, RecapConstants.FAIL)) {
+            if (!StringUtils.containsIgnoreCase(resultStatus, RecapConstants.SUCCESS)) {
                 executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
                 executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, resultStatus);
                 stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, resultStatus));

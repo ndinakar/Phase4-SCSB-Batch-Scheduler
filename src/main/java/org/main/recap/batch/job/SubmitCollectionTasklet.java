@@ -59,7 +59,7 @@ public class SubmitCollectionTasklet implements Tasklet {
             updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
             String resultStatus = submitCollectionService.submitCollection(scsbCircUrl);
             logger.info("Submit Collection status : {}", resultStatus);
-            if (StringUtils.containsIgnoreCase(resultStatus, RecapConstants.FAIL)) {
+            if (!StringUtils.containsIgnoreCase(resultStatus, RecapConstants.SUCCESS)) {
                 executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
                 executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.SUBMIT_COLLECTION_STATUS_NAME + " " + resultStatus);
                 stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE,  RecapConstants.SUBMIT_COLLECTION_STATUS_NAME + " " + resultStatus));

@@ -47,8 +47,6 @@ public class IncrementalExportPulService {
      * @return status of incremental export for PUL
      */
     public String incrementalExportPul(String scsbEtlUrl, String jobName, Date createdDate, String exportStringDate) {
-        String resultStatus = null;
-        try {
             HttpHeaders headers = new HttpHeaders();
             headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
             HttpEntity httpEntity = new HttpEntity<>(headers);
@@ -60,11 +58,6 @@ public class IncrementalExportPulService {
                 requestParameterMap.put(RecapConstants.DATE, exportStringDate);
             }
             ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbEtlUrl + RecapConstants.DATA_EXPORT_ETL_URL, HttpMethod.GET, httpEntity, String.class, requestParameterMap);
-            resultStatus = responseEntity.getBody();
-        } catch (Exception ex) {
-            logger.error(RecapConstants.LOG_ERROR, ex);
-            resultStatus = ex.getMessage();
-        }
-        return resultStatus;
+            return responseEntity.getBody();
     }
 }
