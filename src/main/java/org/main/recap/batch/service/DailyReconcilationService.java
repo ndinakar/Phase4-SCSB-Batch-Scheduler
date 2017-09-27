@@ -35,18 +35,10 @@ public class DailyReconcilationService {
      * @return status of the daily reconciliation process
      */
     public String dailyReconcilation(String solrCircUrl) {
-        String resultStatus = null;
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
-            HttpEntity httpEntity = new HttpEntity<>(headers);
-
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrCircUrl + RecapConstants.DAILY_RECONCILATION_URL, HttpMethod.POST, httpEntity, String.class);
-            resultStatus = responseEntity.getBody();
-        } catch (Exception ex) {
-            logger.error(RecapConstants.LOG_ERROR, ex);
-            resultStatus = ex.getMessage();
-        }
-        return resultStatus;
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        HttpEntity httpEntity = new HttpEntity<>(headers);
+        ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrCircUrl + RecapConstants.DAILY_RECONCILATION_URL, HttpMethod.POST, httpEntity, String.class);
+        return responseEntity.getBody();
     }
 }

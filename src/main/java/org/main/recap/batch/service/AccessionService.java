@@ -36,18 +36,11 @@ public class AccessionService {
      * @return status of the accession process
      */
     public String processAccession(String solrClientUrl) {
-        String resultStatus = null;
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
-            HttpEntity<Date> httpEntity = new HttpEntity<>(headers);
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.ACCESSION_URL, HttpMethod.GET, httpEntity, String.class);
-            resultStatus = responseEntity.getBody();
-        } catch (Exception e) {
-            logger.error(RecapConstants.LOG_ERROR, e);
-            resultStatus = e.getMessage();
-        }
-        return resultStatus;
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        HttpEntity<Date> httpEntity = new HttpEntity<>(headers);
+        ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.ACCESSION_URL, HttpMethod.GET, httpEntity, String.class);
+        return responseEntity.getBody();
     }
 
 }

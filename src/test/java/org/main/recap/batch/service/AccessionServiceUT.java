@@ -27,17 +27,16 @@ public class AccessionServiceUT extends BaseTestCase{
     RestTemplate restTemplate;
 
     @Mock
-    AccessionService accessionService;
+    private AccessionService accessionService;
 
     @Test
     public void processAccession() throws Exception {
-        Date createdDate = new Date();
         HttpHeaders headers = new HttpHeaders();
         headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
-        HttpEntity<Date> httpEntity = new HttpEntity<>(createdDate, headers);
+        HttpEntity<Date> httpEntity = new HttpEntity<>(headers);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
         Mockito.when(accessionService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(accessionService.getRestTemplate().exchange(solrClientUrl + RecapConstants.ACCESSION_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(accessionService.getRestTemplate().exchange(solrClientUrl + RecapConstants.ACCESSION_URL, HttpMethod.GET, httpEntity, String.class)).thenReturn(responseEntity);
         Mockito.when(accessionService.processAccession(solrClientUrl)).thenCallRealMethod();
         String status = accessionService.processAccession(solrClientUrl);
         assertNotNull(status);
