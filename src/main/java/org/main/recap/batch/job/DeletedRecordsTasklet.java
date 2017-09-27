@@ -63,7 +63,7 @@ public class DeletedRecordsTasklet implements Tasklet {
             updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
             String resultStatus = reportDeletedRecordsService.reportDeletedRecords(scsbCircUrl);
             logger.info("Deleted records status : " + resultStatus);
-            if (StringUtils.containsIgnoreCase(resultStatus, RecapConstants.FAIL)) {
+            if (!StringUtils.containsIgnoreCase(resultStatus, RecapConstants.SUCCESS)) {
                 executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
                 executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, resultStatus);
                 stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, resultStatus));

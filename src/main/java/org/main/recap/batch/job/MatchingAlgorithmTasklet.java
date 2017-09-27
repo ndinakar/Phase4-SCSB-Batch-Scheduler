@@ -65,7 +65,7 @@ public class MatchingAlgorithmTasklet implements Tasklet{
             }
             String resultStatus = matchingAlgorithmService.initiateMatchingAlgorithm(solrClientUrl, createdDate);
             logger.info("Matching algorithm status : {}", resultStatus);
-            if (StringUtils.containsIgnoreCase(resultStatus, RecapConstants.FAIL)) {
+            if (!StringUtils.containsIgnoreCase(resultStatus, RecapConstants.SUCCESS)) {
                 executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
                 executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.MATCHING_ALGORITHM_STATUS_NAME + " " + resultStatus);
                 stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, RecapConstants.MATCHING_ALGORITHM_STATUS_NAME + " " + resultStatus));

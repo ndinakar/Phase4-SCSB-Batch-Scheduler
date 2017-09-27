@@ -36,18 +36,10 @@ public class EmailService {
      * @return status of sending email
      */
     public String sendEmail(String solrClientUrl, EmailPayLoad emailPayLoad) {
-        String resultStatus = null;
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
-            HttpEntity<EmailPayLoad> httpEntity = new HttpEntity<>(emailPayLoad, headers);
-
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class);
-            resultStatus = responseEntity.getBody();
-        } catch (Exception ex) {
-            logger.error(RecapConstants.LOG_ERROR, ex);
-            resultStatus = ex.getMessage();
-        }
-        return resultStatus;
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        HttpEntity<EmailPayLoad> httpEntity = new HttpEntity<>(emailPayLoad, headers);
+        ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class);
+        return responseEntity.getBody();
     }
 }

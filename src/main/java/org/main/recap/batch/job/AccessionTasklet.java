@@ -60,7 +60,7 @@ public class AccessionTasklet implements Tasklet{
             }
             String resultStatus = accessionService.processAccession(solrClientUrl);
             logger.info("Accession status : {}", resultStatus);
-            if (StringUtils.containsIgnoreCase(resultStatus, RecapConstants.FAIL)) {
+            if (!StringUtils.containsIgnoreCase(resultStatus, RecapConstants.SUCCESS) && !RecapConstants.ACCESSION_NO_PENDING_REQUESTS.equals(resultStatus)) {
                 executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
                 executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.ACCESSION_STATUS_NAME + " " + resultStatus);
                 stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, RecapConstants.ACCESSION_STATUS_NAME + " " + resultStatus));

@@ -83,6 +83,16 @@ public class RecapConstants {
     public static final String SUBMIT_COLLECTION_STATUS_NAME = "[Submit Collection]";
     public static final String MATCHING_ALGORITHM_STATUS_NAME = "[Ongoing Matching Algorithm]";
     public static final String DATA_EXPORT_STATUS_NAME = "[Data Export]";
+    public static final String ACCESSION_NO_PENDING_REQUESTS = "No pending requests to process accession.";
+
+    public static final String RAN = "ran";
+    public static final String STARTED = "started";
+    public static final String RUNNING = "Running";
+    public static final String POLLING_ACTION = "action";
+    public static final String START = "start";
+    public static final String STOP = "stop";
+
+    public static boolean POLL_LONG_RUNNING_JOBS = true;
 
     private RecapConstants(){}
 }

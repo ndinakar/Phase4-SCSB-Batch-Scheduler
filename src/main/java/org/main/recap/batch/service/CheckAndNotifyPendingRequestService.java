@@ -35,17 +35,10 @@ public class CheckAndNotifyPendingRequestService {
      * @return the string
      */
     public String checkPendingMsgesInQueue(String scsbCircUrl) {
-        String resultStatus = null;
-        try{
-            HttpHeaders headers = new HttpHeaders();
-            HttpEntity<JobEntity> httpEntity = new HttpEntity<>(headers);
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbCircUrl + RecapConstants.NOTIFY_IF_PENDING_REQUEST, HttpMethod.POST, httpEntity, String.class);
-            resultStatus = responseEntity.getBody();
-        } catch (Exception e) {
-            logger.error(RecapConstants.LOG_ERROR,e);
-            resultStatus = e.getMessage();
-        }
-        return  resultStatus;
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<JobEntity> httpEntity = new HttpEntity<>(headers);
+        ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbCircUrl + RecapConstants.NOTIFY_IF_PENDING_REQUEST, HttpMethod.POST, httpEntity, String.class);
+        return responseEntity.getBody();
     }
 
 }
