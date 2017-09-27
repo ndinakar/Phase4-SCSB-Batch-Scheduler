@@ -60,7 +60,7 @@ public class CheckAndNotifyPendingRequestTasklet implements Tasklet {
         } catch (Exception ex) {
             logger.error(RecapConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
             executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
-            executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.ACCESSION_STATUS_NAME + " " + ExceptionUtils.getMessage(ex));
+            executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, ExceptionUtils.getMessage(ex));
             stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
         }
         return RepeatStatus.FINISHED;

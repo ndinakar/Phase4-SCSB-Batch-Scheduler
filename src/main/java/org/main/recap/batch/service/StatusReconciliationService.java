@@ -25,18 +25,11 @@ public class StatusReconciliationService {
     }
 
     public String statusReconcilation(String scsbCircUrl) {
-        String resultStatus = null;
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
-            HttpEntity<JobEntity> httpEntity = new HttpEntity<>(headers);
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbCircUrl +RecapConstants.STATUS_RECOCILATION_URL, HttpMethod.GET, httpEntity, String.class);
-            resultStatus = responseEntity.getBody();
-        } catch (RestClientException e) {
-            logger.error(RecapConstants.LOG_ERROR,e);
-            resultStatus = e.getMessage();
-        }
-        return resultStatus;
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        HttpEntity<JobEntity> httpEntity = new HttpEntity<>(headers);
+        ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbCircUrl + RecapConstants.STATUS_RECOCILATION_URL, HttpMethod.GET, httpEntity, String.class);
+        return responseEntity.getBody();
     }
 
 }

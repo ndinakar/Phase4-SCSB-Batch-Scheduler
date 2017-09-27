@@ -58,6 +58,7 @@ public class EmailProcessingTasklet implements Tasklet {
             EmailPayLoad emailPayLoad = new EmailPayLoad();
             emailPayLoad.setJobName(jobName);
             emailPayLoad.setJobDescription(jobEntity.getJobDescription());
+            emailPayLoad.setJobAction(RecapConstants.RAN);
             emailPayLoad.setStartDate(createdDate);
             emailPayLoad.setStatus(jobStatus);
             emailPayLoad.setMessage(jobStatusMessage);

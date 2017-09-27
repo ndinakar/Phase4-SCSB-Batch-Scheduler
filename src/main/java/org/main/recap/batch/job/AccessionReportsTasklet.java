@@ -68,7 +68,7 @@ public class AccessionReportsTasklet implements Tasklet {
             }
             String resultStatus = generateReportsService.generateReport(solrClientUrl, createdDate, RecapConstants.GENERATE_ACCESSION_REPORT_JOB);
             logger.info("Accession Report status : {}", resultStatus);
-            if (StringUtils.containsIgnoreCase(resultStatus, RecapConstants.FAIL)) {
+            if (!StringUtils.containsIgnoreCase(resultStatus, RecapConstants.SUCCESS)) {
                 executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
                 executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.ACCESSION_REPORT_STATUS_NAME + " " + resultStatus);
                 stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, RecapConstants.ACCESSION_REPORT_STATUS_NAME + " " + resultStatus));

@@ -37,19 +37,10 @@ public class PurgeExceptionRequestsService {
      * @return status of purging exception requests process
      */
     public Map<String, String> purgeExceptionRequests(String scsbCircUrl) {
-        Map<String, String> resultMap = null;
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
-            HttpEntity httpEntity = new HttpEntity<>(headers);
-
-            ResponseEntity<Map> responseEntity = getRestTemplate().exchange(scsbCircUrl + RecapConstants.PURGE_EXCEPTION_REQUEST_URL, HttpMethod.GET, httpEntity, Map.class);
-            resultMap = responseEntity.getBody();
-        } catch (Exception ex) {
-            logger.error(RecapConstants.LOG_ERROR, ex);
-            resultMap.put(RecapConstants.STATUS, RecapConstants.FAILURE);
-            resultMap.put(RecapConstants.MESSAGE, ex.getMessage());
-        }
-        return resultMap;
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        HttpEntity httpEntity = new HttpEntity<>(headers);
+        ResponseEntity<Map> responseEntity = getRestTemplate().exchange(scsbCircUrl + RecapConstants.PURGE_EXCEPTION_REQUEST_URL, HttpMethod.GET, httpEntity, Map.class);
+        return responseEntity.getBody();
     }
 }
