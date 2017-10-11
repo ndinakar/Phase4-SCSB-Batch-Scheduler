@@ -1,9 +1,9 @@
 package org.main.recap.batch.job;
 
+import org.apache.camel.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.main.recap.RecapConstants;
-import org.main.recap.batch.service.SubmitCollectionService;
 import org.main.recap.batch.service.UpdateJobDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +34,13 @@ public class SubmitCollectionTasklet implements Tasklet {
     String solrClientUrl;
 
     @Autowired
-    private SubmitCollectionService submitCollectionService;
+    private UpdateJobDetailsService updateJobDetailsService;
 
     @Autowired
-    private UpdateJobDetailsService updateJobDetailsService;
+    private CamelContext camelContext;
+
+    @Autowired
+    private ProducerTemplate producerTemplate;
 
     /**
      * This method starts the execution of the submit collection job.
@@ -56,9 +59,29 @@ public class SubmitCollectionTasklet implements Tasklet {
             long jobInstanceId = jobExecution.getJobInstance().getInstanceId();
             String jobName = chunkContext.getStepContext().getStepExecution().getJobExecution().getJobInstance().getJobName();
             Date createdDate = chunkContext.getStepContext().getStepExecution().getJobExecution().getCreateTime();
+            String jobNameParam = (String) jobExecution.getExecutionContext().get(RecapConstants.JOB_NAME);
+            logger.info("Job Parameter in Submit Collection Tasklet : {}", jobNameParam);
+            if (!jobName.equalsIgnoreCase(jobNameParam)) {
+                updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
+            }
             updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
-            String resultStatus = submitCollectionService.submitCollection(scsbCircUrl);
-            logger.info("Submit Collection status : {}", resultStatus);
+
+            producerTemplate.sendBody(RecapConstants.SUBMIT_COLLECTION_JOB_INITIATE_QUEUE, String.valueOf(jobExecution.getId()));
+            Endpoint endpoint = camelContext.getEndpoint(RecapConstants.SUBMIT_COLLECTION_JOB_COMPLETION_OUTGOING_QUEUE);
+            PollingConsumer consumer = endpoint.createPollingConsumer();
+            Exchange exchange = consumer.receive();
+            String resultStatus = (String) exchange.getIn().getBody();
+            if (StringUtils.isNotBlank(resultStatus)) {
+                String[] resultSplitMessage = resultStatus.split("\\|");
+                if (!resultSplitMessage[0].equalsIgnoreCase(RecapConstants.JOB_ID + ":" + jobExecution.getId())) {
+                    producerTemplate.sendBody(RecapConstants.SUBMIT_COLLECTION_JOB_COMPLETION_OUTGOING_QUEUE, resultStatus);
+                    resultStatus = RecapConstants.FAILURE + " - " + RecapConstants.FAILURE_QUEUE_MESSAGE;
+                } else {
+                    resultStatus = resultSplitMessage[1];
+                }
+            }
+            logger.info("Job Id : {} Submit Collection Job Result Status : {}", jobExecution.getId(), resultStatus);
+
             if (!StringUtils.containsIgnoreCase(resultStatus, RecapConstants.SUCCESS)) {
                 executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
                 executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.SUBMIT_COLLECTION_STATUS_NAME + " " + resultStatus);

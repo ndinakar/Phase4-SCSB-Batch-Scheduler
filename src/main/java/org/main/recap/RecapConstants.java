@@ -94,5 +94,17 @@ public class RecapConstants {
 
     public static boolean POLL_LONG_RUNNING_JOBS = true;
 
+    public static final String ACCESSION_JOB_INITIATE_QUEUE = "scsbactivemq:queue:accessionInitiateQ";
+    public static final String ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE = "scsbactivemq:queue:accessionCompletionOutgoingQ";
+    public static final String SUBMIT_COLLECTION_JOB_INITIATE_QUEUE = "scsbactivemq:queue:submitCollectionInitiateQ";
+    public static final String SUBMIT_COLLECTION_JOB_COMPLETION_OUTGOING_QUEUE = "scsbactivemq:queue:submitCollectionCompletionOutgoingQ";
+    public static final String MATCHING_ALGORITHM_JOB_INITIATE_QUEUE = "scsbactivemq:queue:matchingAlgorithmInitiateQ";
+    public static final String MATCHING_ALGORITHM_JOB_COMPLETION_OUTGOING_QUEUE = "scsbactivemq:queue:matchingAlgorithmCompletionOutgoingQ";
+
+    public static final String JOB_ID = "jobId";
+    public static final String PROCESS_TYPE = "processType";
+    public static final String CREATED_DATE = "createdDate";
+    public static final String FAILURE_QUEUE_MESSAGE = "Message undelivered or unreceived.";
+
     private RecapConstants(){}
 }

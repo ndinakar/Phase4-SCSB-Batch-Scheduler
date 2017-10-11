@@ -54,27 +54,20 @@ public class UpdateJobDetailsService {
      * @param lastExecutedTime the last executed time
      * @return status of updating the job
      */
-    public String updateJob(String solrClientUrl, String jobName, Date lastExecutedTime, Long jobInstanceId) {
-        String resultStatus = null;
-        try {
-            JobEntity jobEntity = getJobDetailsRepository().findByJobName(jobName);
-            jobEntity.setLastExecutedTime(lastExecutedTime);
-            jobEntity.setJobInstanceId(jobInstanceId.intValue());
-            if (StringUtils.isNotBlank(jobEntity.getCronExpression())) {
-                CronExpression cronExpression = new CronExpression(jobEntity.getCronExpression());
-                jobEntity.setNextRunTime(cronExpression.getNextValidTimeAfter(lastExecutedTime));
-            }
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
-            HttpEntity<JobEntity> httpEntity = new HttpEntity<>(jobEntity, headers);
-
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class);
-            resultStatus = responseEntity.getBody();
-        } catch (Exception ex) {
-            logger.error(RecapConstants.LOG_ERROR, ex);
-            resultStatus = ex.getMessage();
+    public String updateJob(String solrClientUrl, String jobName, Date lastExecutedTime, Long jobInstanceId) throws Exception {
+        JobEntity jobEntity = getJobDetailsRepository().findByJobName(jobName);
+        jobEntity.setLastExecutedTime(lastExecutedTime);
+        jobEntity.setJobInstanceId(jobInstanceId.intValue());
+        if (StringUtils.isNotBlank(jobEntity.getCronExpression())) {
+            CronExpression cronExpression = new CronExpression(jobEntity.getCronExpression());
+            jobEntity.setNextRunTime(cronExpression.getNextValidTimeAfter(lastExecutedTime));
         }
-        return resultStatus;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        HttpEntity<JobEntity> httpEntity = new HttpEntity<>(jobEntity, headers);
+
+        ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class);
+        return responseEntity.getBody();
     }
 }
