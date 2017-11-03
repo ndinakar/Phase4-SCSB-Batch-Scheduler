@@ -36,7 +36,7 @@ public class UpdateJobDetailsServiceUT extends BaseTestCase {
     UpdateJobDetailsService updateJobDetailsService;
 
     @Test
-    public void testUpdateJobDetailsService() {
+    public void testUpdateJobDetailsService() throws Exception {
         String jobName  = RecapConstants.PURGE_EXCEPTION_REQUESTS;
         Long jobInstanceId = Long.valueOf(1);
         Date lastExecutedTime = new Date();
