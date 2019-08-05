@@ -277,6 +277,14 @@
 
     <bean id="checkAndNotifyPendingRequestTasklet" class="org.main.recap.batch.job.CheckAndNotifyPendingRequestTasklet"/>
 
+    <batch:job id="IdentifyAndNotifyPendingRequest" restartable="true">
+        <batch:step id="IdentifyAndNotifyPendingRequestStep" allow-start-if-complete="true">
+            <batch:tasklet ref="identifyAndNotifyPendingRequestTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="identifyAndNotifyPendingRequestTasklet" class="org.main.recap.batch.job.IdentifyAndNotifyPendingRequestTasklet"/>
+
     <batch:job id="StartOrStopPollingLongRunningJobs" restartable="true">
         <batch:step id="StartOrStopPollingLongRunningJobsStep" allow-start-if-complete="true">
             <batch:tasklet ref="startOrStopPollingLongRunningJobsTasklet"/>

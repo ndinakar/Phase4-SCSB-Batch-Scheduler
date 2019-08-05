@@ -55,6 +55,7 @@ public class RecapConstants {
 
     public static final String SUBMIT_COLLECTION_URL = "/submitCollectionJob/startSubmitCollection";
     public static final String NOTIFY_IF_PENDING_REQUEST = "/notifyPendingRequest/sendEmailForPendingRequest";
+    public static final String CHECK_PENDING_REQUEST_IN_DB = "/identifyPendingRequest/identifyAndNotifyPendingRequests";
 
     public static final String INCREMENTAL_RECORDS_EXPORT_PUL = "IncrementalRecordsExportPul";
     public static final String INCREMENTAL_RECORDS_EXPORT_CUL = "IncrementalRecordsExportCul";
