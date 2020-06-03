@@ -1,5 +1,7 @@
 package org.main.recap.quartz;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.main.recap.RecapConstants;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -15,6 +17,8 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 /**
  * Created by rajeshbabuk on 28/3/17.
  */
+@Getter
+@Setter
 public class QuartzJobLauncher extends QuartzJobBean {
 
     private static final Logger logger = LoggerFactory.getLogger(QuartzJobLauncher.class);
@@ -22,60 +26,6 @@ public class QuartzJobLauncher extends QuartzJobBean {
     private String jobName;
     private JobLauncher jobLauncher;
     private JobLocator jobLocator;
-
-    /**
-     * Gets job name.
-     *
-     * @return the job name
-     */
-    public String getJobName() {
-        return jobName;
-    }
-
-    /**
-     * Sets job name.
-     *
-     * @param jobName the job name
-     */
-    public void setJobName(String jobName) {
-        this.jobName = jobName;
-    }
-
-    /**
-     * Gets job launcher.
-     *
-     * @return the job launcher
-     */
-    public JobLauncher getJobLauncher() {
-        return jobLauncher;
-    }
-
-    /**
-     * Sets job launcher.
-     *
-     * @param jobLauncher the job launcher
-     */
-    public void setJobLauncher(JobLauncher jobLauncher) {
-        this.jobLauncher = jobLauncher;
-    }
-
-    /**
-     * Gets job locator.
-     *
-     * @return the job locator
-     */
-    public JobLocator getJobLocator() {
-        return jobLocator;
-    }
-
-    /**
-     * Sets job locator.
-     *
-     * @param jobLocator the job locator
-     */
-    public void setJobLocator(JobLocator jobLocator) {
-        this.jobLocator = jobLocator;
-    }
 
     /**
      * Quartz scheduler calls this method on each scheduled run of a job.
