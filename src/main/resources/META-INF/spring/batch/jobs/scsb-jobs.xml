@@ -19,7 +19,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="purgeExceptionRequestsTasklet" class="org.main.recap.batch.job.PurgeExceptionRequestTasklet"/>
+    <bean id="purgeExceptionRequestsTasklet" class="org.recap.batch.job.PurgeExceptionRequestTasklet"/>
 
     <batch:job id="PurgeEmailAddress" restartable="true">
         <batch:step id="PurgeEmailAddressStep" allow-start-if-complete="true" next="EmailProcessingStep2">
@@ -30,7 +30,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="purgeEmailAddressTasklet" class="org.main.recap.batch.job.PurgeEmailAddressTasklet"/>
+    <bean id="purgeEmailAddressTasklet" class="org.recap.batch.job.PurgeEmailAddressTasklet"/>
 
     <batch:job id="OngoingMatchingAlgorithm" restartable="true">
         <batch:step id="MatchingAlgorithmStep" allow-start-if-complete="true" next="EmailProcessingStep3">
@@ -41,7 +41,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="matchingAlgorithmTasklet" class="org.main.recap.batch.job.MatchingAlgorithmTasklet"/>
+    <bean id="matchingAlgorithmTasklet" class="org.recap.batch.job.MatchingAlgorithmTasklet"/>
 
     <batch:job id="DailyLASTransactionReconciliation" restartable="true">
         <batch:step id="DailyReconcilationStep" allow-start-if-complete="true" next="EmailProcessingStep4">
@@ -52,7 +52,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="DailyReconcilationTasklet" class="org.main.recap.batch.job.DailyReconcilationTasklet"/>
+    <bean id="DailyReconcilationTasklet" class="org.recap.batch.job.DailyReconcilationTasklet"/>
 
     <batch:job id="GenerateAccessionReport" restartable="true">
         <batch:step id="AccessionReportsStep" allow-start-if-complete="true" next="EmailProcessingStep5">
@@ -63,7 +63,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="accessionReportsTasklet" class="org.main.recap.batch.job.AccessionReportsTasklet"/>
+    <bean id="accessionReportsTasklet" class="org.recap.batch.job.AccessionReportsTasklet"/>
 
     <batch:job id="Accession" restartable="true">
         <batch:step id="AccessionStep" allow-start-if-complete="true" next="EmailProcessingStep6">
@@ -74,7 +74,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="accessionTasklet" class="org.main.recap.batch.job.AccessionTasklet"/>
+    <bean id="accessionTasklet" class="org.recap.batch.job.AccessionTasklet"/>
 
     <batch:job id="AccessionToDataExportJobsInSequence" restartable="true">
         <batch:step id="AccessionAndMatchingJobsSequenceStartStep" allow-start-if-complete="true">
@@ -116,13 +116,13 @@
         </batch:step>
     </batch:job>
 
-    <bean id="matchingAlgorithmExecutionDecider" class="org.main.recap.batch.flow.MatchingAlgorithmExecutionDecider"/>
+    <bean id="matchingAlgorithmExecutionDecider" class="org.recap.batch.flow.MatchingAlgorithmExecutionDecider"/>
 
-    <bean id="dataExportExecutionDecider" class="org.main.recap.batch.flow.DataExportExecutionDecider"/>
+    <bean id="dataExportExecutionDecider" class="org.recap.batch.flow.DataExportExecutionDecider"/>
 
-    <bean id="submitCollectionExecutionDecider" class="org.main.recap.batch.flow.SubmitCollectionExecutionDecider"/>
+    <bean id="submitCollectionExecutionDecider" class="org.recap.batch.flow.SubmitCollectionExecutionDecider"/>
 
-    <bean id="jobSequenceTasklet" class="org.main.recap.batch.job.JobSequenceTasklet"/>
+    <bean id="jobSequenceTasklet" class="org.recap.batch.job.JobSequenceTasklet"/>
 
     <batch:job id="PurgeCompletedAccessions" restartable="true">
         <batch:step id="PurgeAccessionRequestsStep" allow-start-if-complete="true" next="EmailProcessingStep7">
@@ -133,9 +133,9 @@
         </batch:step>
     </batch:job>
 
-    <bean id="purgeAccessionRequestsTasklet" class="org.main.recap.batch.job.PurgeAccessionRequestTasklet"/>
+    <bean id="purgeAccessionRequestsTasklet" class="org.recap.batch.job.PurgeAccessionRequestTasklet"/>
 
-    <bean id="emailProcessingTasklet" class="org.main.recap.batch.job.EmailProcessingTasklet"/>
+    <bean id="emailProcessingTasklet" class="org.recap.batch.job.EmailProcessingTasklet"/>
 
     <batch:job id="PeriodicLASBarcodeReconciliation" restartable="true">
         <batch:step id="AccessionReconcilationStep" allow-start-if-complete="true" next="EmailProcessingStep8">
@@ -146,7 +146,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="AccessionReconcilationTasklet" class="org.main.recap.batch.job.AccessionReconcilationTasklet"/>
+    <bean id="AccessionReconcilationTasklet" class="org.recap.batch.job.AccessionReconcilationTasklet"/>
 
     <batch:job id="DeletedRecords" restartable="true">
         <batch:step id="ReportDeletedRecordsStep" allow-start-if-complete="true" next="EmailProcessingStep9">
@@ -157,7 +157,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="deletedRecordsTasklet" class="org.main.recap.batch.job.DeletedRecordsTasklet"/>
+    <bean id="deletedRecordsTasklet" class="org.recap.batch.job.DeletedRecordsTasklet"/>
 
     <batch:job id="PeriodicLASItemStatusReconciliation" restartable="true">
         <batch:step id="StatusReconcilationStep" allow-start-if-complete="true" next="EmailProcessingStep10">
@@ -168,7 +168,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="StatusReconcilationTasklet" class="org.main.recap.batch.job.StatusReconcilationTasklet"/>
+    <bean id="StatusReconcilationTasklet" class="org.recap.batch.job.StatusReconcilationTasklet"/>
 
     <batch:job id="RequestInitialLoad" restartable="true">
         <batch:step id="RequestInitialLoadStep" allow-start-if-complete="true" next="EmailProcessingStep11">
@@ -179,7 +179,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="RequestInitialLoadTasklet" class="org.main.recap.batch.job.RequestInitialLoadTasklet"/>
+    <bean id="RequestInitialLoadTasklet" class="org.recap.batch.job.RequestInitialLoadTasklet"/>
 
     <batch:job id="SubmitCollection" restartable="true">
         <batch:step id="SubmitCollectionStep" allow-start-if-complete="true" next="EmailProcessingStep12">
@@ -190,7 +190,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="submitCollectionTasklet" class="org.main.recap.batch.job.SubmitCollectionTasklet"/>
+    <bean id="submitCollectionTasklet" class="org.recap.batch.job.SubmitCollectionTasklet"/>
 
     <batch:job id="IncrementalRecordsExportPul" restartable="true">
         <batch:step id="IncrementalExportPulStep" allow-start-if-complete="true" next="EmailProcessingStep13">
@@ -201,7 +201,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="incrementalExportPulTasklet" class="org.main.recap.batch.job.IncrementalExportPulTasklet"/>
+    <bean id="incrementalExportPulTasklet" class="org.recap.batch.job.IncrementalExportPulTasklet"/>
 
     <batch:job id="IncrementalRecordsExportCul" restartable="true">
         <batch:step id="IncrementalExportCulStep" allow-start-if-complete="true" next="EmailProcessingStep14">
@@ -212,7 +212,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="incrementalExportCulTasklet" class="org.main.recap.batch.job.IncrementalExportCulTasklet"/>
+    <bean id="incrementalExportCulTasklet" class="org.recap.batch.job.IncrementalExportCulTasklet"/>
 
     <batch:job id="IncrementalRecordsExportNypl" restartable="true">
         <batch:step id="IncrementalExportNyplStep" allow-start-if-complete="true" next="EmailProcessingStep15">
@@ -223,7 +223,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="incrementalExportNyplTasklet" class="org.main.recap.batch.job.IncrementalExportNyplTasklet"/>
+    <bean id="incrementalExportNyplTasklet" class="org.recap.batch.job.IncrementalExportNyplTasklet"/>
 
     <batch:job id="DeletedRecordsExportPul" restartable="true">
         <batch:step id="DeletedRecordsExportPulStep" allow-start-if-complete="true" next="EmailProcessingStep16">
@@ -234,7 +234,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="deletedRecordsExportPulTasklet" class="org.main.recap.batch.job.DeletedRecordsExportPulTasklet"/>
+    <bean id="deletedRecordsExportPulTasklet" class="org.recap.batch.job.DeletedRecordsExportPulTasklet"/>
 
     <batch:job id="DeletedRecordsExportCul" restartable="true">
         <batch:step id="DeletedRecordsExportCulStep" allow-start-if-complete="true" next="EmailProcessingStep17">
@@ -245,7 +245,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="deletedRecordsExportCulTasklet" class="org.main.recap.batch.job.DeletedRecordsExportCulTasklet"/>
+    <bean id="deletedRecordsExportCulTasklet" class="org.recap.batch.job.DeletedRecordsExportCulTasklet"/>
 
     <batch:job id="DeletedRecordsExportNypl" restartable="true">
         <batch:step id="DeletedRecordsExportNyplStep" allow-start-if-complete="true" next="EmailProcessingStep18">
@@ -256,7 +256,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="deletedRecordsExportNyplTasklet" class="org.main.recap.batch.job.DeletedRecordsExportNyplTasklet"/>
+    <bean id="deletedRecordsExportNyplTasklet" class="org.recap.batch.job.DeletedRecordsExportNyplTasklet"/>
 
     <batch:job id="IncrementalAndDeletedExportJobInSequence" restartable="true">
         <batch:step id="IncrementalAndDeletedDataExportStep" allow-start-if-complete="true" next="EmailProcessingStep19">
@@ -267,7 +267,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="dataExportJobSequenceTasklet" class="org.main.recap.batch.job.DataExportJobSequenceTasklet"/>
+    <bean id="dataExportJobSequenceTasklet" class="org.recap.batch.job.DataExportJobSequenceTasklet"/>
 
     <batch:job id="CheckAndNotifyPendingRequest" restartable="true">
         <batch:step id="CheckAndNotifyPendingRequestStep" allow-start-if-complete="true">
@@ -275,7 +275,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="checkAndNotifyPendingRequestTasklet" class="org.main.recap.batch.job.CheckAndNotifyPendingRequestTasklet"/>
+    <bean id="checkAndNotifyPendingRequestTasklet" class="org.recap.batch.job.CheckAndNotifyPendingRequestTasklet"/>
 
     <batch:job id="IdentifyAndNotifyPendingRequest" restartable="true">
         <batch:step id="IdentifyAndNotifyPendingRequestStep" allow-start-if-complete="true">
@@ -283,7 +283,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="identifyAndNotifyPendingRequestTasklet" class="org.main.recap.batch.job.IdentifyAndNotifyPendingRequestTasklet"/>
+    <bean id="identifyAndNotifyPendingRequestTasklet" class="org.recap.batch.job.IdentifyAndNotifyPendingRequestTasklet"/>
 
     <batch:job id="StartOrStopPollingLongRunningJobs" restartable="true">
         <batch:step id="StartOrStopPollingLongRunningJobsStep" allow-start-if-complete="true">
@@ -291,6 +291,6 @@
         </batch:step>
     </batch:job>
 
-    <bean id="startOrStopPollingLongRunningJobsTasklet" class="org.main.recap.batch.job.StartOrStopPollingLongRunningJobsTasklet"/>
+    <bean id="startOrStopPollingLongRunningJobsTasklet" class="org.recap.batch.job.StartOrStopPollingLongRunningJobsTasklet"/>
 
 </beans>
