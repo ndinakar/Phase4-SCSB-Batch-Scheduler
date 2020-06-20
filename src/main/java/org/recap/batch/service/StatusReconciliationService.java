@@ -1,5 +1,6 @@
 package org.recap.batch.service;
 
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.jpa.JobEntity;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ public class StatusReconciliationService {
 
     public String statusReconcilation(String scsbCircUrl) {
         HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
         HttpEntity<JobEntity> httpEntity = new HttpEntity<>(headers);
         ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbCircUrl + RecapConstants.STATUS_RECOCILATION_URL, HttpMethod.GET, httpEntity, String.class);
         return responseEntity.getBody();

@@ -1,10 +1,11 @@
 package org.recap.batch.service;
 
 import org.apache.commons.lang.StringUtils;
-import org.recap.RecapConstants;
-import org.recap.repository.jpa.JobDetailsRepository;
 import org.quartz.CronExpression;
+import org.recap.RecapCommonConstants;
+import org.recap.RecapConstants;
 import org.recap.model.jpa.JobEntity;
+import org.recap.repository.jpa.JobDetailsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,7 @@ public class UpdateJobDetailsService {
         }
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
         HttpEntity<JobEntity> httpEntity = new HttpEntity<>(jobEntity, headers);
 
         ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class);

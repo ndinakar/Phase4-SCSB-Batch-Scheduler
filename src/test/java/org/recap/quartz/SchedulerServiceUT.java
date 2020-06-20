@@ -1,16 +1,20 @@
 package org.recap.quartz;
 
 import org.junit.Test;
-import org.recap.BaseTestCase;
-import org.recap.RecapConstants;
 import org.quartz.Scheduler;
 import org.quartz.Trigger;
 import org.quartz.TriggerKey;
+import org.recap.BaseTestCase;
+import org.recap.RecapCommonConstants;
+import org.recap.RecapConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by rajeshbabuk on 19/4/17.
@@ -25,7 +29,7 @@ public class SchedulerServiceUT extends BaseTestCase {
 
     @Test
     public void testScheduleJobInvalidCron() throws Exception {
-        String jobName = RecapConstants.PURGE_EXCEPTION_REQUESTS;
+        String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
         String cronExpression = "1 2 3 4 5";
         String message = schedulerService.scheduleJob(jobName, cronExpression);
         assertNotNull(message);
@@ -34,7 +38,7 @@ public class SchedulerServiceUT extends BaseTestCase {
 
     @Test
     public void testScheduleJobRunEveryFiveSeconds() throws Exception {
-        String jobName = RecapConstants.PURGE_EXCEPTION_REQUESTS;
+        String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
         TriggerKey triggerKey = new TriggerKey(jobName + RecapConstants.TRIGGER_SUFFIX);
         String message = schedulerService.scheduleJob(jobName, "0/5 * * * * ? *");
         assertNotNull(message);
@@ -53,7 +57,7 @@ public class SchedulerServiceUT extends BaseTestCase {
 
     @Test
     public void testRescheduleJobInvalidCron() throws Exception {
-        String jobName = RecapConstants.PURGE_EXCEPTION_REQUESTS;
+        String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
         String cronExpression = "1 2 3 4 5";
         String message = schedulerService.rescheduleJob(jobName, cronExpression);
         assertNotNull(message);
@@ -62,7 +66,7 @@ public class SchedulerServiceUT extends BaseTestCase {
 
     @Test
     public void testRescheduleJobForUnscheduledJob() throws Exception {
-        String jobName = RecapConstants.PURGE_EXCEPTION_REQUESTS;
+        String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
         String cronExpression = "0/10 * * * * ? *";
         String message = schedulerService.rescheduleJob(jobName, cronExpression);
         assertNotNull(message);
@@ -71,7 +75,7 @@ public class SchedulerServiceUT extends BaseTestCase {
 
     @Test
     public void testRescheduleJobRunEveryFiveSecondsForScheduledJob() throws Exception {
-        String jobName = RecapConstants.PURGE_EXCEPTION_REQUESTS;
+        String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
         TriggerKey triggerKey = new TriggerKey(jobName + RecapConstants.TRIGGER_SUFFIX);
         String scheduleMessage = schedulerService.scheduleJob(jobName, "0/5 * * * * ? *");
         assertNotNull(scheduleMessage);
@@ -96,7 +100,7 @@ public class SchedulerServiceUT extends BaseTestCase {
 
     @Test
     public void testUnscheduleJob() throws Exception {
-        String jobName = RecapConstants.PURGE_EXCEPTION_REQUESTS;
+        String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
         TriggerKey triggerKey = new TriggerKey(jobName + RecapConstants.TRIGGER_SUFFIX);
         String scheduleMessage = schedulerService.scheduleJob(jobName, "0/5 * * * * ? *");
         assertNotNull(scheduleMessage);

@@ -2,6 +2,7 @@ package org.recap.batch.job;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.batch.service.DataExportJobSequenceService;
 import org.recap.batch.service.UpdateJobDetailsService;
@@ -64,7 +65,7 @@ public class DataExportJobSequenceTasklet implements Tasklet {
             }
             String resultStatus = dataExportJobSequenceService.dataExportJobSequence(scsbEtlUrl, createdDate, exportStringDate);
             logger.info("Incremental and delete data export status : {}", resultStatus);
-            if (StringUtils.containsIgnoreCase(RecapConstants.FAIL, resultStatus)) {
+            if (StringUtils.containsIgnoreCase(RecapCommonConstants.FAIL, resultStatus)) {
                 executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
                 executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.DATA_EXPORT_STATUS_NAME + " " + resultStatus);
                 stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, RecapConstants.DATA_EXPORT_STATUS_NAME + " " + resultStatus));
@@ -74,7 +75,7 @@ public class DataExportJobSequenceTasklet implements Tasklet {
                 stepExecution.setExitStatus(new ExitStatus(RecapConstants.SUCCESS, RecapConstants.DATA_EXPORT_STATUS_NAME + " " + resultStatus));
             }
         } catch (Exception ex) {
-            logger.error(RecapConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+            logger.error(RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
             executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
             executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.DATA_EXPORT_STATUS_NAME + " " + ExceptionUtils.getMessage(ex));
             stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));

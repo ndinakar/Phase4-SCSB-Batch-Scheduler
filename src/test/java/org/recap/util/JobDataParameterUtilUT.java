@@ -1,19 +1,21 @@
 package org.recap.util;
 
 import org.junit.Test;
-import org.recap.BaseTestCase;
-import org.recap.RecapConstants;
-import org.recap.repository.jpa.JobParamDetailRepository;
-import org.recap.model.jpa.JobParamEntity;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.recap.BaseTestCase;
+import org.recap.RecapConstants;
 import org.recap.model.jpa.JobParamDataEntity;
+import org.recap.model.jpa.JobParamEntity;
+import org.recap.repository.jpa.JobParamDetailRepository;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 /**

@@ -1,6 +1,7 @@
 package org.recap.batch.service;
 
 import org.apache.commons.lang.StringUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.util.JobDataParameterUtil;
 import org.slf4j.Logger;
@@ -45,7 +46,7 @@ public class DataExportJobSequenceService {
      */
     public String dataExportJobSequence(String scsbEtlUrl, Date createdDate, String exportStringDate) {
         HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
         HttpEntity httpEntity = new HttpEntity<>(headers);
         Map<String, String> requestParameterMap = new HashMap<>();
         if (StringUtils.isBlank(exportStringDate)) {
