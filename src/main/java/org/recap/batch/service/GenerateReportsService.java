@@ -1,8 +1,9 @@
 package org.recap.batch.service;
 
-import org.recap.util.JobDataParameterUtil;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.batch.SolrIndexRequest;
+import org.recap.util.JobDataParameterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class GenerateReportsService {
     public String generateReport(String solrClientUrl, Date reportCreatedDate, String jobName) {
         SolrIndexRequest solrIndexRequest = getSolrIndexRequest(reportCreatedDate, jobName);
         HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
         HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(solrIndexRequest, headers);
         ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.GENERATE_REPORT_URL, HttpMethod.POST, httpEntity, String.class);
         return responseEntity.getBody();

@@ -1,5 +1,6 @@
 package org.recap.batch.service;
 
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class AccessionService {
      */
     public String processAccession(String solrClientUrl) {
         HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
         HttpEntity<Date> httpEntity = new HttpEntity<>(headers);
         ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.ACCESSION_URL, HttpMethod.GET, httpEntity, String.class);
         return responseEntity.getBody();

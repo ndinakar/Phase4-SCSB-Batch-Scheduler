@@ -2,6 +2,7 @@ package org.recap.batch.job;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.batch.service.DeletedRecordsExportCulService;
 import org.recap.batch.service.UpdateJobDetailsService;
@@ -64,7 +65,7 @@ public class DeletedRecordsExportCulTasklet implements Tasklet {
             }
             String resultStatus = deletedRecordsExportCulService.deletedRecordsExportCul(scsbEtlUrl, RecapConstants.DELETED_RECORDS_EXPORT_CUL, createdDate, exportStringDate);
             logger.info("Deleted Records Export CUL status : {}", resultStatus);
-            if (StringUtils.containsIgnoreCase(resultStatus, RecapConstants.FAIL)) {
+            if (StringUtils.containsIgnoreCase(resultStatus, RecapCommonConstants.FAIL)) {
                 executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
                 executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, resultStatus);
                 stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, resultStatus));
@@ -74,7 +75,7 @@ public class DeletedRecordsExportCulTasklet implements Tasklet {
                 stepExecution.setExitStatus(new ExitStatus(RecapConstants.SUCCESS, resultStatus));
             }
         } catch (Exception ex) {
-            logger.error(RecapConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+            logger.error(RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
             executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
             executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, ExceptionUtils.getMessage(ex));
             stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));

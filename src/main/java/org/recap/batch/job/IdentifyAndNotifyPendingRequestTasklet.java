@@ -1,6 +1,7 @@
 package org.recap.batch.job;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.batch.service.IdentifyPendingRequestService;
 import org.recap.batch.service.UpdateJobDetailsService;
@@ -55,7 +56,7 @@ public class IdentifyAndNotifyPendingRequestTasklet implements Tasklet {
             updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
             identifyPendingRequestService.identifyPendingRequestService(scsbCircUrl);
         } catch (Exception ex) {
-            logger.error(RecapConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+            logger.error(RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
             executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
             executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, ExceptionUtils.getMessage(ex));
             stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));

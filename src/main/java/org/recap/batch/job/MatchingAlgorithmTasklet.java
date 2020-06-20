@@ -1,8 +1,13 @@
 package org.recap.batch.job;
 
-import org.apache.camel.*;
+import org.apache.camel.CamelContext;
+import org.apache.camel.Endpoint;
+import org.apache.camel.Exchange;
+import org.apache.camel.PollingConsumer;
+import org.apache.camel.ProducerTemplate;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.batch.service.UpdateJobDetailsService;
 import org.slf4j.Logger;
@@ -74,18 +79,18 @@ public class MatchingAlgorithmTasklet implements Tasklet{
             }
 
             Map<String, String> requestMap = new HashMap<>();
-            requestMap.put(RecapConstants.JOB_ID, String.valueOf(jobExecution.getId()));
-            requestMap.put(RecapConstants.PROCESS_TYPE, RecapConstants.ONGOING_MATCHING_ALGORITHM_JOB);
-            requestMap.put(RecapConstants.CREATED_DATE, createdDate.toString());
-            producerTemplate.sendBody(RecapConstants.MATCHING_ALGORITHM_JOB_INITIATE_QUEUE, requestMap);
-            Endpoint endpoint = camelContext.getEndpoint(RecapConstants.MATCHING_ALGORITHM_JOB_COMPLETION_OUTGOING_QUEUE);
+            requestMap.put(RecapCommonConstants.JOB_ID, String.valueOf(jobExecution.getId()));
+            requestMap.put(RecapCommonConstants.PROCESS_TYPE, RecapCommonConstants.ONGOING_MATCHING_ALGORITHM_JOB);
+            requestMap.put(RecapCommonConstants.CREATED_DATE, createdDate.toString());
+            producerTemplate.sendBody(RecapCommonConstants.MATCHING_ALGORITHM_JOB_INITIATE_QUEUE, requestMap);
+            Endpoint endpoint = camelContext.getEndpoint(RecapCommonConstants.MATCHING_ALGORITHM_JOB_COMPLETION_OUTGOING_QUEUE);
             PollingConsumer consumer = endpoint.createPollingConsumer();
             Exchange exchange = consumer.receive();
             String resultStatus = (String) exchange.getIn().getBody();
             if (StringUtils.isNotBlank(resultStatus)) {
                 String[] resultSplitMessage = resultStatus.split("\\|");
-                if (!resultSplitMessage[0].equalsIgnoreCase(RecapConstants.JOB_ID + ":" + jobExecution.getId())) {
-                    producerTemplate.sendBody(RecapConstants.MATCHING_ALGORITHM_JOB_COMPLETION_OUTGOING_QUEUE, resultStatus);
+                if (!resultSplitMessage[0].equalsIgnoreCase(RecapCommonConstants.JOB_ID + ":" + jobExecution.getId())) {
+                    producerTemplate.sendBody(RecapCommonConstants.MATCHING_ALGORITHM_JOB_COMPLETION_OUTGOING_QUEUE, resultStatus);
                     resultStatus = RecapConstants.FAILURE + " - " + RecapConstants.FAILURE_QUEUE_MESSAGE;
                 } else {
                     resultStatus = resultSplitMessage[1];
@@ -103,7 +108,7 @@ public class MatchingAlgorithmTasklet implements Tasklet{
                 stepExecution.setExitStatus(new ExitStatus(RecapConstants.SUCCESS, RecapConstants.MATCHING_ALGORITHM_STATUS_NAME + " " + resultStatus));
             }
         } catch (Exception ex) {
-            logger.error(RecapConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+            logger.error(RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
             executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
             executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.MATCHING_ALGORITHM_STATUS_NAME + " " + ExceptionUtils.getMessage(ex));
             stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));

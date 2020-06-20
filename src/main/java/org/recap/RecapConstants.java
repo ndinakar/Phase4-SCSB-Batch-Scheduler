@@ -6,8 +6,6 @@ package org.recap;
 public class RecapConstants {
 
     public static final String SUCCESS = "SUCCESS";
-    public static final String API_KEY = "api_key";
-    public static final String RECAP = "recap";
     public static final String SCHEDULE = "Schedule";
     public static final String RESCHEDULE = "Reschedule";
     public static final String UNSCHEDULE = "Unschedule";
@@ -23,8 +21,6 @@ public class RecapConstants {
     public static final String JOB_SUCCESS_SCHEDULING = "Job successfully scheduled.";
     public static final String JOB_SUCCESS_RESCHEDULING = "Job successfully rescheduled.";
     public static final String JOB_SUCCESS_UNSCHEDULING = "Job successfully unscheduled.";
-    public static final String LOG_ERROR = "error-->";
-    public static final String ONGOING_MATCHING_ALGORITHM_JOB = "ongoingMatchingAlgorithmJob";
     public static final String GENERATE_ACCESSION_REPORT_JOB = "GenerateAccessionReport";
     public static final String PURGE_EMAIL_URL = "purge/purgeEmailAddress";
     public static final String PURGE_EXCEPTION_REQUEST_URL = "purge/purgeExceptionRequests";
@@ -44,9 +40,7 @@ public class RecapConstants {
     public static final String STATUS_RECOCILATION_URL = "/statusReconciliation/itemStatusReconciliation";
     public static final String REQUEST_DATA_LOAD_URL = "/requestInitialDataLoad/startRequestInitialLoad";
 
-    public static final String PURGE_EXCEPTION_REQUESTS = "PurgeExceptionRequests";
     public static final String PURGE_EMAIL_ADDRESS = "PurgeEmailAddress";
-    public static final String ONGOING_MATCHING_ALGORITHM = "OngoingMatchingAlgorithm";
     public static final String DAILY_LAS_TRANSACTION_RECONCILIATION = "DailyLASTransactionReconciliation";
     public static final String GENERATE_ACCESSION_REPORT = "GenerateAccessionReport";
     public static final String ACCESSION = "Accession";
@@ -72,19 +66,13 @@ public class RecapConstants {
 
     public static final String JOB_STATUS = "JobStatus";
     public static final String JOB_STATUS_MESSAGE = "JobStatusMessage";
-    public static final String STATUS = "Status";
     public static final String FAILURE = "FAILURE";
-    public static final String FAIL = "Fail";
-    public static final String MESSAGE = "Message";
-    public static final String PURGE_EDD_REQUEST = "noOfUpdatedRecordsForEddRequest";
-    public static final String PURGE_PHYSICAL_REQUEST = "noOfUpdatedRecordsForPhysicalRequest";
 
     public static final String ACCESSION_STATUS_NAME = "[Ongoing Accession]";
     public static final String ACCESSION_REPORT_STATUS_NAME = "[Ongoing Accession Report]";
     public static final String SUBMIT_COLLECTION_STATUS_NAME = "[Submit Collection]";
     public static final String MATCHING_ALGORITHM_STATUS_NAME = "[Ongoing Matching Algorithm]";
     public static final String DATA_EXPORT_STATUS_NAME = "[Data Export]";
-    public static final String ACCESSION_NO_PENDING_REQUESTS = "No pending requests to process accession.";
 
     public static final String RAN = "ran";
     public static final String STARTED = "started";
@@ -95,16 +83,6 @@ public class RecapConstants {
 
     public static boolean POLL_LONG_RUNNING_JOBS = true;
 
-    public static final String ACCESSION_JOB_INITIATE_QUEUE = "scsbactivemq:queue:accessionInitiateQ";
-    public static final String ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE = "scsbactivemq:queue:accessionCompletionOutgoingQ";
-    public static final String SUBMIT_COLLECTION_JOB_INITIATE_QUEUE = "scsbactivemq:queue:submitCollectionInitiateQ";
-    public static final String SUBMIT_COLLECTION_JOB_COMPLETION_OUTGOING_QUEUE = "scsbactivemq:queue:submitCollectionCompletionOutgoingQ";
-    public static final String MATCHING_ALGORITHM_JOB_INITIATE_QUEUE = "scsbactivemq:queue:matchingAlgorithmInitiateQ";
-    public static final String MATCHING_ALGORITHM_JOB_COMPLETION_OUTGOING_QUEUE = "scsbactivemq:queue:matchingAlgorithmCompletionOutgoingQ";
-
-    public static final String JOB_ID = "jobId";
-    public static final String PROCESS_TYPE = "processType";
-    public static final String CREATED_DATE = "createdDate";
     public static final String FAILURE_QUEUE_MESSAGE = "Message undelivered or unreceived.";
 
     private RecapConstants(){}

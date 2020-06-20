@@ -1,10 +1,11 @@
 package org.recap.quartz;
 
 import org.junit.Test;
-import org.recap.BaseTestCase;
-import org.recap.RecapConstants;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
+import org.recap.BaseTestCase;
+import org.recap.RecapCommonConstants;
+import org.recap.RecapConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertTrue;
@@ -23,9 +24,9 @@ public class QuartzJobsInitializerUT extends BaseTestCase {
     @Test
     public void testInitializeJobs() throws Exception {
         quartzJobsInitializer.initializeJobs();
-        JobKey purgeExceptionRequestsJobKey = new JobKey(RecapConstants.PURGE_EXCEPTION_REQUESTS);
+        JobKey purgeExceptionRequestsJobKey = new JobKey(RecapCommonConstants.PURGE_EXCEPTION_REQUESTS);
         JobKey purgeEmailAddressJobKey = new JobKey(RecapConstants.PURGE_EMAIL_ADDRESS);
-        JobKey matchingAlgorithmJobKey = new JobKey(RecapConstants.ONGOING_MATCHING_ALGORITHM);
+        JobKey matchingAlgorithmJobKey = new JobKey(RecapCommonConstants.ONGOING_MATCHING_ALGORITHM);
         JobKey dailyReconciliationJobKey = new JobKey(RecapConstants.DAILY_LAS_TRANSACTION_RECONCILIATION);
         JobKey generateAccessionReportJobKey = new JobKey(RecapConstants.GENERATE_ACCESSION_REPORT);
         JobKey accessionJobKey = new JobKey(RecapConstants.ACCESSION);
