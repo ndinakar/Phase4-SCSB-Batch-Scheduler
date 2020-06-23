@@ -1,11 +1,12 @@
 package org.recap.batch;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.batch.service.EmailService;
-import org.recap.repository.jpa.JobDetailsRepository;
 import org.recap.model.EmailPayLoad;
 import org.recap.model.jpa.JobEntity;
+import org.recap.repository.jpa.JobDetailsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobExecution;
@@ -63,7 +64,7 @@ public class JobExecutionPoller {
                         sendNotificationMailForLongRunningJobs();
                     }
                 } catch (Exception ex) {
-                    logger.error(RecapConstants.LOG_ERROR, ex);
+                    logger.error(RecapCommonConstants.LOG_ERROR, ex);
                 }
             }
         }

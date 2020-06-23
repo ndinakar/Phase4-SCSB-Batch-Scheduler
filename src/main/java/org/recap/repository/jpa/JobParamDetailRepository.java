@@ -1,7 +1,6 @@
 package org.recap.repository.jpa;
 
 import org.recap.model.jpa.JobParamEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Created by rajeshbabuk on 29/6/17.

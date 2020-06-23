@@ -2,10 +2,11 @@ package org.recap.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.ScheduleJobRequest;
 import org.recap.quartz.SchedulerService;
-import org.mockito.Mock;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.Assert.assertNotNull;
@@ -25,7 +26,7 @@ public class ScheduleJobsControllerUT extends BaseControllerUT {
 
     @Test
     public void testScheduleJob() throws Exception {
-        String jobName = RecapConstants.PURGE_EXCEPTION_REQUESTS;
+        String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
         String cronExpression = "0/10 * * * * ? *";
         ScheduleJobRequest scheduleJobRequest = new ScheduleJobRequest();
         scheduleJobRequest.setJobName(jobName);

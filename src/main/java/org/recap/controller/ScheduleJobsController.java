@@ -1,11 +1,12 @@
 package org.recap.controller;
 
 import org.apache.commons.lang.StringUtils;
+import org.quartz.CronExpression;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.ScheduleJobRequest;
 import org.recap.model.ScheduleJobResponse;
 import org.recap.quartz.SchedulerService;
-import org.quartz.CronExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class ScheduleJobsController {
                 scheduleJobResponse.setNextRunTime(cronExpression.getNextValidTimeAfter(new Date()));
             }
         } catch (Exception exception) {
-            logger.error(RecapConstants.LOG_ERROR, exception);
+            logger.error(RecapCommonConstants.LOG_ERROR, exception);
             message = exception.getMessage();
         }
         scheduleJobResponse.setMessage(message);

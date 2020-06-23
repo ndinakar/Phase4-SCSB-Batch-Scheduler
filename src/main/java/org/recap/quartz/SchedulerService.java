@@ -1,9 +1,14 @@
 package org.recap.quartz;
 
-import org.recap.RecapConstants;
-import org.quartz.*;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.TriggerKey;
 import org.quartz.impl.JobDetailImpl;
 import org.quartz.impl.triggers.CronTriggerImpl;
+import org.recap.RecapCommonConstants;
+import org.recap.RecapConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.configuration.JobLocator;
@@ -66,7 +71,7 @@ public class SchedulerService {
                 }
             }
         } catch (Exception ex) {
-            logger.error(RecapConstants.LOG_ERROR, ex);
+            logger.error(RecapCommonConstants.LOG_ERROR, ex);
             return RecapConstants.ERROR_JOB_FAILED_SCHEDULING;
         }
         return RecapConstants.JOB_SUCCESS_SCHEDULING;
@@ -91,7 +96,7 @@ public class SchedulerService {
                 scheduler.rescheduleJob(triggerKey, trigger);
             }
         } catch (Exception ex) {
-            logger.error(RecapConstants.LOG_ERROR, ex);
+            logger.error(RecapCommonConstants.LOG_ERROR, ex);
             return RecapConstants.ERROR_JOB_FAILED_RESCHEDULING;
         }
         return RecapConstants.JOB_SUCCESS_RESCHEDULING;
@@ -108,7 +113,7 @@ public class SchedulerService {
             TriggerKey triggerKey = new TriggerKey(jobName + RecapConstants.TRIGGER_SUFFIX);
             scheduler.unscheduleJob(triggerKey);
         } catch (Exception ex) {
-            logger.error(RecapConstants.LOG_ERROR, ex);
+            logger.error(RecapCommonConstants.LOG_ERROR, ex);
             return RecapConstants.ERROR_JOB_FAILED_UNSCHEDULING;
         }
         return RecapConstants.JOB_SUCCESS_UNSCHEDULING;

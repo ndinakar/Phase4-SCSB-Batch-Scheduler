@@ -1,5 +1,6 @@
 package org.recap.batch.service;
 
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.repository.jpa.JobDetailsRepository;
 import org.slf4j.Logger;
@@ -49,7 +50,7 @@ public class ReportDeletedRecordsService {
      */
     public String reportDeletedRecords(String scsbCircUrl){
         HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
         HttpEntity httpEntity = new HttpEntity<>(headers);
         logger.info(scsbCircUrl + RecapConstants.REPORT_DELETED_RECORDS_URL);
         ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbCircUrl + RecapConstants.REPORT_DELETED_RECORDS_URL, HttpMethod.GET, httpEntity, String.class);

@@ -1,5 +1,6 @@
 package org.recap.batch.service;
 
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.batch.SolrIndexRequest;
 import org.slf4j.Logger;
@@ -40,7 +41,7 @@ public class MatchingAlgorithmService {
     public String initiateMatchingAlgorithm(String solrClientUrl, Date createdDate) {
         SolrIndexRequest solrIndexRequest = getSolrIndexRequest(createdDate);
         HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
         HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(solrIndexRequest, headers);
         ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST, httpEntity, String.class);
         return responseEntity.getBody();
@@ -54,7 +55,7 @@ public class MatchingAlgorithmService {
      */
     public SolrIndexRequest getSolrIndexRequest(Date createdDate) {
         SolrIndexRequest solrIndexRequest = new SolrIndexRequest();
-        solrIndexRequest.setProcessType(RecapConstants.ONGOING_MATCHING_ALGORITHM_JOB);
+        solrIndexRequest.setProcessType(RecapCommonConstants.ONGOING_MATCHING_ALGORITHM_JOB);
         solrIndexRequest.setCreatedDate(createdDate);
         return solrIndexRequest;
     }
