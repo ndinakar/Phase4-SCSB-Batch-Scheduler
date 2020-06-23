@@ -1,5 +1,6 @@
 package org.recap.batch.service;
 
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.EmailPayLoad;
 import org.slf4j.Logger;
@@ -37,7 +38,7 @@ public class EmailService {
      */
     public String sendEmail(String solrClientUrl, EmailPayLoad emailPayLoad) {
         HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
         HttpEntity<EmailPayLoad> httpEntity = new HttpEntity<>(emailPayLoad, headers);
         ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class);
         return responseEntity.getBody();

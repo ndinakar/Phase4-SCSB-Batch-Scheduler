@@ -1,8 +1,9 @@
 package org.recap.batch.service;
 
 import org.apache.commons.lang.StringUtils;
-import org.recap.util.JobDataParameterUtil;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
+import org.recap.util.JobDataParameterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class IncrementalExportNyplService {
      */
     public String incrementalExportNypl(String scsbEtlUrl, String jobName, Date createdDate, String exportStringDate) {
         HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapConstants.API_KEY, RecapConstants.RECAP);
+        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
         HttpEntity httpEntity = new HttpEntity<>(headers);
         Map<String, String> requestParameterMap = jobDataParameterUtil.buildJobRequestParameterMap(jobName);
         requestParameterMap.put(RecapConstants.EMAIL_TO_ADDRESS, dataDumpEmailNyplTo);

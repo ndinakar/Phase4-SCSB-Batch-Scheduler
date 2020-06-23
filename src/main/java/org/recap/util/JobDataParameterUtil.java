@@ -2,9 +2,9 @@ package org.recap.util;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.recap.RecapConstants;
-import org.recap.repository.jpa.JobParamDetailRepository;
-import org.recap.model.jpa.JobParamEntity;
 import org.recap.model.jpa.JobParamDataEntity;
+import org.recap.model.jpa.JobParamEntity;
+import org.recap.repository.jpa.JobParamDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

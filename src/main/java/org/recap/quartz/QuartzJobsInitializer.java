@@ -2,14 +2,15 @@ package org.recap.quartz;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.recap.RecapConstants;
-import org.recap.repository.jpa.JobDetailsRepository;
 import org.quartz.JobDataMap;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.impl.JobDetailImpl;
 import org.quartz.impl.triggers.CronTriggerImpl;
+import org.recap.RecapCommonConstants;
+import org.recap.RecapConstants;
 import org.recap.model.jpa.JobEntity;
+import org.recap.repository.jpa.JobDetailsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.configuration.JobLocator;
@@ -91,7 +92,7 @@ public class QuartzJobsInitializer {
                     }
                 } catch (Exception ex) {
                     logger.error("Initializing job {} Failed.", jobName);
-                    logger.error(RecapConstants.LOG_ERROR, ex);
+                    logger.error(RecapCommonConstants.LOG_ERROR, ex);
                 }
             }
         }
