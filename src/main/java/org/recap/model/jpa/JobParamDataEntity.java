@@ -12,7 +12,7 @@ import javax.persistence.Table;
  * Created by rajeshbabuk on 7/7/17.
  */
 @Entity
-@Table(name = "JOB_PARAM_DATA_T", schema = "RECAP", catalog = "")
+@Table(name = "JOB_PARAM_DATA_T", schema = "RECAP", catalog = "RECAP")
 @AttributeOverride(name = "id", column = @Column(name = "JOB_PARAM_DATA_ID"))
 @Getter
 @Setter
