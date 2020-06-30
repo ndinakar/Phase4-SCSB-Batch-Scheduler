@@ -15,8 +15,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.HtmlUtils;
 
@@ -117,7 +117,7 @@ public class JobController {
      * @param origin        the origin
      * @return the string
      */
-    @RequestMapping(value = "/jobs/{jobName}", method = RequestMethod.POST)
+    @PostMapping(value = "/jobs/{jobName}")
     public String launch(ModelMap model, @ModelAttribute("jobName") String jobName,
                          @ModelAttribute("launchRequest") LaunchRequest launchRequest, Errors errors,
                          @RequestParam(defaultValue = "execution") String origin) {
@@ -176,7 +176,7 @@ public class JobController {
      * @param pageSize         the page size
      * @return the string
      */
-    @RequestMapping(value = "/jobs/{jobName}", method = RequestMethod.GET)
+    @GetMapping(value = "/jobs/{jobName}")
     public String details(ModelMap model, @ModelAttribute("jobName") String jobName, Errors errors,
                           @RequestParam(defaultValue = "0") int startJobInstance, @RequestParam(defaultValue = "20") int pageSize) {
 
@@ -218,7 +218,7 @@ public class JobController {
      * @param startJob the start job
      * @param pageSize the page size
      */
-    @RequestMapping(value = "/jobs", method = RequestMethod.GET)
+    @GetMapping(value = "/jobs")
     public void jobs(ModelMap model, @RequestParam(defaultValue = "0") int startJob,
                      @RequestParam(defaultValue = "20") int pageSize) {
         int total = jobService.countJobs();

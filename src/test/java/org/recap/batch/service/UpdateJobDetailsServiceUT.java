@@ -51,13 +51,13 @@ public class UpdateJobDetailsServiceUT extends BaseTestCase {
         headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
         HttpEntity<JobEntity> httpEntity = new HttpEntity<>(jobEntity, headers);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
-        Mockito.when(updateJobDetailsService.getRestTemplate()).thenReturn(restTemplate);
+        Mockito.when(updateJobDetailsService.commonService.getRestTemplate()).thenReturn(restTemplate);
         Mockito.when(updateJobDetailsService.getJobDetailsRepository()).thenReturn(jobDetailsRepository);
         Mockito.when(updateJobDetailsService.getJobDetailsRepository().findByJobName(jobName)).thenReturn(jobEntity);
-        Mockito.when(updateJobDetailsService.getRestTemplate().exchange(solrClientUrl + RecapConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(updateJobDetailsService.commonService.getRestTemplate().exchange(solrClientUrl + RecapConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
         Mockito.when(updateJobDetailsService.updateJob(solrClientUrl, jobName, lastExecutedTime, jobInstanceId)).thenCallRealMethod();
         String status = updateJobDetailsService.updateJob(solrClientUrl, jobName, lastExecutedTime, jobInstanceId);
         assertNotNull(status);
-        assertEquals(status, RecapConstants.SUCCESS);
+        assertEquals(RecapConstants.SUCCESS, status);
     }
 }

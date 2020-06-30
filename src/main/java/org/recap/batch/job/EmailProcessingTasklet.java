@@ -18,19 +18,15 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 
 /**
  * Created by rajeshbabuk on 10/4/17.
  */
-public class EmailProcessingTasklet implements Tasklet {
+public class EmailProcessingTasklet extends JobCommonTasklet implements Tasklet {
 
     private static final Logger logger = LoggerFactory.getLogger(EmailProcessingTasklet.class);
-
-    @Value("${scsb.solr.client.url}")
-    private String solrClientUrl;
 
     @Autowired
     private EmailService emailService;

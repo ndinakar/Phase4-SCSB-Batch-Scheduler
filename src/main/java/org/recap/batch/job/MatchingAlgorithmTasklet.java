@@ -1,15 +1,12 @@
 package org.recap.batch.job;
 
-import org.apache.camel.CamelContext;
 import org.apache.camel.Endpoint;
 import org.apache.camel.Exchange;
 import org.apache.camel.PollingConsumer;
-import org.apache.camel.ProducerTemplate;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
-import org.recap.batch.service.UpdateJobDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
@@ -20,10 +17,7 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.repeat.RepeatStatus;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,22 +25,9 @@ import java.util.Map;
 /**
  * Created by rajeshbabuk on 3/4/17.
  */
-public class MatchingAlgorithmTasklet implements Tasklet{
+public class MatchingAlgorithmTasklet extends  JobCommonTasklet implements Tasklet{
 
     private static final Logger logger = LoggerFactory.getLogger(MatchingAlgorithmTasklet.class);
-
-    @Value("${scsb.solr.client.url}")
-    private String solrClientUrl;
-
-    @Autowired
-    private UpdateJobDetailsService updateJobDetailsService;
-
-    @Autowired
-    private CamelContext camelContext;
-
-    @Autowired
-    private ProducerTemplate producerTemplate;
-
 
     /**
      * This method starts the execution of the matching algorithm job.
@@ -62,22 +43,9 @@ public class MatchingAlgorithmTasklet implements Tasklet{
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         try {
-            String fromDate = jobExecution.getJobParameters().getString(RecapConstants.FROM_DATE);
-            Date createdDate;
-            if (StringUtils.isNotBlank(fromDate)) {
-                SimpleDateFormat dateFormatter = new SimpleDateFormat(RecapConstants.FROM_DATE_FORMAT);
-                createdDate = dateFormatter.parse(fromDate);
-            } else {
-                createdDate = jobExecution.getCreateTime();
-            }
-            long jobInstanceId = jobExecution.getJobInstance().getInstanceId();
-            String jobName = jobExecution.getJobInstance().getJobName();
-            String jobNameParam = (String) jobExecution.getExecutionContext().get(RecapConstants.JOB_NAME);
-            logger.info("Job Parameter in Matching Algorithm Tasklet : {}", jobNameParam);
-            if (!jobName.equalsIgnoreCase(jobNameParam)) {
-                updateJobDetailsService.updateJob(solrClientUrl, jobName, jobExecution.getCreateTime(), jobInstanceId);
-            }
-
+            Date createdDate = getCreatedDate(jobExecution);
+                updateJob(jobExecution, "Matching Algorithm Tasklet", Boolean.TRUE);
+            
             Map<String, String> requestMap = new HashMap<>();
             requestMap.put(RecapCommonConstants.JOB_ID, String.valueOf(jobExecution.getId()));
             requestMap.put(RecapCommonConstants.PROCESS_TYPE, RecapCommonConstants.ONGOING_MATCHING_ALGORITHM_JOB);
@@ -97,16 +65,8 @@ public class MatchingAlgorithmTasklet implements Tasklet{
                 }
             }
             logger.info("Job Id : {} Matching Algorithm Job Result Status : {}", jobExecution.getId(), resultStatus);
+            setExecutionContext(executionContext, stepExecution, RecapConstants.MATCHING_ALGORITHM_STATUS_NAME + " " + resultStatus);
 
-            if (!StringUtils.containsIgnoreCase(resultStatus, RecapConstants.SUCCESS)) {
-                executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
-                executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.MATCHING_ALGORITHM_STATUS_NAME + " " + resultStatus);
-                stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, RecapConstants.MATCHING_ALGORITHM_STATUS_NAME + " " + resultStatus));
-            } else {
-                executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.SUCCESS);
-                executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.MATCHING_ALGORITHM_STATUS_NAME + " " + resultStatus);
-                stepExecution.setExitStatus(new ExitStatus(RecapConstants.SUCCESS, RecapConstants.MATCHING_ALGORITHM_STATUS_NAME + " " + resultStatus));
-            }
         } catch (Exception ex) {
             logger.error(RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
             executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
