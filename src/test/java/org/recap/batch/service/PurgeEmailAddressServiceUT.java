@@ -42,11 +42,11 @@ public class PurgeEmailAddressServiceUT extends BaseTestCase {
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put(RecapCommonConstants.STATUS, RecapConstants.SUCCESS);
         ResponseEntity<Map> responseEntity = new ResponseEntity<>(resultMap, HttpStatus.OK);
-        Mockito.when(purgeEmailAddressService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(purgeEmailAddressService.getRestTemplate().exchange(scsbCircUrl + RecapConstants.PURGE_EMAIL_URL, HttpMethod.GET, httpEntity, Map.class)).thenReturn(responseEntity);
+        Mockito.when(purgeEmailAddressService.commonService.getRestTemplate()).thenReturn(restTemplate);
+        Mockito.when(purgeEmailAddressService.commonService.getRestTemplate().exchange(scsbCircUrl + RecapConstants.PURGE_EMAIL_URL, HttpMethod.GET, httpEntity, Map.class)).thenReturn(responseEntity);
         Mockito.when(purgeEmailAddressService.purgeEmailAddress(scsbCircUrl)).thenCallRealMethod();
         resultMap = purgeEmailAddressService.purgeEmailAddress(scsbCircUrl);
         assertNotNull(resultMap);
-        assertEquals(resultMap.get(RecapCommonConstants.STATUS), RecapConstants.SUCCESS);
+        assertEquals(RecapConstants.SUCCESS, resultMap.get(RecapCommonConstants.STATUS));
     }
 }

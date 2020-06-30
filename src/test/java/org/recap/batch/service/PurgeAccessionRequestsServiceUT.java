@@ -42,11 +42,11 @@ public class PurgeAccessionRequestsServiceUT extends BaseTestCase {
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put(RecapCommonConstants.STATUS, RecapConstants.SUCCESS);
         ResponseEntity<Map> responseEntity = new ResponseEntity<>(resultMap, HttpStatus.OK);
-        Mockito.when(purgeAccessionRequestsService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(purgeAccessionRequestsService.getRestTemplate().exchange(scsbCircUrl + RecapConstants.PURGE_ACCESSION_REQUEST_URL, HttpMethod.GET, httpEntity, Map.class)).thenReturn(responseEntity);
+        Mockito.when(purgeAccessionRequestsService.commonService.getRestTemplate()).thenReturn(restTemplate);
+        Mockito.when(purgeAccessionRequestsService.commonService.getRestTemplate().exchange(scsbCircUrl + RecapConstants.PURGE_ACCESSION_REQUEST_URL, HttpMethod.GET, httpEntity, Map.class)).thenReturn(responseEntity);
         Mockito.when(purgeAccessionRequestsService.purgeAccessionRequests(scsbCircUrl)).thenCallRealMethod();
         resultMap = purgeAccessionRequestsService.purgeAccessionRequests(scsbCircUrl);
         assertNotNull(resultMap);
-        assertEquals(resultMap.get(RecapCommonConstants.STATUS), RecapConstants.SUCCESS);
+        assertEquals(RecapConstants.SUCCESS, resultMap.get(RecapCommonConstants.STATUS));
     }
 }

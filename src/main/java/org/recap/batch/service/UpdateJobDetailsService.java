@@ -2,7 +2,6 @@ package org.recap.batch.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.quartz.CronExpression;
-import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.jpa.JobEntity;
 import org.recap.repository.jpa.JobDetailsRepository;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 
@@ -24,19 +22,13 @@ import java.util.Date;
 @Service
 public class UpdateJobDetailsService {
 
-    private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
+    private static final Logger logger = LoggerFactory.getLogger(UpdateJobDetailsService.class);
 
     @Autowired
     private JobDetailsRepository jobDetailsRepository;
 
-    /**
-     * Gets rest template.
-     *
-     * @return the rest template
-     */
-    public RestTemplate getRestTemplate() {
-        return new RestTemplate();
-    }
+    @Autowired
+    protected CommonService commonService;
 
     /**
      * Gets job details repository.
@@ -64,11 +56,10 @@ public class UpdateJobDetailsService {
             jobEntity.setNextRunTime(cronExpression.getNextValidTimeAfter(lastExecutedTime));
         }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
+        HttpHeaders headers = commonService.getHttpHeaders();
         HttpEntity<JobEntity> httpEntity = new HttpEntity<>(jobEntity, headers);
 
-        ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class);
+        ResponseEntity<String> responseEntity = commonService.getRestTemplate().exchange(solrClientUrl + RecapConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class);
         return responseEntity.getBody();
     }
 }

@@ -45,11 +45,11 @@ public class EmailServiceUT extends BaseTestCase {
         headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
         HttpEntity<EmailPayLoad> httpEntity = new HttpEntity<>(emailPayLoad, headers);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
-        Mockito.when(emailService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(emailService.getRestTemplate().exchange(solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(emailService.commonService.getRestTemplate()).thenReturn(restTemplate);
+        Mockito.when(emailService.commonService.getRestTemplate().exchange(solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
         Mockito.when(emailService.sendEmail(solrClientUrl, emailPayLoad)).thenCallRealMethod();
         String status = emailService.sendEmail(solrClientUrl, emailPayLoad);
         assertNotNull(status);
-        assertEquals(status, RecapConstants.SUCCESS);
+        assertEquals(RecapConstants.SUCCESS, status);
     }
 }

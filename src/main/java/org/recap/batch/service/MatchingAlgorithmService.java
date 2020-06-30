@@ -5,12 +5,8 @@ import org.recap.RecapConstants;
 import org.recap.model.batch.SolrIndexRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 
@@ -22,14 +18,8 @@ public class MatchingAlgorithmService {
 
     private static final Logger logger = LoggerFactory.getLogger(MatchingAlgorithmService.class);
 
-    /**
-     * Gets rest template.
-     *
-     * @return the rest template
-     */
-    public RestTemplate getRestTemplate() {
-        return new RestTemplate();
-    }
+    @Autowired
+    protected CommonService commonService;
 
     /**
      * This method makes a rest call to solr client microservice to initiate the matching algorithm process.
@@ -40,11 +30,7 @@ public class MatchingAlgorithmService {
      */
     public String initiateMatchingAlgorithm(String solrClientUrl, Date createdDate) {
         SolrIndexRequest solrIndexRequest = getSolrIndexRequest(createdDate);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
-        HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(solrIndexRequest, headers);
-        ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST, httpEntity, String.class);
-        return responseEntity.getBody();
+        return commonService.getResponse(solrIndexRequest, solrClientUrl, RecapConstants.MATCHING_ALGORITHM_URL);
     }
 
     /**

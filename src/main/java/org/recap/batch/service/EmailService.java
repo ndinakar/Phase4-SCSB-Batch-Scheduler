@@ -1,16 +1,15 @@
 package org.recap.batch.service;
 
-import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.EmailPayLoad;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * Created by rajeshbabuk on 10/4/17.
@@ -20,14 +19,8 @@ public class EmailService {
 
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
-    /**
-     * Gets rest template.
-     *
-     * @return the rest template
-     */
-    public RestTemplate getRestTemplate() {
-        return new RestTemplate();
-    }
+    @Autowired
+    protected CommonService commonService;
 
     /**
      * This method makes a rest call to solr client microservice to send an email with the job execution information.
@@ -37,10 +30,9 @@ public class EmailService {
      * @return status of sending email
      */
     public String sendEmail(String solrClientUrl, EmailPayLoad emailPayLoad) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
+        HttpHeaders headers = commonService.getHttpHeaders();
         HttpEntity<EmailPayLoad> httpEntity = new HttpEntity<>(emailPayLoad, headers);
-        ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class);
+        ResponseEntity<String> responseEntity = commonService.getRestTemplate().exchange(solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class);
         return responseEntity.getBody();
     }
 }
