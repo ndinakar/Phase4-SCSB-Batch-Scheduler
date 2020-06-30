@@ -4,7 +4,6 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.batch.service.CheckAndNotifyPendingRequestService;
-import org.recap.batch.service.UpdateJobDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
@@ -16,25 +15,13 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-
-import java.util.Date;
 
 /**
  * Created by angelind on 14/9/17.
  */
-public class CheckAndNotifyPendingRequestTasklet implements Tasklet {
+public class CheckAndNotifyPendingRequestTasklet extends JobCommonTasklet implements Tasklet {
 
     private static final Logger logger = LoggerFactory.getLogger(CheckAndNotifyPendingRequestTasklet.class);
-
-    @Value("${scsb.solr.client.url}")
-    private String solrClientUrl;
-
-    @Value("${scsb.circ.url}")
-    private String scsbCircUrl;
-
-    @Autowired
-    private UpdateJobDetailsService updateJobDetailsService;
 
     @Autowired
     private CheckAndNotifyPendingRequestService checkAndNotifyPendingRequestService;
@@ -53,10 +40,7 @@ public class CheckAndNotifyPendingRequestTasklet implements Tasklet {
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         try {
-            long jobInstanceId = jobExecution.getJobInstance().getInstanceId();
-            String jobName = jobExecution.getJobInstance().getJobName();
-            Date createdDate = jobExecution.getCreateTime();
-            updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
+            updateJob(jobExecution, "CheckAndNotifyPendingRequestTasklet", Boolean.FALSE);
             checkAndNotifyPendingRequestService.checkPendingMsgesInQueue(scsbCircUrl);
         } catch (Exception ex) {
             logger.error(RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));

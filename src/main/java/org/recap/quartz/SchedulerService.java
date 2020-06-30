@@ -1,6 +1,5 @@
 package org.recap.quartz;
 
-import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
@@ -9,6 +8,7 @@ import org.quartz.impl.JobDetailImpl;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
+import org.recap.batch.job.JobCommonTasklet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.configuration.JobLocator;
@@ -52,14 +52,9 @@ public class SchedulerService {
                 JobDetail jobDetail = scheduler.getJobDetail(jobKey);
                 JobDetailImpl jobDetailImpl = new JobDetailImpl();
                 if (null == jobDetail) {
-                    jobDetailImpl.setName(jobName);
-                    jobDetailImpl.setJobClass(QuartzJobLauncher.class);
-                    JobDataMap jobDataMap = new JobDataMap();
-                    jobDataMap.put(RecapConstants.JOB_NAME, jobName);
-                    jobDataMap.put(RecapConstants.JOB_LAUNCHER, jobLauncher);
-                    jobDataMap.put(RecapConstants.JOB_LOCATOR, jobLocator);
-                    jobDetailImpl.setJobDataMap(jobDataMap);
-                }
+                    JobCommonTasklet jobCommonTasklet = new JobCommonTasklet();
+                    jobCommonTasklet.setJobDetailImpl(jobDetailImpl, jobName, jobLauncher, jobLocator);
+                   }
                 CronTriggerImpl trigger = new CronTriggerImpl();
                 trigger.setName(jobName + RecapConstants.TRIGGER_SUFFIX);
                 trigger.setJobKey(jobKey);

@@ -4,7 +4,6 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.batch.service.PurgeExceptionRequestsService;
-import org.recap.batch.service.UpdateJobDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
@@ -16,29 +15,18 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
-import java.util.Date;
 import java.util.Map;
 
 /**
  * Created by rajeshbabuk on 23/3/17.
  */
-public class PurgeExceptionRequestTasklet implements Tasklet {
+public class PurgeExceptionRequestTasklet extends JobCommonTasklet implements Tasklet {
 
     private static final Logger logger = LoggerFactory.getLogger(PurgeExceptionRequestTasklet.class);
 
-    @Value("${scsb.solr.client.url}")
-    String solrClientUrl;
-
-    @Value("${scsb.circ.url}")
-    String scsbCircUrl;
-
     @Autowired
     private PurgeExceptionRequestsService purgeExceptionRequestsService;
-
-    @Autowired
-    private UpdateJobDetailsService updateJobDetailsService;
 
     /**
      * This method starts the execution of purging exception requests job.
@@ -54,10 +42,7 @@ public class PurgeExceptionRequestTasklet implements Tasklet {
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         try {
-            long jobInstanceId = jobExecution.getJobInstance().getInstanceId();
-            String jobName = jobExecution.getJobInstance().getJobName();
-            Date createdDate = jobExecution.getCreateTime();
-            updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
+            updateJob(jobExecution, "PurgeExceptionRequestTasklet", Boolean.FALSE);
             Map<String, String> resultMap = purgeExceptionRequestsService.purgeExceptionRequests(scsbCircUrl);
             String status = resultMap.get(RecapCommonConstants.STATUS);
             String message = resultMap.get(RecapCommonConstants.MESSAGE);

@@ -1,14 +1,11 @@
 package org.recap.batch.service;
 
-import org.apache.commons.lang.StringUtils;
-import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.util.JobDataParameterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,14 +26,8 @@ public class DataExportJobSequenceService {
     @Autowired
     JobDataParameterUtil jobDataParameterUtil;
 
-    /**
-     * Gets rest template.
-     *
-     * @return the rest template
-     */
-    public RestTemplate getRestTemplate() {
-        return new RestTemplate();
-    }
+    @Autowired
+    private CommonService commonService;
 
     /**
      * This method makes a rest call to scsb etl microservice to initiate the process of incremental and delete data export.
@@ -45,16 +36,11 @@ public class DataExportJobSequenceService {
      * @return status of incremental and delete data export.
      */
     public String dataExportJobSequence(String scsbEtlUrl, Date createdDate, String exportStringDate) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
-        HttpEntity httpEntity = new HttpEntity<>(headers);
+        HttpEntity httpEntity = commonService.getHttpEntity();
         Map<String, String> requestParameterMap = new HashMap<>();
-        if (StringUtils.isBlank(exportStringDate)) {
-            requestParameterMap.put(RecapConstants.DATE, jobDataParameterUtil.getDateFormatStringForExport(createdDate));
-        } else {
-            requestParameterMap.put(RecapConstants.DATE, exportStringDate);
-        }
-        ResponseEntity<String> responseEntity = getRestTemplate().exchange(scsbEtlUrl + RecapConstants.DATA_EXPORT_JOB_SEQUENCE_URL, HttpMethod.GET, httpEntity, String.class, requestParameterMap);
+        commonService.setRequestParameterMap(requestParameterMap, exportStringDate, jobDataParameterUtil, createdDate);
+
+        ResponseEntity<String> responseEntity = new RestTemplate().exchange(scsbEtlUrl + RecapConstants.DATA_EXPORT_JOB_SEQUENCE_URL, HttpMethod.GET, httpEntity, String.class, requestParameterMap);
         return responseEntity.getBody();
     }
 }

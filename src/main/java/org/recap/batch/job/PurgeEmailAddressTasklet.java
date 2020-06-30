@@ -4,7 +4,6 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.batch.service.PurgeEmailAddressService;
-import org.recap.batch.service.UpdateJobDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
@@ -16,29 +15,18 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
-import java.util.Date;
 import java.util.Map;
 
 /**
  * Created by rajeshbabuk on 28/3/17.
  */
-public class PurgeEmailAddressTasklet implements Tasklet {
+public class PurgeEmailAddressTasklet extends JobCommonTasklet implements Tasklet {
 
     private static final Logger logger = LoggerFactory.getLogger(PurgeEmailAddressTasklet.class);
 
-    @Value("${scsb.solr.client.url}")
-    String solrClientUrl;
-
-    @Value("${scsb.circ.url}")
-    String scsbCircUrl;
-
     @Autowired
     private PurgeEmailAddressService purgeEmailAddressService;
-
-    @Autowired
-    private UpdateJobDetailsService updateJobDetailsService;
 
     /**
      * This method starts the execution of purging email addresses job.
@@ -55,10 +43,7 @@ public class PurgeEmailAddressTasklet implements Tasklet {
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         try {
-            long jobInstanceId = jobExecution.getJobInstance().getInstanceId();
-            String jobName = jobExecution.getJobInstance().getJobName();
-            Date createdDate = jobExecution.getCreateTime();
-            updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
+            updateJob(jobExecution, "PurgeEmailAddressTasklet", Boolean.FALSE);
             Map<String, String> resultMap = purgeEmailAddressService.purgeEmailAddress(scsbCircUrl);
             String status = resultMap.get(RecapCommonConstants.STATUS);
             String message = RecapCommonConstants.PURGE_EDD_REQUEST + ":" + resultMap.get(RecapCommonConstants.PURGE_EDD_REQUEST)

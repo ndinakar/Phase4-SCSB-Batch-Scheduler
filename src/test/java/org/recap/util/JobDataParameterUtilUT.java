@@ -42,7 +42,7 @@ public class JobDataParameterUtilUT extends BaseTestCase {
         Map<String, String> parameterMap = jobDataParameterUtil.buildJobRequestParameterMap(RecapConstants.GENERATE_ACCESSION_REPORT_JOB);
         assertNotNull(parameterMap);
         assertTrue(parameterMap.containsKey(RecapConstants.FETCH_TYPE));
-        assertEquals(parameterMap.get(RecapConstants.FETCH_TYPE), "1");
+        assertEquals("1",parameterMap.get(RecapConstants.FETCH_TYPE));
     }
 
     @Test

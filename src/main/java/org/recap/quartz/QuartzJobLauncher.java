@@ -3,7 +3,6 @@ package org.recap.quartz;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
