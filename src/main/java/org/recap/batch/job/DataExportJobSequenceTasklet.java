@@ -5,7 +5,6 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.batch.service.DataExportJobSequenceService;
-import org.recap.batch.service.UpdateJobDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
@@ -17,28 +16,18 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 
 /**
  * Created by rajeshbabuk on 10/7/17.
  */
-public class DataExportJobSequenceTasklet implements Tasklet {
+public class DataExportJobSequenceTasklet extends JobCommonTasklet implements Tasklet {
 
     private static final Logger logger = LoggerFactory.getLogger(DataExportJobSequenceTasklet.class);
 
-    @Value("${scsb.solr.client.url}")
-    String solrClientUrl;
-
-    @Value("${scsb.etl.url}")
-    String scsbEtlUrl;
-
     @Autowired
     private DataExportJobSequenceService dataExportJobSequenceService;
-
-    @Autowired
-    private UpdateJobDetailsService updateJobDetailsService;
 
     /**
      * This method starts the execution of incremental and delete data export.
@@ -55,14 +44,8 @@ public class DataExportJobSequenceTasklet implements Tasklet {
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         try {
             String exportStringDate = jobExecution.getJobParameters().getString(RecapConstants.FROM_DATE);
-            long jobInstanceId = jobExecution.getJobInstance().getInstanceId();
-            String jobName = jobExecution.getJobInstance().getJobName();
             Date createdDate = jobExecution.getCreateTime();
-            String jobNameParam = (String) jobExecution.getExecutionContext().get(RecapConstants.JOB_NAME);
-            logger.info("Job Parameter in Data Export Job Sequence Tasklet : {}", jobNameParam);
-            if (!jobName.equalsIgnoreCase(jobNameParam)) {
-                updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
-            }
+            updateJob(jobExecution,"Data Export Job Sequence Tasklet", Boolean.TRUE);
             String resultStatus = dataExportJobSequenceService.dataExportJobSequence(scsbEtlUrl, createdDate, exportStringDate);
             logger.info("Incremental and delete data export status : {}", resultStatus);
             if (StringUtils.containsIgnoreCase(RecapCommonConstants.FAIL, resultStatus)) {

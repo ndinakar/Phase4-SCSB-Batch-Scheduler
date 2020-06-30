@@ -2,13 +2,13 @@ package org.recap.quartz;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.quartz.JobDataMap;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.impl.JobDetailImpl;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
+import org.recap.batch.job.JobCommonTasklet;
 import org.recap.model.jpa.JobEntity;
 import org.recap.repository.jpa.JobDetailsRepository;
 import org.slf4j.Logger;
@@ -67,13 +67,8 @@ public class QuartzJobsInitializer {
                 String cronExpression = jobEntity.getCronExpression();
                 try {
                     JobDetailImpl jobDetailImpl = new JobDetailImpl();
-                    jobDetailImpl.setName(jobName);
-                    jobDetailImpl.setJobClass(QuartzJobLauncher.class);
-                    JobDataMap jobDataMap = new JobDataMap();
-                    jobDataMap.put(RecapConstants.JOB_NAME, jobName);
-                    jobDataMap.put(RecapConstants.JOB_LAUNCHER, jobLauncher);
-                    jobDataMap.put(RecapConstants.JOB_LOCATOR, jobLocator);
-                    jobDetailImpl.setJobDataMap(jobDataMap);
+                    JobCommonTasklet jobCommonTasklet = new JobCommonTasklet();
+                    jobCommonTasklet.setJobDetailImpl(jobDetailImpl, jobName, jobLauncher, jobLocator);
                     if (StringUtils.isNotBlank(cronExpression) && isValidExpression(cronExpression) && !RecapConstants.UNSCHEDULED.equalsIgnoreCase(jobStatus)) {
                         JobKey jobKey = new JobKey(jobName);
                         jobDetailImpl.setKey(jobKey);

@@ -73,7 +73,7 @@ public class JobExecutionPoller {
          * Sends an email notification if the jobs are running more than the configured time.
          * @throws NoSuchJobException
          */
-        private void sendNotificationMailForLongRunningJobs() throws NoSuchJobException {
+        private void sendNotificationMailForLongRunningJobs() {
             List<String> jobNames = jobExplorer.getJobNames();
             if (CollectionUtils.isNotEmpty(jobNames)) {
                 for (String jobName : jobNames) {

@@ -37,12 +37,12 @@ public class RequestInitialLoadServiceUT extends BaseTestCase{
         headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
         HttpEntity httpEntity = new HttpEntity<>(headers);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
-        Mockito.when(requestInitialLoadService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(requestInitialLoadService.getRestTemplate().exchange(solrCircUrl +RecapConstants.REQUEST_DATA_LOAD_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(requestInitialLoadService.commonService.getRestTemplate()).thenReturn(restTemplate);
+        Mockito.when(requestInitialLoadService.commonService.getRestTemplate().exchange(solrCircUrl +RecapConstants.REQUEST_DATA_LOAD_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
         Mockito.when(requestInitialLoadService.requestInitialLoad(solrCircUrl)).thenCallRealMethod();
         String status = requestInitialLoadService.requestInitialLoad(solrCircUrl);
         assertNotNull(status);
-        assertEquals(status, RecapConstants.SUCCESS);
+        assertEquals(RecapConstants.SUCCESS, status);
     }
 
 }

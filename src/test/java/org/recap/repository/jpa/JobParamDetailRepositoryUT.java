@@ -22,6 +22,6 @@ public class JobParamDetailRepositoryUT extends BaseTestCase {
         JobParamEntity byJobName = jobParamDetailRepository.findByJobName(RecapConstants.GENERATE_ACCESSION_REPORT_JOB);
         assertNotNull(byJobName);
         assertNotNull(byJobName.getJobName());
-        assertEquals(byJobName.getJobName(), RecapConstants.GENERATE_ACCESSION_REPORT_JOB);
+        assertEquals(RecapConstants.GENERATE_ACCESSION_REPORT_JOB, byJobName.getJobName());
     }
 }

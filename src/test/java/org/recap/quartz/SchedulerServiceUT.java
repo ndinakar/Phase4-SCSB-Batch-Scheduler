@@ -33,7 +33,7 @@ public class SchedulerServiceUT extends BaseTestCase {
         String cronExpression = "1 2 3 4 5";
         String message = schedulerService.scheduleJob(jobName, cronExpression);
         assertNotNull(message);
-        assertEquals(message, RecapConstants.ERROR_INVALID_CRON_EXPRESSION);
+        assertEquals(RecapConstants.ERROR_INVALID_CRON_EXPRESSION, message);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class SchedulerServiceUT extends BaseTestCase {
         String cronExpression = "1 2 3 4 5";
         String message = schedulerService.rescheduleJob(jobName, cronExpression);
         assertNotNull(message);
-        assertEquals(message, RecapConstants.ERROR_INVALID_CRON_EXPRESSION);
+        assertEquals(RecapConstants.ERROR_INVALID_CRON_EXPRESSION, message);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class SchedulerServiceUT extends BaseTestCase {
         String cronExpression = "0/10 * * * * ? *";
         String message = schedulerService.rescheduleJob(jobName, cronExpression);
         assertNotNull(message);
-        assertEquals(message, RecapConstants.ERROR_JOB_FAILED_RESCHEDULING);
+        assertEquals(RecapConstants.ERROR_JOB_FAILED_RESCHEDULING, message);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class SchedulerServiceUT extends BaseTestCase {
         String cronExpression = "0/10 * * * * ? *";
         String rescheduleMessage = schedulerService.rescheduleJob(jobName, cronExpression);
         assertNotNull(rescheduleMessage);
-        assertEquals(rescheduleMessage, RecapConstants.JOB_SUCCESS_RESCHEDULING);
+        assertEquals(RecapConstants.JOB_SUCCESS_RESCHEDULING, rescheduleMessage);
         boolean isTriggerExistsAfterReschedule = scheduler.checkExists(triggerKey);
         assertTrue(isTriggerExistsAfterReschedule);
         Thread.sleep(10000);
@@ -108,7 +108,7 @@ public class SchedulerServiceUT extends BaseTestCase {
         assertTrue(isTriggerExistsAfterSchedule);
         String message = schedulerService.unscheduleJob(jobName);
         assertNotNull(message);
-        assertEquals(message, RecapConstants.JOB_SUCCESS_UNSCHEDULING);
+        assertEquals(RecapConstants.JOB_SUCCESS_UNSCHEDULING, message);
         boolean isTriggerExistsAfterUnschedule = scheduler.checkExists(triggerKey);
         assertFalse(isTriggerExistsAfterUnschedule);
     }

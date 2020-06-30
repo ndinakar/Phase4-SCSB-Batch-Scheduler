@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
@@ -35,7 +35,7 @@ public class ScheduleJobsController {
      * @param scheduleJobRequest the schedule job request
      * @return the schedule job response with the status message and next execution time.
      */
-    @RequestMapping(value = "/scheduleJob", method = RequestMethod.POST)
+    @PostMapping(value = "/scheduleJob")
     public ScheduleJobResponse scheduleJob(@RequestBody ScheduleJobRequest scheduleJobRequest) {
         ScheduleJobResponse scheduleJobResponse = new ScheduleJobResponse();
         String message = null;

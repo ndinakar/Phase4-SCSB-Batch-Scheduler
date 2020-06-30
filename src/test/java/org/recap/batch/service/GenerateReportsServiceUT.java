@@ -45,13 +45,13 @@ public class GenerateReportsServiceUT extends BaseTestCase{
         headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
         HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(solrIndexRequest, headers);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
-        Mockito.when(generateReportsService.getRestTemplate()).thenReturn(restTemplate);
+        Mockito.when(generateReportsService.commonService.getRestTemplate()).thenReturn(restTemplate);
         Mockito.when(generateReportsService.getSolrIndexRequest(createdDate, RecapConstants.GENERATE_ACCESSION_REPORT)).thenReturn(solrIndexRequest);
-        Mockito.when(generateReportsService.getRestTemplate().exchange(solrClientUrl + RecapConstants.GENERATE_REPORT_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(generateReportsService.commonService.getRestTemplate().exchange(solrClientUrl + RecapConstants.GENERATE_REPORT_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
         Mockito.when(generateReportsService.generateReport(solrClientUrl, createdDate, RecapConstants.GENERATE_ACCESSION_REPORT)).thenCallRealMethod();
         String status = generateReportsService.generateReport(solrClientUrl, createdDate, RecapConstants.GENERATE_ACCESSION_REPORT);
         assertNotNull(status);
-        assertEquals(status, RecapConstants.SUCCESS);
+        assertEquals(RecapConstants.SUCCESS, status);
     }
 
 }
