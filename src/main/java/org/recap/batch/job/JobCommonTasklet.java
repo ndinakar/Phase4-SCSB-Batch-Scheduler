@@ -71,20 +71,20 @@ public class JobCommonTasklet {
             }
         }
         catch (Exception ex) {
-            logger.error(RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+            logger.error(" {} {} ",RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
             executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
             executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, statusName + " " + ExceptionUtils.getMessage(ex));
             stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
         }
         return resultStatus;
     }
-    public void updateJob(JobExecution jobExecution, String taskletNsme, Boolean check) throws Exception {
+    public void updateJob(JobExecution jobExecution, String taskletName, Boolean check) throws Exception {
         long jobInstanceId = jobExecution.getJobInstance().getInstanceId();
         String jobName = jobExecution.getJobInstance().getJobName();
         Date createdDate = jobExecution.getCreateTime();
         if(check.booleanValue()) {
             String jobNameParam = (String) jobExecution.getExecutionContext().get(RecapConstants.JOB_NAME);
-            logger.info("Job Parameter in " + taskletNsme + ": {}", jobNameParam);
+            logger.info("Job Parameter in " + taskletName + ": {}", jobNameParam);
             if (!jobName.equalsIgnoreCase(jobNameParam)) {
                 updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
             }
@@ -130,7 +130,7 @@ public class JobCommonTasklet {
                 createdDate = jobExecution.getCreateTime();
             }
         } catch (ParseException e) {
-            logger.error(RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(e));
+            logger.error("{} {}", RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(e));
 
         }
         return createdDate;
