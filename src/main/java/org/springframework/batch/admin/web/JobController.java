@@ -1,5 +1,6 @@
 package org.springframework.batch.admin.web;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.admin.service.JobService;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -34,6 +35,7 @@ import java.util.TimeZone;
  * Created by rajeshbabuk on 5/7/17.
  */
 @Controller
+@Slf4j
 public class JobController {
 
     private final JobService jobService;
@@ -148,7 +150,7 @@ public class JobController {
         catch (JobParametersInvalidException e) {
             errors.reject("job.parameters.invalid", "The job parameters are invalid according to the configuration.");
         } catch (org.springframework.batch.core.launch.NoSuchJobException e) {
-            e.printStackTrace();
+           log.error("Error Details : {}", e);
         }
 
         if (!"job".equals(origin)) {
@@ -204,7 +206,7 @@ public class JobController {
             errors.reject("no.such.job", new Object[] { jobName },
                     "There is no such job (" + HtmlUtils.htmlEscape(jobName) + ")");
         } catch (org.springframework.batch.core.launch.NoSuchJobException e) {
-            e.printStackTrace();
+            log.error("Error Details : {}", e);
         }
 
         return "jobs/job";
@@ -233,7 +235,7 @@ public class JobController {
             catch (NoSuchJobException e) {
                 // shouldn't happen
             } catch (org.springframework.batch.core.launch.NoSuchJobException e) {
-                e.printStackTrace();
+                log.error("Error Details : {}", e);
             }
             boolean launchable = jobService.isLaunchable(name);
             boolean incrementable = jobService.isIncrementable(name);
