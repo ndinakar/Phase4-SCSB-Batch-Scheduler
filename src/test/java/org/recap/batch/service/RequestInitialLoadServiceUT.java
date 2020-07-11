@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.Assert.assertEquals;
@@ -31,14 +32,19 @@ public class RequestInitialLoadServiceUT extends BaseTestCase{
     @Mock
     private RequestInitialLoadService requestInitialLoadService;
 
+    @Mock
+    CommonService commonService;
+
     @Test
     public void testRequestInitialLoadService(){
         HttpHeaders headers = new HttpHeaders();
         headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
         HttpEntity httpEntity = new HttpEntity<>(headers);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
+        ReflectionTestUtils.setField(requestInitialLoadService,"commonService",commonService);
         Mockito.when(requestInitialLoadService.commonService.getRestTemplate()).thenReturn(restTemplate);
         Mockito.when(requestInitialLoadService.commonService.getRestTemplate().exchange(solrCircUrl +RecapConstants.REQUEST_DATA_LOAD_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(requestInitialLoadService.commonService.executeService(solrCircUrl,  RecapConstants.REQUEST_DATA_LOAD_URL, HttpMethod.POST)).thenReturn(RecapConstants.SUCCESS);
         Mockito.when(requestInitialLoadService.requestInitialLoad(solrCircUrl)).thenCallRealMethod();
         String status = requestInitialLoadService.requestInitialLoad(solrCircUrl);
         assertNotNull(status);
