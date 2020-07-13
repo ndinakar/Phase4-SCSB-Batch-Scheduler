@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -32,6 +33,9 @@ public class PurgeEmailAddressServiceUT extends BaseTestCase {
     RestTemplate restTemplate;
 
     @Mock
+    CommonService commonService;
+
+    @Mock
     PurgeEmailAddressService purgeEmailAddressService;
 
     @Test
@@ -42,8 +46,10 @@ public class PurgeEmailAddressServiceUT extends BaseTestCase {
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put(RecapCommonConstants.STATUS, RecapConstants.SUCCESS);
         ResponseEntity<Map> responseEntity = new ResponseEntity<>(resultMap, HttpStatus.OK);
+        ReflectionTestUtils.setField(purgeEmailAddressService,"commonService",commonService);
         Mockito.when(purgeEmailAddressService.commonService.getRestTemplate()).thenReturn(restTemplate);
         Mockito.when(purgeEmailAddressService.commonService.getRestTemplate().exchange(scsbCircUrl + RecapConstants.PURGE_EMAIL_URL, HttpMethod.GET, httpEntity, Map.class)).thenReturn(responseEntity);
+        Mockito.when(purgeEmailAddressService.commonService.executePurge(scsbCircUrl, RecapConstants.PURGE_EMAIL_URL)).thenReturn(responseEntity.getBody());
         Mockito.when(purgeEmailAddressService.purgeEmailAddress(scsbCircUrl)).thenCallRealMethod();
         resultMap = purgeEmailAddressService.purgeEmailAddress(scsbCircUrl);
         assertNotNull(resultMap);
