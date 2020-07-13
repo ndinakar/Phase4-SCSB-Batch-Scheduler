@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.Assert.assertEquals;
@@ -31,14 +32,19 @@ public class SubmitCollectionServiceUT extends BaseTestCase {
     @Mock
     SubmitCollectionService submitCollectionService;
 
+    @Mock
+    CommonService commonService;
+
     @Test
     public void submitCollectionTest() throws Exception {
         HttpHeaders headers = new HttpHeaders();
         headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
         HttpEntity httpEntity = new HttpEntity<>(headers);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
+        ReflectionTestUtils.setField(submitCollectionService,"commonService",commonService);
         Mockito.when(submitCollectionService.commonService.getRestTemplate()).thenReturn(restTemplate);
         Mockito.when(submitCollectionService.commonService.getRestTemplate().exchange(scsbCircUrl + RecapConstants.SUBMIT_COLLECTION_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(submitCollectionService.commonService.executeService(scsbCircUrl, RecapConstants.SUBMIT_COLLECTION_URL, HttpMethod.POST)).thenReturn(RecapConstants.SUCCESS);
         Mockito.when(submitCollectionService.submitCollection(scsbCircUrl)).thenCallRealMethod();
         String status = submitCollectionService.submitCollection(scsbCircUrl);
         assertNotNull(status);

@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
@@ -34,6 +35,9 @@ public class DailyReconcilationServiceUT extends BaseTestCase {
     @Mock
     private DailyReconcilationService dailyReconcilationService;
 
+    @Mock
+    CommonService commonService;
+
     @Test
     public void testDailyReconcilationService() throws Exception{
         String jobName  = "DailyReconcilation";
@@ -42,8 +46,10 @@ public class DailyReconcilationServiceUT extends BaseTestCase {
         headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
         HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(headers);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
+        ReflectionTestUtils.setField(dailyReconcilationService,"commonService",commonService);
         Mockito.when(dailyReconcilationService.commonService.getRestTemplate()).thenReturn(restTemplate);
         Mockito.when(dailyReconcilationService.commonService.getRestTemplate().exchange(solrCircUrl +RecapConstants.DAILY_RECONCILATION_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(dailyReconcilationService.commonService.executeService(solrCircUrl,  RecapConstants.DAILY_RECONCILATION_URL, HttpMethod.POST)).thenReturn(responseEntity.getBody());
         Mockito.when(dailyReconcilationService.dailyReconcilation(solrCircUrl)).thenCallRealMethod();
         String status = dailyReconcilationService.dailyReconcilation(solrCircUrl);
         assertNotNull(status);
