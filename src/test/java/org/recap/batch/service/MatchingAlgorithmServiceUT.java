@@ -59,6 +59,8 @@ public class MatchingAlgorithmServiceUT extends BaseTestCase {
         Mockito.when(matchingAlgorithmService.initiateMatchingAlgorithm(solrClientUrl, createdDate)).thenCallRealMethod();
         String status = matchingAlgorithmService.initiateMatchingAlgorithm(solrClientUrl, createdDate);
         assertNotNull(status);
+        assertNotNull(solrIndexRequest.getCreatedDate());
+        assertNotNull(solrIndexRequest.getProcessType());
         assertEquals(RecapConstants.SUCCESS, status);
     }
 }
