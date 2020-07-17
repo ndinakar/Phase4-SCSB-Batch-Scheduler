@@ -44,4 +44,66 @@ public class ScheduleJobsControllerUT extends BaseControllerUT {
         String result = mvcResult.getResponse().getContentAsString();
         assertNotNull(result);
     }
+
+    @Test
+    public void testScheduleJob_reschedule() throws Exception {
+        String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
+        String cronExpression = "0/10 * * * * ? *";
+        ScheduleJobRequest scheduleJobRequest = new ScheduleJobRequest();
+        scheduleJobRequest.setJobName(jobName);
+        scheduleJobRequest.setScheduleType(RecapConstants.RESCHEDULE);
+        scheduleJobRequest.setCronExpression(cronExpression);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        MvcResult mvcResult = this.mockMvc.perform(post("/scheduleService/scheduleJob")
+                .headers(getHttpHeaders())
+                .contentType(contentType)
+                .content(objectMapper.writeValueAsString(scheduleJobRequest)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String result = mvcResult.getResponse().getContentAsString();
+        assertNotNull(result);
+    }
+    @Test
+    public void testScheduleJob_unschedule() throws Exception {
+        String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
+        String cronExpression = "0/10 * * * * ? *";
+        ScheduleJobRequest scheduleJobRequest = new ScheduleJobRequest();
+        scheduleJobRequest.setJobName(jobName);
+        scheduleJobRequest.setScheduleType(RecapConstants.UNSCHEDULE);
+        scheduleJobRequest.setCronExpression(cronExpression);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        MvcResult mvcResult = this.mockMvc.perform(post("/scheduleService/scheduleJob")
+                .headers(getHttpHeaders())
+                .contentType(contentType)
+                .content(objectMapper.writeValueAsString(scheduleJobRequest)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String result = mvcResult.getResponse().getContentAsString();
+        assertNotNull(result);
+    }
+
+    @Test
+    public void testScheduleJob_Exception() throws Exception {
+        String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
+        String cronExpression = "0/10 * * * * ? *";
+        ScheduleJobRequest scheduleJobRequest = new ScheduleJobRequest();
+        scheduleJobRequest.setJobName(jobName);
+        scheduleJobRequest.setScheduleType(null);
+        scheduleJobRequest.setCronExpression(cronExpression);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        MvcResult mvcResult = this.mockMvc.perform(post("/scheduleService/scheduleJob")
+                .headers(getHttpHeaders())
+                .contentType(contentType)
+                .content(objectMapper.writeValueAsString(scheduleJobRequest)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String result = mvcResult.getResponse().getContentAsString();
+        assertNotNull(result);
+    }
 }

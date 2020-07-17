@@ -53,8 +53,9 @@ public class EmailServiceUT extends BaseTestCase {
         ReflectionTestUtils.setField(emailService,"commonService",commonService);
         Mockito.when(responseEntity.getBody()).thenReturn(RecapConstants.SUCCESS);
 
-        Mockito.when(emailService.commonService.getRestTemplate()).thenReturn(restTemplate);
-     //   Mockito.when(restTemplate.exchange(Mockito.anyString(), Mockito.any(HttpMethod.class), Mockito.any(HttpEntity.class), Mockito.any())).thenReturn(responseEntity);
+        Mockito.when(commonService.getRestTemplate()).thenReturn(restTemplate);
+        Mockito.when(restTemplate.exchange(solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(responseEntity.getBody()).thenReturn("SUCCESS");
         Mockito.when(emailService.sendEmail(solrClientUrl, emailPayLoad)).thenCallRealMethod();
         String status = emailService.sendEmail(solrClientUrl, emailPayLoad);
         assertNotNull(status);
