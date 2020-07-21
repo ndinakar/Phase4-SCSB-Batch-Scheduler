@@ -41,7 +41,7 @@ public class DeletedRecordsExportTasklet extends JobCommonTasklet {
      * @throws Exception
      */
     public RepeatStatus executeDeletedRecordsExport(StepContribution contribution, ChunkContext chunkContext, Logger logger, String exportInstitution, Boolean check) throws Exception {
-        logger.info("Executing DeletedRecordsExport"+exportInstitution+"Tasklet");
+        logger.info("Executing DeletedRecordsExport {}Tasklet", exportInstitution);
         StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();

@@ -2,8 +2,6 @@ package org.recap.batch.service;
 
 import org.recap.RecapConstants;
 import org.recap.model.jpa.JobEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,8 +12,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StatusReconciliationService {
-
-    private static final Logger logger = LoggerFactory.getLogger(StatusReconciliationService.class);
 
     @Autowired
     private CommonService commonService;

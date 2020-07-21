@@ -2,8 +2,6 @@ package org.recap.batch.service;
 
 import org.recap.RecapConstants;
 import org.recap.util.JobDataParameterUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -20,8 +18,6 @@ import java.util.Map;
  */
 @Service
 public class DataExportJobSequenceService {
-
-    private static final Logger logger = LoggerFactory.getLogger(DataExportJobSequenceService.class);
 
     @Autowired
     JobDataParameterUtil jobDataParameterUtil;

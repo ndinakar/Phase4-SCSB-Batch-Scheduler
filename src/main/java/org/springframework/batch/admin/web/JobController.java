@@ -40,11 +40,13 @@ public class JobController {
 
     private final JobService jobService;
 
-    private Collection<String> extensions = new HashSet<String>();
+    private Collection<String> extensions = new HashSet<>();
 
     private TimeZone timeZone = TimeZone.getDefault();
 
     private JobParametersExtractor jobParametersExtractor = new JobParametersExtractor();
+
+    private String errorDetails = "Error Details : {}";
 
     /**
      * A collection of extensions that may be appended to request urls aimed at
@@ -53,7 +55,7 @@ public class JobController {
      * @param extensions the extensions (e.g. [rss, xml, atom])
      */
     public void setExtensions(Collection<String> extensions) {
-        this.extensions = new LinkedHashSet<String>(extensions);
+        this.extensions = new LinkedHashSet<>(extensions);
     }
 
     /**
@@ -150,7 +152,7 @@ public class JobController {
         catch (JobParametersInvalidException e) {
             errors.reject("job.parameters.invalid", "The job parameters are invalid according to the configuration.");
         } catch (org.springframework.batch.core.launch.NoSuchJobException e) {
-           log.error("Error Details : {}", e);
+           log.error(errorDetails , e);
         }
 
         if (!"job".equals(origin)) {
@@ -206,7 +208,7 @@ public class JobController {
             errors.reject("no.such.job", new Object[] { jobName },
                     "There is no such job (" + HtmlUtils.htmlEscape(jobName) + ")");
         } catch (org.springframework.batch.core.launch.NoSuchJobException e) {
-            log.error("Error Details : {}", e);
+            log.error(errorDetails , e);
         }
 
         return "jobs/job";
@@ -235,7 +237,7 @@ public class JobController {
             catch (NoSuchJobException e) {
                 // shouldn't happen
             } catch (org.springframework.batch.core.launch.NoSuchJobException e) {
-                log.error("Error Details : {}", e);
+                log.error(errorDetails , e);
             }
             boolean launchable = jobService.isLaunchable(name);
             boolean incrementable = jobService.isIncrementable(name);

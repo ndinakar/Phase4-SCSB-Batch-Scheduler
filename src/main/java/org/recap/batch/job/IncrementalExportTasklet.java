@@ -53,7 +53,7 @@ public class IncrementalExportTasklet extends JobCommonTasklet {
             } else if (exportInstitution.equalsIgnoreCase("PUL")) {
                 resultStatus = incrementalExportPulService.incrementalExportPul(scsbEtlUrl, RecapConstants.INCREMENTAL_RECORDS_EXPORT_PUL, createdDate, exportStringDate);
             }
-            logger.info("Incremental Export " + exportInstitution + " status : {}", resultStatus);
+            logger.info("Incremental Export {} status : {}" , exportInstitution , resultStatus);
             setExecutionContext(executionContext, stepExecution, resultStatus);
         } catch (Exception ex) {
             logger.error(RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
