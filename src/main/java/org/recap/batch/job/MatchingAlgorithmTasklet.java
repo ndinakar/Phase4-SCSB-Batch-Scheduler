@@ -42,6 +42,7 @@ public class MatchingAlgorithmTasklet extends  JobCommonTasklet implements Taskl
         StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
+        PollingConsumer consumer = null;
         try {
             Date createdDate = getCreatedDate(jobExecution);
                 updateJob(jobExecution, "Matching Algorithm Tasklet", Boolean.TRUE);
@@ -52,7 +53,7 @@ public class MatchingAlgorithmTasklet extends  JobCommonTasklet implements Taskl
             requestMap.put(RecapCommonConstants.CREATED_DATE, createdDate.toString());
             producerTemplate.sendBody(RecapCommonConstants.MATCHING_ALGORITHM_JOB_INITIATE_QUEUE, requestMap);
             Endpoint endpoint = camelContext.getEndpoint(RecapCommonConstants.MATCHING_ALGORITHM_JOB_COMPLETION_OUTGOING_QUEUE);
-            PollingConsumer consumer = endpoint.createPollingConsumer();
+            consumer = endpoint.createPollingConsumer();
             Exchange exchange = consumer.receive();
             String resultStatus = (String) exchange.getIn().getBody();
             if (StringUtils.isNotBlank(resultStatus)) {
@@ -72,6 +73,11 @@ public class MatchingAlgorithmTasklet extends  JobCommonTasklet implements Taskl
             executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
             executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.MATCHING_ALGORITHM_STATUS_NAME + " " + ExceptionUtils.getMessage(ex));
             stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+        }
+        finally {
+            if(consumer != null) {
+                consumer.close();
+            }
         }
         return RepeatStatus.FINISHED;
     }

@@ -24,6 +24,7 @@ import org.springframework.batch.item.ExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,12 +53,13 @@ public class JobCommonTasklet {
     @Autowired
     protected UpdateJobDetailsService updateJobDetailsService;
 
-    public String getResultStatus(JobExecution jobExecution, StepExecution stepExecution, Logger logger, ExecutionContext executionContext, String initialQueueName, String completeQueueName, String statusName){
+    public String getResultStatus(JobExecution jobExecution, StepExecution stepExecution, Logger logger, ExecutionContext executionContext, String initialQueueName, String completeQueueName, String statusName) throws IOException {
         String resultStatus = null;
+        PollingConsumer consumer = null;
         try {
             producerTemplate.sendBody(initialQueueName, String.valueOf(jobExecution.getId()));
             Endpoint endpoint = camelContext.getEndpoint(completeQueueName);
-            PollingConsumer consumer = endpoint.createPollingConsumer();
+            consumer = endpoint.createPollingConsumer();
             Exchange exchange = consumer.receive();
             resultStatus = (String) exchange.getIn().getBody();
             if (StringUtils.isNotBlank(resultStatus)) {
@@ -76,7 +78,12 @@ public class JobCommonTasklet {
             executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, statusName + " " + ExceptionUtils.getMessage(ex));
             stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
         }
-        return resultStatus;
+        finally {
+            if (consumer != null) {
+                consumer.close();
+            }
+        }
+            return resultStatus;
     }
     public void updateJob(JobExecution jobExecution, String taskletName, Boolean check) throws Exception {
         long jobInstanceId = jobExecution.getJobInstance().getInstanceId();
@@ -84,7 +91,7 @@ public class JobCommonTasklet {
         Date createdDate = jobExecution.getCreateTime();
         if(check.booleanValue()) {
             String jobNameParam = (String) jobExecution.getExecutionContext().get(RecapConstants.JOB_NAME);
-            logger.info("Job Parameter in " + taskletName + ": {}", jobNameParam);
+            logger.info("Job Parameter in {} : {}" , taskletName , jobNameParam);
             if (!jobName.equalsIgnoreCase(jobNameParam)) {
                 updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
             }

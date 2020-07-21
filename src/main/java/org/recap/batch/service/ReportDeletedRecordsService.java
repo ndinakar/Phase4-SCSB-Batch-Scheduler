@@ -42,7 +42,7 @@ public class ReportDeletedRecordsService {
      */
     public String reportDeletedRecords(String scsbCircUrl){
         HttpEntity httpEntity = commonService.getHttpEntity();
-        logger.info(scsbCircUrl + RecapConstants.REPORT_DELETED_RECORDS_URL);
+        logger.info("{},{}", scsbCircUrl , RecapConstants.REPORT_DELETED_RECORDS_URL);
         ResponseEntity<String> responseEntity = commonService.getRestTemplate().exchange(scsbCircUrl + RecapConstants.REPORT_DELETED_RECORDS_URL, HttpMethod.GET, httpEntity, String.class);
         return responseEntity.getBody();
     }
