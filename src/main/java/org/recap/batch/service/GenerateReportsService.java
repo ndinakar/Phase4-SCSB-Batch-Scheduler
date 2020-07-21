@@ -3,8 +3,6 @@ package org.recap.batch.service;
 import org.recap.RecapConstants;
 import org.recap.model.batch.SolrIndexRequest;
 import org.recap.util.JobDataParameterUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +13,6 @@ import java.util.Date;
  */
 @Service
 public class GenerateReportsService {
-
-    private static final Logger logger = LoggerFactory.getLogger(GenerateReportsService.class);
 
     @Autowired
     JobDataParameterUtil jobDataParameterUtil;
