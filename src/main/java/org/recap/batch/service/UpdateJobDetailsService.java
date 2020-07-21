@@ -5,8 +5,6 @@ import org.quartz.CronExpression;
 import org.recap.RecapConstants;
 import org.recap.model.jpa.JobEntity;
 import org.recap.repository.jpa.JobDetailsRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,8 +19,6 @@ import java.util.Date;
  */
 @Service
 public class UpdateJobDetailsService {
-
-    private static final Logger logger = LoggerFactory.getLogger(UpdateJobDetailsService.class);
 
     @Autowired
     private JobDetailsRepository jobDetailsRepository;
