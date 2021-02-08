@@ -1,6 +1,7 @@
 package org.recap.batch.service;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import java.util.Date;
 
 import static org.junit.Assert.assertNotNull;
-
+@Ignore
 @RunWith(PowerMockRunner.class)
 public class DeletedRecordsExportServiceUT {
 
