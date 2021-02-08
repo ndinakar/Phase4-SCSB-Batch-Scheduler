@@ -20,7 +20,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
+@Ignore
 public class IncrementalExportNyplServiceUT extends BaseTestCase {
 
     @Value("${scsb.etl.url}")
