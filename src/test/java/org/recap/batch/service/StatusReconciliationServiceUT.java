@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCaseUT;
 import org.recap.RecapConstants;
-import org.recap.model.EmailPayLoad;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +14,10 @@ import org.springframework.web.client.RestTemplate;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by rajeshbabuk on 19/4/17.
- */
-public class EmailServiceUT extends BaseTestCaseUT {
+public class StatusReconciliationServiceUT extends BaseTestCaseUT {
 
     @InjectMocks
-    EmailService emailService;
+    StatusReconciliationService statusReconciliationService;
 
     @Mock
     CommonService commonService;
@@ -30,20 +26,17 @@ public class EmailServiceUT extends BaseTestCaseUT {
     RestTemplate restTemplate;
 
     @Mock
-    EmailPayLoad emailPayLoad;
-
-    @Mock
     ResponseEntity<String> responseEntity;
 
     @Test
-    public void testEmailService() {
+    public void testStatusReconciliation() {
         Mockito.when(commonService.getRestTemplate()).thenReturn(restTemplate);
         Mockito.when(restTemplate.exchange( Matchers.anyString(),
                 Matchers.any(HttpMethod.class),
                 Matchers.<HttpEntity<?>> any(),
                 Matchers.<Class<String>> any())).thenReturn(responseEntity);
         Mockito.when(responseEntity.getBody()).thenReturn(RecapConstants.SUCCESS);
-        String status=emailService.sendEmail("solrClientUrl",emailPayLoad);
+        String status=statusReconciliationService.statusReconciliation("scsbCoreUrl");
         assertEquals(RecapConstants.SUCCESS,status);
     }
 }

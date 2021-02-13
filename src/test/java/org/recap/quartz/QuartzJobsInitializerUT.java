@@ -1,52 +1,84 @@
 package org.recap.quartz;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.quartz.JobKey;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.quartz.Scheduler;
-import org.recap.BaseTestCase;
-import org.recap.RecapCommonConstants;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapConstants;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.recap.model.jpa.JobEntity;
+import org.recap.repository.jpa.JobDetailsRepository;
+import org.springframework.batch.core.configuration.JobLocator;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by rajeshbabuk on 20/4/17.
  */
-public class QuartzJobsInitializerUT extends BaseTestCase {
+public class QuartzJobsInitializerUT extends BaseTestCaseUT {
 
-    @Autowired
-    QuartzJobsInitializer quartzJobsInitializer;
+    @InjectMocks
+    QuartzJobsInitializer mockquartzJobsInitializer;
 
-    @Autowired
+    @Mock
+    JobDetailsRepository jobDetailsRepository;
+
+    @Mock
+    JobEntity jobEntity;
+
+    @Mock
+    JobLauncher jobLauncher;
+
+    @Mock
+    JobLocator jobLocator;
+
+    @Mock
     Scheduler scheduler;
 
+    @Before
+    public  void setup(){
+        MockitoAnnotations.initMocks(this);
+        ReflectionTestUtils.setField(mockquartzJobsInitializer,"jobLocator",jobLocator);
+        ReflectionTestUtils.setField(mockquartzJobsInitializer,"scheduler",scheduler);
+        ReflectionTestUtils.setField(mockquartzJobsInitializer,"jobLauncher",jobLauncher);
+        ReflectionTestUtils.setField(mockquartzJobsInitializer,"jobDetailsRepository",jobDetailsRepository);
+        List<JobEntity> jobEntities=new ArrayList<>();
+        jobEntities.add(jobEntity);
+        Mockito.when(jobEntity.getCronExpression()).thenReturn("* * * * * ? *");
+        Mockito.when(jobDetailsRepository.findAll()).thenReturn(jobEntities);
+    }
+
+   @Test
+    public void testInitializeJobsUnscheduled() {
+        Mockito.when(jobEntity.getStatus()).thenReturn(RecapConstants.UNSCHEDULED);
+        Mockito.when(jobEntity.getJobName()).thenReturn(RecapConstants.UNSCHEDULED);
+        mockquartzJobsInitializer.initializeJobs();
+        assertTrue(true);
+    }
+
+
     @Test
-    public void testInitializeJobs() throws Exception {
-        quartzJobsInitializer.initializeJobs();
-        JobKey purgeExceptionRequestsJobKey = new JobKey(RecapCommonConstants.PURGE_EXCEPTION_REQUESTS);
-        JobKey purgeEmailAddressJobKey = new JobKey(RecapConstants.PURGE_EMAIL_ADDRESS);
-        JobKey matchingAlgorithmJobKey = new JobKey(RecapCommonConstants.ONGOING_MATCHING_ALGORITHM);
-        JobKey dailyReconciliationJobKey = new JobKey(RecapConstants.DAILY_LAS_TRANSACTION_RECONCILIATION);
-        JobKey generateAccessionReportJobKey = new JobKey(RecapConstants.GENERATE_ACCESSION_REPORT);
-        JobKey accessionJobKey = new JobKey(RecapConstants.ACCESSION);
-        JobKey runJobSequentiallyJobKey = new JobKey(RecapConstants.ACCESSION_MATCHING_JOBS_SEQUENCE);
-        JobKey purgeAccessionRequestsJobKey = new JobKey(RecapConstants.PURGE_ACCESSION_REQUESTS);
-        boolean isPurgeExceptionRequestsJobKeyExists = scheduler.checkExists(purgeExceptionRequestsJobKey);
-        boolean isPurgeEmailAddressJobKeyExists = scheduler.checkExists(purgeEmailAddressJobKey);
-        boolean isMatchingAlgorithmJobKeyExists = scheduler.checkExists(matchingAlgorithmJobKey);
-        boolean isDailyReconciliationJobKeyExists = scheduler.checkExists(dailyReconciliationJobKey);
-        boolean isGenerateAccessionReportJobKeyExists = scheduler.checkExists(generateAccessionReportJobKey);
-        boolean isAccessionJobKeyExists = scheduler.checkExists(accessionJobKey);
-        boolean isRunJobSequentiallyJobKeyExists = scheduler.checkExists(runJobSequentiallyJobKey);
-        boolean isPurgeAccessionRequestsJobKeyExists = scheduler.checkExists(purgeAccessionRequestsJobKey);
-        assertTrue(isPurgeExceptionRequestsJobKeyExists);
-        assertTrue(isPurgeEmailAddressJobKeyExists);
-        assertTrue(isMatchingAlgorithmJobKeyExists);
-        assertTrue(isDailyReconciliationJobKeyExists);
-        assertTrue(isGenerateAccessionReportJobKeyExists);
-        assertTrue(isAccessionJobKeyExists);
-        assertTrue(isRunJobSequentiallyJobKeyExists);
-        assertTrue(isPurgeAccessionRequestsJobKeyExists);
+    public void testInitializeJobsScheduled() {
+        Mockito.when(jobEntity.getStatus()).thenReturn(RecapConstants.SCHEDULE);
+        Mockito.when(jobEntity.getJobName()).thenReturn(RecapConstants.SCHEDULE);
+        mockquartzJobsInitializer.initializeJobs();
+        assertTrue(true);
+    }
+
+    @Test
+    public void testInitializeJobsException() throws Exception {
+        Mockito.when(jobEntity.getStatus()).thenReturn(RecapConstants.SCHEDULE);
+        Mockito.when(jobEntity.getJobName()).thenReturn(RecapConstants.SCHEDULE);
+        Mockito.when(scheduler.scheduleJob(Mockito.any(),Mockito.any())).thenThrow(NullPointerException.class);
+        mockquartzJobsInitializer.initializeJobs();
+        assertTrue(true);
     }
 }

@@ -42,6 +42,9 @@ public class CommonServiceUT extends BaseTestCase {
     @Mock
     JobDataParameterUtil jobDataParameterUtil;
 
+    @Mock
+    Map<String, String>  requestParameterMap;
+
     @Test
     public void testExecuteService() throws Exception {
         HttpHeaders headers = new HttpHeaders();
@@ -113,7 +116,23 @@ public class CommonServiceUT extends BaseTestCase {
     public void testgetRestTemplate()  {
         Mockito.when(commonService.getRestTemplate()).thenCallRealMethod();
         assertNotEquals(commonService.getRestTemplate(),restTemplate);
+    }
 
+    @Test
+    public void setRequestParameterMapBlankDate()  {
+        Date createdDate=new Date();
+        Mockito.doCallRealMethod().when(commonService).setRequestParameterMap(requestParameterMap,"",jobDataParameterUtil,createdDate);
+        commonService.setRequestParameterMap(requestParameterMap,"",jobDataParameterUtil,createdDate);
+        assertTrue(true);
+    }
+
+    @Test
+    public void setRequestParameterMap()  {
+        String exportStringDate=new Date().toString();
+        Date createdDate=new Date();
+        Mockito.doCallRealMethod().when(commonService).setRequestParameterMap(requestParameterMap,exportStringDate,jobDataParameterUtil,createdDate);
+        commonService.setRequestParameterMap(requestParameterMap,exportStringDate,jobDataParameterUtil,createdDate);
+        assertTrue(true);
     }
 
 }
