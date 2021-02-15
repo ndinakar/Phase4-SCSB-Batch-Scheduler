@@ -1,39 +1,74 @@
 package org.recap.batch.job;
 
 import org.junit.Test;
-import org.junit.platform.commons.util.ReflectionUtils;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.recap.BaseTestCase;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapConstants;
-import org.springframework.batch.core.*;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobInstance;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.scope.context.StepContext;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.batch.test.MetaDataInstanceFactory;
-import org.springframework.test.util.ReflectionTestUtils;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Anitha V on 14/7/20.
  */
 
-public class StartOrStopPollingLongRunningJobsTaskletUT extends BaseTestCase {
+public class StartOrStopPollingLongRunningJobsTaskletUT extends BaseTestCaseUT {
 
     @Mock
     StartOrStopPollingLongRunningJobsTasklet startOrStopPollingLongRunningJobsTasklet;
 
+    @Mock
+    ChunkContext context;
+
+    @Mock
+    StepContext stepContext;
+
+    @Mock
+    StepExecution stepExecution;
+
+    @Mock
+    JobExecution jobExecution;
+
+    @Mock
+    JobParameters jobParameters;
+
     @Test
-    public void testexecute() throws Exception {
+    public void testexecuteStart() throws Exception {
         StepContribution contribution = new StepContribution(new StepExecution("StatusReconcilationStep", new JobExecution(new JobInstance(123L, "job"),new JobParameters())));
         StepExecution execution = MetaDataInstanceFactory.createStepExecution();
         execution.setCommitCount(2);
-        ChunkContext context = new ChunkContext(new StepContext(execution));
-        JobExecution jobExecution = execution.getJobExecution();
-        String action= RecapConstants.START;
-//        ReflectionTestUtils.setField(startOrStopPollingLongRunningJobsTasklet,"action",RecapConstants.START);
-      //  Mockito.when(jobExecution.getJobParameters().getString(RecapConstants.POLLING_ACTION)).thenReturn(action);
+        Mockito.when(context.getStepContext()).thenReturn(stepContext);
+        Mockito.when(stepContext.getStepExecution()).thenReturn(stepExecution);
+        Mockito.when(stepExecution.getJobExecution()).thenReturn(jobExecution);
+        Mockito.when(jobExecution.getJobParameters()).thenReturn(jobParameters);
+        Mockito.when(jobParameters.getString(RecapConstants.POLLING_ACTION)).thenReturn(RecapConstants.START);
         Mockito.when(startOrStopPollingLongRunningJobsTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status=startOrStopPollingLongRunningJobsTasklet.execute(contribution,context);
+        assertEquals(RepeatStatus.FINISHED,status);
+    }
+
+    @Test
+    public void testexecuteStop() throws Exception {
+        StepContribution contribution = new StepContribution(new StepExecution("StatusReconcilationStep", new JobExecution(new JobInstance(123L, "job"),new JobParameters())));
+        StepExecution execution = MetaDataInstanceFactory.createStepExecution();
+        execution.setCommitCount(2);
+        Mockito.when(context.getStepContext()).thenReturn(stepContext);
+        Mockito.when(stepContext.getStepExecution()).thenReturn(stepExecution);
+        Mockito.when(stepExecution.getJobExecution()).thenReturn(jobExecution);
+        Mockito.when(jobExecution.getJobParameters()).thenReturn(jobParameters);
+        Mockito.when(jobParameters.getString(RecapConstants.POLLING_ACTION)).thenReturn(RecapConstants.STOP);
+        Mockito.when(startOrStopPollingLongRunningJobsTasklet.execute(contribution,context)).thenCallRealMethod();
+        RepeatStatus status=startOrStopPollingLongRunningJobsTasklet.execute(contribution,context);
+        assertEquals(RepeatStatus.FINISHED,status);
     }
 
 

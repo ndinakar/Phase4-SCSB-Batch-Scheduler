@@ -1,31 +1,35 @@
 package org.recap.quartz;
 
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.quartz.JobDetail;
 import org.quartz.Scheduler;
-import org.quartz.Trigger;
-import org.quartz.TriggerKey;
-import org.recap.BaseTestCase;
+import org.quartz.impl.triggers.CronTriggerImpl;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by rajeshbabuk on 19/4/17.
  */
-public class SchedulerServiceUT extends BaseTestCase {
+public class SchedulerServiceUT extends BaseTestCaseUT {
 
-    @Autowired
+    @InjectMocks
     SchedulerService schedulerService;
 
-    @Autowired
+    @Mock
     Scheduler scheduler;
+
+    @Mock
+    JobDetail jobDetail;
+
+    @Mock
+    CronTriggerImpl trigger;
 
     @Test
     public void testScheduleJobInvalidCron() throws Exception {
@@ -37,31 +41,27 @@ public class SchedulerServiceUT extends BaseTestCase {
     }
 
     @Test
-    public void testScheduleJobRunEveryFiveSeconds() throws Exception {
+    public void testScheduleJobScheduled() throws Exception {
         String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
-        TriggerKey triggerKey = new TriggerKey(jobName + RecapConstants.TRIGGER_SUFFIX);
+        Mockito.when(scheduler.getJobDetail(Mockito.any())).thenReturn(jobDetail);
         String message = schedulerService.scheduleJob(jobName, "0/5 * * * * ? *");
-        assertNotNull(message);
-        boolean isTriggerExistsAfterSchedule = scheduler.checkExists(triggerKey);
-        assertTrue(isTriggerExistsAfterSchedule);
-        Thread.sleep(10000);
-        Trigger trigger = scheduler.getTrigger(triggerKey);
-        boolean mayFireAgain = trigger.mayFireAgain();
-        Date previousFireTime = trigger.getPreviousFireTime();
-        Date nextFireTime = trigger.getNextFireTime();
-        assertEquals(trigger.getJobKey().getName(), jobName);
-        assertTrue(mayFireAgain);
-        assertNotNull(previousFireTime);
-        assertNotNull(nextFireTime);
+        assertEquals(RecapConstants.JOB_SUCCESS_SCHEDULING, message);
     }
 
     @Test
-    public void testRescheduleJobInvalidCron() throws Exception {
+    public void testScheduleJobScheduledException() throws Exception {
         String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
-        String cronExpression = "1 2 3 4 5";
-        String message = schedulerService.rescheduleJob(jobName, cronExpression);
-        assertNotNull(message);
-        assertEquals(RecapConstants.ERROR_INVALID_CRON_EXPRESSION, message);
+        Mockito.when(scheduler.getJobDetail(Mockito.any())).thenReturn(jobDetail);
+        Mockito.when(scheduler.scheduleJob(Mockito.any())).thenThrow(NullPointerException.class);
+        String message = schedulerService.scheduleJob(jobName, "0/5 * * * * ? *");
+        assertEquals(RecapConstants.ERROR_JOB_FAILED_SCHEDULING, message);
+    }
+
+    @Test
+    public void testScheduleJobRunEveryFiveSeconds() throws Exception {
+        String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
+        String message = schedulerService.scheduleJob(jobName, "0/5 * * * * ? *");
+        assertEquals(RecapConstants.JOB_SUCCESS_SCHEDULING, message);
     }
 
     @Test
@@ -75,41 +75,46 @@ public class SchedulerServiceUT extends BaseTestCase {
 
     @Test
     public void testRescheduleJobRunEveryFiveSecondsForScheduledJob() throws Exception {
+        Mockito.when(scheduler.getTrigger(Mockito.any())).thenReturn(trigger);
         String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
-        TriggerKey triggerKey = new TriggerKey(jobName + RecapConstants.TRIGGER_SUFFIX);
         String scheduleMessage = schedulerService.scheduleJob(jobName, "0/5 * * * * ? *");
         assertNotNull(scheduleMessage);
-        boolean isTriggerExistsAfterSchedule = scheduler.checkExists(triggerKey);
-        assertTrue(isTriggerExistsAfterSchedule);
         String cronExpression = "0/10 * * * * ? *";
         String rescheduleMessage = schedulerService.rescheduleJob(jobName, cronExpression);
         assertNotNull(rescheduleMessage);
         assertEquals(RecapConstants.JOB_SUCCESS_RESCHEDULING, rescheduleMessage);
-        boolean isTriggerExistsAfterReschedule = scheduler.checkExists(triggerKey);
-        assertTrue(isTriggerExistsAfterReschedule);
-        Thread.sleep(10000);
-        Trigger trigger = scheduler.getTrigger(triggerKey);
-        boolean mayFireAgain = trigger.mayFireAgain();
-        Date previousFireTime = trigger.getPreviousFireTime();
-        Date nextFireTime = trigger.getNextFireTime();
-        assertEquals(trigger.getJobKey().getName(), jobName);
-        assertTrue(mayFireAgain);
-        assertNotNull(previousFireTime);
-        assertNotNull(nextFireTime);
+    }
+
+    @Test
+    public void testRescheduleJobRunEveryFiveSecondsInvalid() throws Exception {
+        Mockito.when(scheduler.getTrigger(Mockito.any())).thenReturn(trigger);
+        String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
+        String scheduleMessage = schedulerService.scheduleJob(jobName, "0/5 * * * * ? *");
+        assertNotNull(scheduleMessage);
+        String cronExpression = "1 2 3 4 5";
+        String rescheduleMessage = schedulerService.rescheduleJob(jobName, cronExpression);
+        assertNotNull(rescheduleMessage);
+        assertEquals(RecapConstants.ERROR_INVALID_CRON_EXPRESSION, rescheduleMessage);
     }
 
     @Test
     public void testUnscheduleJob() throws Exception {
         String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
-        TriggerKey triggerKey = new TriggerKey(jobName + RecapConstants.TRIGGER_SUFFIX);
         String scheduleMessage = schedulerService.scheduleJob(jobName, "0/5 * * * * ? *");
         assertNotNull(scheduleMessage);
-        boolean isTriggerExistsAfterSchedule = scheduler.checkExists(triggerKey);
-        assertTrue(isTriggerExistsAfterSchedule);
         String message = schedulerService.unscheduleJob(jobName);
         assertNotNull(message);
         assertEquals(RecapConstants.JOB_SUCCESS_UNSCHEDULING, message);
-        boolean isTriggerExistsAfterUnschedule = scheduler.checkExists(triggerKey);
-        assertFalse(isTriggerExistsAfterUnschedule);
+    }
+
+    @Test
+    public void testUnscheduleJobException() throws Exception {
+        String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
+        String scheduleMessage = schedulerService.scheduleJob(jobName, "1 2 3 4 5");
+        assertNotNull(scheduleMessage);
+        Mockito.when(scheduler.unscheduleJob(Mockito.any())).thenThrow(NullPointerException.class);
+        String message = schedulerService.unscheduleJob(jobName);
+        assertNotNull(message);
+        assertEquals(RecapConstants.ERROR_JOB_FAILED_UNSCHEDULING, message);
     }
 }
