@@ -59,10 +59,10 @@ public class CommonService {
         ResponseEntity<String> responseEntity = getRestTemplate().exchange(url + jobUrl, HttpMethod.POST, httpEntity, String.class);
         return responseEntity.getBody();
     }
-    public String  getResponse(SolrIndexRequest solrIndexRequest, String solrClientUrl, String url) {
+    public String  getResponse(SolrIndexRequest solrIndexRequest, String solrClientUrl, String url, HttpMethod httpMethod) {
         HttpHeaders headers = getHttpHeaders();
         HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(solrIndexRequest, headers);
-        ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + url, HttpMethod.POST, httpEntity, String.class);
+        ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + url, httpMethod, httpEntity, String.class);
         return responseEntity.getBody();
     }
 

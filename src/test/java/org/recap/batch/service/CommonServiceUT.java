@@ -10,7 +10,6 @@ import org.recap.RecapConstants;
 import org.recap.model.batch.SolrIndexRequest;
 import org.recap.model.jpa.JobEntity;
 import org.recap.util.JobDataParameterUtil;
-import org.recap.util.PropertyUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
@@ -88,8 +87,8 @@ public class CommonServiceUT extends BaseTestCase {
         Mockito.when(commonService.getHttpHeaders()).thenCallRealMethod();
         Mockito.when(commonService.getRestTemplate()).thenReturn(restTemplate);
         Mockito.when(commonService.getRestTemplate().exchange(solrClientUrl + RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
-        Mockito.when(commonService.getResponse(solrIndexRequest , solrClientUrl, RecapConstants.MATCHING_ALGORITHM_URL)).thenCallRealMethod();
-        String status = commonService.getResponse(solrIndexRequest , solrClientUrl, RecapConstants.MATCHING_ALGORITHM_URL);
+        Mockito.when(commonService.getResponse(solrIndexRequest , solrClientUrl, RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST)).thenCallRealMethod();
+        String status = commonService.getResponse(solrIndexRequest , solrClientUrl, RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST);
         assertNotNull(status);
         assertEquals(RecapConstants.SUCCESS, status);
     }

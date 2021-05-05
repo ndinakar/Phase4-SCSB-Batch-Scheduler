@@ -82,6 +82,8 @@ public class RecapConstants {
     public static final String POLLING_ACTION = "action";
     public static final String START = "start";
     public static final String STOP = "stop";
+    public static final String GENERATE_CDG_ROUND_TRIP_REPORT_JOB = "GenrateCgdRoundTripReport" ;
+    public static final String GENERATE_CGD_ROUND_TRIP_REPORT_URL = "ongoingMatchingAlgorithmService/generateCGDRoundTripReport";
 
     public static boolean POLL_LONG_RUNNING_JOBS = true;
 
