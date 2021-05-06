@@ -8,7 +8,6 @@ import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.batch.SolrIndexRequest;
 import org.recap.util.JobDataParameterUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -58,7 +57,7 @@ public class GenerateReportsServiceUT extends BaseTestCase{
         Mockito.when(generateReportsService.getSolrIndexRequest(createdDate, RecapConstants.GENERATE_ACCESSION_REPORT)).thenReturn(solrIndexRequest);
         Mockito.when(commonService.getRestTemplate().exchange(solrClientUrl + RecapConstants.GENERATE_REPORT_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
         Mockito.when(jobDataParameterUtil.getFromDate(createdDate)).thenCallRealMethod();
-        Mockito.when(commonService.getResponse(Mockito.any(),Mockito.anyString(),Mockito.anyString())).thenReturn(RecapConstants.SUCCESS);
+        Mockito.when(commonService.getResponse(Mockito.any(),Mockito.anyString(),Mockito.anyString(), HttpMethod.POST)).thenReturn(RecapConstants.SUCCESS);
         Mockito.when(generateReportsService.getSolrIndexRequest(createdDate, RecapConstants.GENERATE_ACCESSION_REPORT)).thenCallRealMethod();
         Mockito.when(generateReportsService.generateReport(solrClientUrl, createdDate, RecapConstants.GENERATE_ACCESSION_REPORT)).thenCallRealMethod();
         String status = generateReportsService.generateReport(solrClientUrl, createdDate, RecapConstants.GENERATE_ACCESSION_REPORT);

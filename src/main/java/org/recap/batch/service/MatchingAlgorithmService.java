@@ -4,6 +4,7 @@ import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.batch.SolrIndexRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -26,7 +27,7 @@ public class MatchingAlgorithmService {
      */
     public String initiateMatchingAlgorithm(String solrClientUrl, Date createdDate) {
         SolrIndexRequest solrIndexRequest = getSolrIndexRequest(createdDate);
-        return commonService.getResponse(solrIndexRequest, solrClientUrl, RecapConstants.MATCHING_ALGORITHM_URL);
+        return commonService.getResponse(solrIndexRequest, solrClientUrl, RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST);
     }
 
     /**
