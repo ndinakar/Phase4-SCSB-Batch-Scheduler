@@ -6,8 +6,8 @@ import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.impl.JobDetailImpl;
 import org.quartz.impl.triggers.CronTriggerImpl;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.job.JobCommonTasklet;
 import org.recap.model.jpa.JobEntity;
 import org.recap.repository.jpa.JobDetailsRepository;
@@ -69,11 +69,11 @@ public class QuartzJobsInitializer {
                     JobDetailImpl jobDetailImpl = new JobDetailImpl();
                     JobCommonTasklet jobCommonTasklet = new JobCommonTasklet();
                     jobCommonTasklet.setJobDetailImpl(jobDetailImpl, jobName, jobLauncher, jobLocator);
-                    if (StringUtils.isNotBlank(cronExpression) && isValidExpression(cronExpression) && !RecapConstants.UNSCHEDULED.equalsIgnoreCase(jobStatus)) {
+                    if (StringUtils.isNotBlank(cronExpression) && isValidExpression(cronExpression) && !ScsbConstants.UNSCHEDULED.equalsIgnoreCase(jobStatus)) {
                         JobKey jobKey = new JobKey(jobName);
                         jobDetailImpl.setKey(jobKey);
                         CronTriggerImpl trigger = new CronTriggerImpl();
-                        trigger.setName(jobName + RecapConstants.TRIGGER_SUFFIX);
+                        trigger.setName(jobName + ScsbConstants.TRIGGER_SUFFIX);
                         trigger.setJobKey(jobKey);
                         trigger.setCronExpression(cronExpression);
                         scheduler.scheduleJob(jobDetailImpl, trigger);
@@ -87,7 +87,7 @@ public class QuartzJobsInitializer {
                     }
                 } catch (Exception ex) {
                     logger.error("Initializing job {} Failed.", jobName);
-                    logger.error(RecapCommonConstants.LOG_ERROR, ex);
+                    logger.error(ScsbCommonConstants.LOG_ERROR, ex);
                 }
             }
         }

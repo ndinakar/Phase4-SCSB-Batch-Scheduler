@@ -6,7 +6,7 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCaseUT;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -31,15 +31,15 @@ public class CheckAndNotifyPendingRequestServiceUT extends BaseTestCaseUT {
 
     @Test
     public void testcheckPendingMsgesInQueue() {
-        Mockito.when(commonService.pendingRequest("scsbCircUrl", RecapConstants.NOTIFY_IF_PENDING_REQUEST)).thenCallRealMethod();
+        Mockito.when(commonService.pendingRequest("scsbCircUrl", ScsbConstants.NOTIFY_IF_PENDING_REQUEST)).thenCallRealMethod();
         Mockito.when(commonService.getRestTemplate()).thenReturn(restTemplate);
         Mockito.when(restTemplate.exchange( Matchers.anyString(),
                 Matchers.any(HttpMethod.class),
                 Matchers.<HttpEntity<?>> any(),
                 Matchers.<Class<String>> any())).thenReturn(responseEntity);
-        Mockito.when(responseEntity.getBody()).thenReturn(RecapConstants.SUCCESS);
+        Mockito.when(responseEntity.getBody()).thenReturn(ScsbConstants.SUCCESS);
         String status=checkAndNotifyPendingRequestService.checkPendingMsgesInQueue("scsbCircUrl");
-        assertEquals(RecapConstants.SUCCESS,status);
+        assertEquals(ScsbConstants.SUCCESS,status);
 
     }
 }

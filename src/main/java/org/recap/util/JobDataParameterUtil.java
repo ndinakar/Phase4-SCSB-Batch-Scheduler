@@ -1,7 +1,7 @@
 package org.recap.util;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.jpa.JobParamDataEntity;
 import org.recap.model.jpa.JobParamEntity;
 import org.recap.repository.jpa.JobParamDetailRepository;
@@ -50,7 +50,7 @@ public class JobDataParameterUtil {
      * @return date format string for export
      */
     public String getDateFormatStringForExport(Date createdDate) {
-        SimpleDateFormat dateFormatter = new SimpleDateFormat(RecapConstants.EXPORT_DATE_FORMAT);
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(ScsbConstants.EXPORT_DATE_FORMAT);
         return dateFormatter.format(getFromDate(createdDate));
     }
 

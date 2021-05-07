@@ -1,6 +1,6 @@
 package org.recap.batch.service;
 
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,6 @@ public class RequestInitialLoadService {
     protected CommonService commonService;
 
     public String requestInitialLoad(String scsbCircUrl) {
-        return commonService.executeService(scsbCircUrl,  RecapConstants.REQUEST_DATA_LOAD_URL, HttpMethod.POST);
+        return commonService.executeService(scsbCircUrl,  ScsbConstants.REQUEST_DATA_LOAD_URL, HttpMethod.POST);
     }
 }

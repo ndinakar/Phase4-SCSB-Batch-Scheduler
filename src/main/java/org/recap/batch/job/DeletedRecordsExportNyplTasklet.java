@@ -1,6 +1,6 @@
 package org.recap.batch.job;
 
-import org.recap.RecapCommonConstants;
+import org.recap.ScsbCommonConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepContribution;
@@ -26,6 +26,6 @@ public class DeletedRecordsExportNyplTasklet extends DeletedRecordsExportTasklet
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         logger.info("Executing - DeletedRecordsExportNyplTasklet");
-        return executeDeletedRecordsExport(chunkContext, logger, RecapCommonConstants.NYPL, Boolean.TRUE);
+        return executeDeletedRecordsExport(chunkContext, logger, ScsbCommonConstants.NYPL, Boolean.TRUE);
     }
 }

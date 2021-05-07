@@ -1,6 +1,6 @@
 package org.recap.batch.service;
 
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class CheckAndNotifyPendingRequestService {
      * @return the string
      */
     public String checkPendingMsgesInQueue(String scsbCircUrl) {
-        return commonService.pendingRequest(scsbCircUrl, RecapConstants.NOTIFY_IF_PENDING_REQUEST);
+        return commonService.pendingRequest(scsbCircUrl, ScsbConstants.NOTIFY_IF_PENDING_REQUEST);
     }
 
 }

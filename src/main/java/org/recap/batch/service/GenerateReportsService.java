@@ -1,6 +1,6 @@
 package org.recap.batch.service;
 
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.batch.SolrIndexRequest;
 import org.recap.util.JobDataParameterUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class GenerateReportsService {
      */
     public String generateReport(String solrClientUrl, Date reportCreatedDate, String jobName) {
         SolrIndexRequest solrIndexRequest = getSolrIndexRequest(reportCreatedDate, jobName);
-        return commonService.getResponse(solrIndexRequest, solrClientUrl, RecapConstants.GENERATE_REPORT_URL, HttpMethod.POST);
+        return commonService.getResponse(solrIndexRequest, solrClientUrl, ScsbConstants.GENERATE_REPORT_URL, HttpMethod.POST);
 
     }
 
@@ -45,7 +45,7 @@ public class GenerateReportsService {
      */
     public String generateCgdReport(String solrClientUrl, Date reportCreatedDate, String jobName) {
         SolrIndexRequest solrIndexRequest = getSolrIndexRequest(reportCreatedDate, jobName);
-        return commonService.getResponse(solrIndexRequest, solrClientUrl, RecapConstants.GENERATE_CGD_ROUND_TRIP_REPORT_URL, HttpMethod.GET);
+        return commonService.getResponse(solrIndexRequest, solrClientUrl, ScsbConstants.GENERATE_CGD_ROUND_TRIP_REPORT_URL, HttpMethod.GET);
 
     }
 

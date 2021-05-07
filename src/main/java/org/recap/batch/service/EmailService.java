@@ -1,6 +1,6 @@
 package org.recap.batch.service;
 
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.EmailPayLoad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -28,7 +28,7 @@ public class EmailService {
     public String sendEmail(String solrClientUrl, EmailPayLoad emailPayLoad) {
         HttpHeaders headers = commonService.getHttpHeaders();
         HttpEntity<EmailPayLoad> httpEntity = new HttpEntity<>(emailPayLoad, headers);
-        ResponseEntity<String> responseEntity = commonService.getRestTemplate().exchange(solrClientUrl + RecapConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class);
+        ResponseEntity<String> responseEntity = commonService.getRestTemplate().exchange(solrClientUrl + ScsbConstants.BATCH_JOB_EMAIL_URL, HttpMethod.POST, httpEntity, String.class);
         return responseEntity.getBody();
     }
 }

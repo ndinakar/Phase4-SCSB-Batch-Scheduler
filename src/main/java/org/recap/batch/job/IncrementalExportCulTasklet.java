@@ -1,6 +1,6 @@
 package org.recap.batch.job;
 
-import org.recap.RecapCommonConstants;
+import org.recap.ScsbCommonConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepContribution;
@@ -26,6 +26,6 @@ public class IncrementalExportCulTasklet extends IncrementalExportTasklet implem
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         logger.info("Executing - IncrementalExportCulTasklet");
-        return executeIncrementalExport(chunkContext, logger, RecapCommonConstants.COLUMBIA);
+        return executeIncrementalExport(chunkContext, logger, ScsbCommonConstants.COLUMBIA);
     }
 }

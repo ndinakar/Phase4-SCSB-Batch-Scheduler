@@ -1,6 +1,6 @@
 package org.recap.batch.service;
 
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +24,6 @@ public class PurgeEmailAddressService {
      * @return status of purging email addresses process
      */
     public Map<String, String> purgeEmailAddress(String scsbCoreUrl) {
-        return commonService.executePurge(scsbCoreUrl, RecapConstants.PURGE_EMAIL_URL);
+        return commonService.executePurge(scsbCoreUrl, ScsbConstants.PURGE_EMAIL_URL);
     }
 }

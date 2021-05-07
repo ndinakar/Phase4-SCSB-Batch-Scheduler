@@ -1,10 +1,11 @@
 package org.recap.batch.service;
 
 import org.apache.commons.lang.StringUtils;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.batch.SolrIndexRequest;
 import org.recap.model.jpa.JobEntity;
+import org.recap.spring.SwaggerAPIProvider;
 import org.recap.util.JobDataParameterUtil;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -30,7 +31,7 @@ public class CommonService {
 
     public HttpEntity getHttpEntity() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
+        headers.set(ScsbCommonConstants.API_KEY, SwaggerAPIProvider.getInstance().getSwaggerApiKey());
         return new HttpEntity<>(headers);
     }
 
@@ -43,7 +44,7 @@ public class CommonService {
 
     public HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
+        headers.set(ScsbCommonConstants.API_KEY, SwaggerAPIProvider.getInstance().getSwaggerApiKey());
         return headers;
     }
 
@@ -68,9 +69,9 @@ public class CommonService {
 
     protected void setRequestParameterMap(Map<String, String>  requestParameterMap, String exportStringDate,JobDataParameterUtil jobDataParameterUtil,  Date createdDate) {
         if (StringUtils.isBlank(exportStringDate)) {
-            requestParameterMap.put(RecapConstants.DATE, jobDataParameterUtil.getDateFormatStringForExport(createdDate));
+            requestParameterMap.put(ScsbConstants.DATE, jobDataParameterUtil.getDateFormatStringForExport(createdDate));
         } else {
-            requestParameterMap.put(RecapConstants.DATE, exportStringDate);
+            requestParameterMap.put(ScsbConstants.DATE, exportStringDate);
         }
     }
 }

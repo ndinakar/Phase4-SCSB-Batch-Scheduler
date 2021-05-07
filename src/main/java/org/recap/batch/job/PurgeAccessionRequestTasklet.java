@@ -1,8 +1,8 @@
 package org.recap.batch.job;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.PurgeAccessionRequestsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,18 +45,18 @@ public class PurgeAccessionRequestTasklet extends JobCommonTasklet implements Ta
         try {
             updateJob(jobExecution, "PurgeAccessionRequestTasklet", Boolean.FALSE);
             Map<String, String> resultMap = purgeAccessionRequestsService.purgeAccessionRequests(scsbCoreUrl);
-            String status = resultMap.get(RecapCommonConstants.STATUS);
-            String message = resultMap.get(RecapCommonConstants.MESSAGE);
+            String status = resultMap.get(ScsbCommonConstants.STATUS);
+            String message = resultMap.get(ScsbCommonConstants.MESSAGE);
             logger.info("Purge Accession Requests status : {}", status);
             logger.info("Purge Accession Requests status message : {}", message);
-            executionContext.put(RecapConstants.JOB_STATUS, status);
-            executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, message);
+            executionContext.put(ScsbConstants.JOB_STATUS, status);
+            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, message);
             stepExecution.setExitStatus(new ExitStatus(status, message));
         } catch (Exception ex) {
-            logger.error("{} {}", RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
-            executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
-            executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, ExceptionUtils.getMessage(ex));
-            stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+            executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
+            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, ExceptionUtils.getMessage(ex));
+            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
         }
         return RepeatStatus.FINISHED;
     }

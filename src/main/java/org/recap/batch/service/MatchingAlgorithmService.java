@@ -1,7 +1,7 @@
 package org.recap.batch.service;
 
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.batch.SolrIndexRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -27,7 +27,7 @@ public class MatchingAlgorithmService {
      */
     public String initiateMatchingAlgorithm(String solrClientUrl, Date createdDate) {
         SolrIndexRequest solrIndexRequest = getSolrIndexRequest(createdDate);
-        return commonService.getResponse(solrIndexRequest, solrClientUrl, RecapConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST);
+        return commonService.getResponse(solrIndexRequest, solrClientUrl, ScsbConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST);
     }
 
     /**
@@ -38,7 +38,7 @@ public class MatchingAlgorithmService {
      */
     public SolrIndexRequest getSolrIndexRequest(Date createdDate) {
         SolrIndexRequest solrIndexRequest = new SolrIndexRequest();
-        solrIndexRequest.setProcessType(RecapCommonConstants.ONGOING_MATCHING_ALGORITHM_JOB);
+        solrIndexRequest.setProcessType(ScsbCommonConstants.ONGOING_MATCHING_ALGORITHM_JOB);
         solrIndexRequest.setCreatedDate(createdDate);
         return solrIndexRequest;
     }

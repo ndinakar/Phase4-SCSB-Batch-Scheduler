@@ -2,8 +2,8 @@ package org.recap.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.quartz.CronExpression;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.ScheduleJobRequest;
 import org.recap.model.ScheduleJobResponse;
 import org.recap.quartz.SchedulerService;
@@ -40,19 +40,19 @@ public class ScheduleJobsController {
         ScheduleJobResponse scheduleJobResponse = new ScheduleJobResponse();
         String message = null;
         try {
-            if (RecapConstants.SCHEDULE.equals(scheduleJobRequest.getScheduleType())) {
+            if (ScsbConstants.SCHEDULE.equals(scheduleJobRequest.getScheduleType())) {
                 message = schedulerService.scheduleJob(scheduleJobRequest.getJobName(), scheduleJobRequest.getCronExpression());
-            } else if (RecapConstants.RESCHEDULE.equals(scheduleJobRequest.getScheduleType())) {
+            } else if (ScsbConstants.RESCHEDULE.equals(scheduleJobRequest.getScheduleType())) {
                 message = schedulerService.rescheduleJob(scheduleJobRequest.getJobName(), scheduleJobRequest.getCronExpression());
-            } else if (RecapConstants.UNSCHEDULE.equals(scheduleJobRequest.getScheduleType())) {
+            } else if (ScsbConstants.UNSCHEDULE.equals(scheduleJobRequest.getScheduleType())) {
                 message = schedulerService.unscheduleJob(scheduleJobRequest.getJobName());
             }
-            if (StringUtils.containsIgnoreCase(message, RecapConstants.SUCCESS) && !RecapConstants.UNSCHEDULE.equals(scheduleJobRequest.getScheduleType())) {
+            if (StringUtils.containsIgnoreCase(message, ScsbConstants.SUCCESS) && !ScsbConstants.UNSCHEDULE.equals(scheduleJobRequest.getScheduleType())) {
                 CronExpression cronExpression = new CronExpression(scheduleJobRequest.getCronExpression());
                 scheduleJobResponse.setNextRunTime(cronExpression.getNextValidTimeAfter(new Date()));
             }
         } catch (Exception exception) {
-            logger.error(RecapCommonConstants.LOG_ERROR, exception);
+            logger.error(ScsbCommonConstants.LOG_ERROR, exception);
             message = exception.getMessage();
         }
         scheduleJobResponse.setMessage(message);

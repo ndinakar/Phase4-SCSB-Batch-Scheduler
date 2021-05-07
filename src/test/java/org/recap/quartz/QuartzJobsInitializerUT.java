@@ -8,7 +8,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.quartz.Scheduler;
 import org.recap.BaseTestCaseUT;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.jpa.JobEntity;
 import org.recap.repository.jpa.JobDetailsRepository;
 import org.springframework.batch.core.configuration.JobLocator;
@@ -58,8 +58,8 @@ public class QuartzJobsInitializerUT extends BaseTestCaseUT {
 
    @Test
     public void testInitializeJobsUnscheduled() {
-        Mockito.when(jobEntity.getStatus()).thenReturn(RecapConstants.UNSCHEDULED);
-        Mockito.when(jobEntity.getJobName()).thenReturn(RecapConstants.UNSCHEDULED);
+        Mockito.when(jobEntity.getStatus()).thenReturn(ScsbConstants.UNSCHEDULED);
+        Mockito.when(jobEntity.getJobName()).thenReturn(ScsbConstants.UNSCHEDULED);
         mockquartzJobsInitializer.initializeJobs();
         assertTrue(true);
     }
@@ -67,16 +67,16 @@ public class QuartzJobsInitializerUT extends BaseTestCaseUT {
 
     @Test
     public void testInitializeJobsScheduled() {
-        Mockito.when(jobEntity.getStatus()).thenReturn(RecapConstants.SCHEDULE);
-        Mockito.when(jobEntity.getJobName()).thenReturn(RecapConstants.SCHEDULE);
+        Mockito.when(jobEntity.getStatus()).thenReturn(ScsbConstants.SCHEDULE);
+        Mockito.when(jobEntity.getJobName()).thenReturn(ScsbConstants.SCHEDULE);
         mockquartzJobsInitializer.initializeJobs();
         assertTrue(true);
     }
 
     @Test
     public void testInitializeJobsException() throws Exception {
-        Mockito.when(jobEntity.getStatus()).thenReturn(RecapConstants.SCHEDULE);
-        Mockito.when(jobEntity.getJobName()).thenReturn(RecapConstants.SCHEDULE);
+        Mockito.when(jobEntity.getStatus()).thenReturn(ScsbConstants.SCHEDULE);
+        Mockito.when(jobEntity.getJobName()).thenReturn(ScsbConstants.SCHEDULE);
         Mockito.when(scheduler.scheduleJob(Mockito.any(),Mockito.any())).thenThrow(NullPointerException.class);
         mockquartzJobsInitializer.initializeJobs();
         assertTrue(true);

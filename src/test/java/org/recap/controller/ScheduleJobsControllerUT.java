@@ -1,13 +1,12 @@
 package org.recap.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.ScheduleJobRequest;
 import org.recap.model.ScheduleJobResponse;
 import org.recap.quartz.SchedulerService;
@@ -37,11 +36,11 @@ public class ScheduleJobsControllerUT extends BaseControllerUT {
 
     @Test
     public void testScheduleJob() throws Exception {
-        String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
+        String jobName = ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS;
         String cronExpression = "0/10 * * * * ? *";
         ScheduleJobRequest scheduleJobRequest = new ScheduleJobRequest();
         scheduleJobRequest.setJobName(jobName);
-        scheduleJobRequest.setScheduleType(RecapConstants.SCHEDULE);
+        scheduleJobRequest.setScheduleType(ScsbConstants.SCHEDULE);
         scheduleJobRequest.setCronExpression(cronExpression);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -58,11 +57,11 @@ public class ScheduleJobsControllerUT extends BaseControllerUT {
 
     @Test
     public void testScheduleJob_reschedule() throws Exception {
-        String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
+        String jobName = ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS;
         String cronExpression = "0/10 * * * * ? *";
         ScheduleJobRequest scheduleJobRequest = new ScheduleJobRequest();
         scheduleJobRequest.setJobName(jobName);
-        scheduleJobRequest.setScheduleType(RecapConstants.RESCHEDULE);
+        scheduleJobRequest.setScheduleType(ScsbConstants.RESCHEDULE);
         scheduleJobRequest.setCronExpression(cronExpression);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -78,11 +77,11 @@ public class ScheduleJobsControllerUT extends BaseControllerUT {
     }
     @Test
     public void testScheduleJob_unschedule() throws Exception {
-        String jobName = RecapCommonConstants.PURGE_EXCEPTION_REQUESTS;
+        String jobName = ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS;
         String cronExpression = "0/10 * * * * ? *";
         ScheduleJobRequest scheduleJobRequest = new ScheduleJobRequest();
         scheduleJobRequest.setJobName(jobName);
-        scheduleJobRequest.setScheduleType(RecapConstants.UNSCHEDULE);
+        scheduleJobRequest.setScheduleType(ScsbConstants.UNSCHEDULE);
         scheduleJobRequest.setCronExpression(cronExpression);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -99,7 +98,7 @@ public class ScheduleJobsControllerUT extends BaseControllerUT {
 
     @Test
     public void testScheduleJob_Exception() {
-        Mockito.when(scheduleJobRequest.getScheduleType()).thenReturn(RecapConstants.SCHEDULE);
+        Mockito.when(scheduleJobRequest.getScheduleType()).thenReturn(ScsbConstants.SCHEDULE);
         Mockito.when(schedulerService.scheduleJob(null,null)).thenThrow(NullPointerException.class);
         ScheduleJobResponse scheduleJobResponse=mockscheduleJobsController.scheduleJob(scheduleJobRequest);
         assertNull(scheduleJobResponse.getMessage());

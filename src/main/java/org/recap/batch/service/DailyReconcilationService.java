@@ -1,6 +1,6 @@
 package org.recap.batch.service;
 
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,6 @@ public class DailyReconcilationService {
      * @return status of the daily reconciliation process
      */
     public String dailyReconcilation(String scsbCoreUrl) {
-        return commonService.executeService(scsbCoreUrl,  RecapConstants.DAILY_RECONCILIATION_URL, HttpMethod.POST);
+        return commonService.executeService(scsbCoreUrl,  ScsbConstants.DAILY_RECONCILIATION_URL, HttpMethod.POST);
     }
 }

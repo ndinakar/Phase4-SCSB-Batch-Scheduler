@@ -1,11 +1,10 @@
 package org.recap.batch.job;
 
 import org.junit.Test;
-import org.junit.platform.commons.util.ReflectionUtils;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.AccessionReconcilationService;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -53,7 +52,7 @@ public class AccessionReconcilationTaskletUT extends BaseTestCase {
         execution.setCommitCount(2);
         ChunkContext context = new ChunkContext(new StepContext(execution));
         ReflectionTestUtils.setField(accessionReconcilationTasklet,"accessionReconcilationService",accessionReconcilationService);
-        Mockito.when(accessionReconcilationService.accessionReconcilation(scsbCircUrl)).thenReturn(RecapConstants.SUCCESS);
+        Mockito.when(accessionReconcilationService.accessionReconcilation(scsbCircUrl)).thenReturn(ScsbConstants.SUCCESS);
         Mockito.when(accessionReconcilationTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status = accessionReconcilationTasklet.execute(contribution,context);
         assertNotNull(status);

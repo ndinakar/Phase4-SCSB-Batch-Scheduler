@@ -1,7 +1,7 @@
 package org.recap.batch.job;
 
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobExecution;
@@ -35,10 +35,10 @@ public class SubmitCollectionTasklet extends JobCommonTasklet implements Tasklet
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         updateJob(jobExecution, "Submit Collection Tasklet", Boolean.TRUE);
-        String resultStatus = getResultStatus(jobExecution, stepExecution, logger, executionContext, RecapCommonConstants.SUBMIT_COLLECTION_JOB_INITIATE_QUEUE, RecapCommonConstants.SUBMIT_COLLECTION_JOB_COMPLETION_OUTGOING_QUEUE, RecapConstants.SUBMIT_COLLECTION_STATUS_NAME);
+        String resultStatus = getResultStatus(jobExecution, stepExecution, logger, executionContext, ScsbCommonConstants.SUBMIT_COLLECTION_JOB_INITIATE_QUEUE, ScsbCommonConstants.SUBMIT_COLLECTION_JOB_COMPLETION_OUTGOING_QUEUE, ScsbConstants.SUBMIT_COLLECTION_STATUS_NAME);
 
         logger.info("Job Id : {} Submit Collection Job Result Status : {}", jobExecution.getId(), resultStatus);
-        setExecutionContext(executionContext, stepExecution, RecapConstants.SUBMIT_COLLECTION_STATUS_NAME + " " + resultStatus);
+        setExecutionContext(executionContext, stepExecution, ScsbConstants.SUBMIT_COLLECTION_STATUS_NAME + " " + resultStatus);
         return RepeatStatus.FINISHED;
     }
 }

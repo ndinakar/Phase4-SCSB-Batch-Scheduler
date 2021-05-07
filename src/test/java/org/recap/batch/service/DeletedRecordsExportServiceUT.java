@@ -1,14 +1,13 @@
 package org.recap.batch.service;
 
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
@@ -29,24 +28,24 @@ public class DeletedRecordsExportServiceUT {
 
     @Test
     public void testDeletedRecordsExportPulService() throws Exception {
-        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, RecapConstants.DELETED_RECORDS_EXPORT_PUL,createdDate,exportStringDate, RecapCommonConstants.PRINCETON)).thenReturn(RecapConstants.SUCCESS);
-        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, RecapConstants.DELETED_RECORDS_EXPORT_PUL,createdDate,exportStringDate, RecapCommonConstants.PRINCETON)).thenCallRealMethod();
-        String status=recordsExportService.exportRecords(scsbEtlUrl, RecapConstants.DELETED_RECORDS_EXPORT_PUL,createdDate,exportStringDate, RecapCommonConstants.PRINCETON);
+        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT_PUL,createdDate,exportStringDate, ScsbCommonConstants.PRINCETON)).thenReturn(ScsbConstants.SUCCESS);
+        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT_PUL,createdDate,exportStringDate, ScsbCommonConstants.PRINCETON)).thenCallRealMethod();
+        String status=recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT_PUL,createdDate,exportStringDate, ScsbCommonConstants.PRINCETON);
         assertNotNull(status);
     }
 
     @Test
     public void testDeletedRecordsExportCulService() throws Exception {
-        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, RecapConstants.DELETED_RECORDS_EXPORT_CUL,createdDate,exportStringDate,RecapCommonConstants.COLUMBIA)).thenReturn(RecapConstants.SUCCESS);
-        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, RecapConstants.DELETED_RECORDS_EXPORT_CUL,createdDate,exportStringDate,RecapCommonConstants.COLUMBIA)).thenCallRealMethod();
-        String status=recordsExportService.exportRecords(scsbEtlUrl, RecapConstants.DELETED_RECORDS_EXPORT_CUL,createdDate,exportStringDate,RecapCommonConstants.COLUMBIA);
+        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT_CUL,createdDate,exportStringDate,ScsbCommonConstants.COLUMBIA)).thenReturn(ScsbConstants.SUCCESS);
+        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT_CUL,createdDate,exportStringDate,ScsbCommonConstants.COLUMBIA)).thenCallRealMethod();
+        String status=recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT_CUL,createdDate,exportStringDate,ScsbCommonConstants.COLUMBIA);
         assertNotNull(status);
     }
     @Test
     public void testDeletedRecordsExportNyplService() throws Exception {
-        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, RecapConstants.DELETED_RECORDS_EXPORT_NYPL,createdDate,exportStringDate,RecapCommonConstants.NYPL)).thenReturn(RecapConstants.SUCCESS);
-        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, RecapConstants.DELETED_RECORDS_EXPORT_NYPL,createdDate,exportStringDate,RecapCommonConstants.NYPL)).thenCallRealMethod();
-        String status=recordsExportService.exportRecords(scsbEtlUrl, RecapConstants.DELETED_RECORDS_EXPORT_NYPL,createdDate,exportStringDate,RecapCommonConstants.NYPL);
+        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT_NYPL,createdDate,exportStringDate,ScsbCommonConstants.NYPL)).thenReturn(ScsbConstants.SUCCESS);
+        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT_NYPL,createdDate,exportStringDate,ScsbCommonConstants.NYPL)).thenCallRealMethod();
+        String status=recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT_NYPL,createdDate,exportStringDate,ScsbCommonConstants.NYPL);
         assertNotNull(status);
     }
 

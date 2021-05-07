@@ -3,7 +3,7 @@ package org.recap;
 /**
  * Created by rajeshbabuk on 7/4/17.
  */
-public class RecapConstants {
+public class ScsbConstants {
 
     public static final String SUCCESS = "SUCCESS";
     public static final String SCHEDULE = "Schedule";
@@ -89,5 +89,5 @@ public class RecapConstants {
 
     public static final String FAILURE_QUEUE_MESSAGE = "Message undelivered or unreceived.";
 
-    private RecapConstants(){}
+    private ScsbConstants(){}
 }

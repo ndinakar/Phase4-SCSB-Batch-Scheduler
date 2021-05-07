@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.IdentifyPendingRequestService;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -52,7 +52,7 @@ public class IdentifyAndNotifyPendingRequestTaskletUT extends BaseTestCase {
         execution.setCommitCount(2);
         ChunkContext context = new ChunkContext(new StepContext(execution));
         ReflectionTestUtils.setField(identifyAndNotifyPendingRequestTasklet,"identifyPendingRequestService",identifyPendingRequestService);
-        Mockito.when(identifyPendingRequestService.identifyPendingRequestService(scsbCircUrl)).thenReturn(RecapConstants.SUCCESS);
+        Mockito.when(identifyPendingRequestService.identifyPendingRequestService(scsbCircUrl)).thenReturn(ScsbConstants.SUCCESS);
         Mockito.when(identifyAndNotifyPendingRequestTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status = identifyAndNotifyPendingRequestTasklet.execute(contribution,context);
         assertNotNull(status);

@@ -2,7 +2,7 @@ package org.recap.quartz;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.recap.RecapCommonConstants;
+import org.recap.ScsbCommonConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
@@ -92,7 +92,7 @@ public class QuartzJobLauncher extends QuartzJobBean {
             JobExecution jobExecution = jobLauncher.run(job, jobParametersBuilder.toJobParameters());
             logger.info("{}_{} was completed successfully. Status : {}", job.getName(), jobExecution.getId(), jobExecution.getStatus());
         } catch (Exception exception) {
-            logger.error(RecapCommonConstants.LOG_ERROR, exception);
+            logger.error(ScsbCommonConstants.LOG_ERROR, exception);
         }
     }
 }

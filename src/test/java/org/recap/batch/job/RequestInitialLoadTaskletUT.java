@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.RequestInitialLoadService;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -52,7 +52,7 @@ public class RequestInitialLoadTaskletUT extends BaseTestCase {
         execution.setCommitCount(2);
         ChunkContext context = new ChunkContext(new StepContext(execution));
         ReflectionTestUtils.setField(requestInitialLoadTasklet,"requestInitialLoadService",requestInitialLoadService);
-        Mockito.when(requestInitialLoadService.requestInitialLoad(scsbCircUrl)).thenReturn(RecapConstants.SUCCESS);
+        Mockito.when(requestInitialLoadService.requestInitialLoad(scsbCircUrl)).thenReturn(ScsbConstants.SUCCESS);
         Mockito.when(requestInitialLoadTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status = requestInitialLoadTasklet.execute(contribution,context);
         assertNotNull(status);

@@ -7,8 +7,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import org.recap.BaseTestCaseUT;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.DataExportJobSequenceService;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -70,7 +70,7 @@ public class DataExportJobSequenceTaskletUT extends BaseTestCaseUT {
         StepExecution execution = MetaDataInstanceFactory.createStepExecution();
         ChunkContext context = new ChunkContext(new StepContext(execution));
         ReflectionTestUtils.setField(dataExportJobSequenceTasklet,"dataExportJobSequenceService",dataExportJobSequenceServiceMock);
-        Mockito.when(dataExportJobSequenceServiceMock.dataExportJobSequence(Mockito.anyString(),Mockito.any(Date.class),Mockito.anyString())).thenReturn(RecapConstants.SUCCESS);
+        Mockito.when(dataExportJobSequenceServiceMock.dataExportJobSequence(Mockito.anyString(),Mockito.any(Date.class),Mockito.anyString())).thenReturn(ScsbConstants.SUCCESS);
         Mockito.when(dataExportJobSequenceTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status = dataExportJobSequenceTasklet.execute(contribution,context);
         assertNotNull(status);
@@ -86,7 +86,7 @@ public class DataExportJobSequenceTaskletUT extends BaseTestCaseUT {
         String exportStringDate = "time=1594711136358";
         Date createdDate = jobExecution.getCreateTime();
         ReflectionTestUtils.setField(dataExportJobSequenceTasklet,"dataExportJobSequenceService",dataExportJobSequenceServiceMock);
-        Mockito.when(dataExportJobSequenceServiceMock.dataExportJobSequence(scsbEtlUrl,createdDate,null)).thenReturn(RecapCommonConstants.FAIL);
+        Mockito.when(dataExportJobSequenceServiceMock.dataExportJobSequence(scsbEtlUrl,createdDate,null)).thenReturn(ScsbCommonConstants.FAIL);
         Mockito.when(dataExportJobSequenceTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status = dataExportJobSequenceTasklet.execute(contribution,context);
         assertNotNull(status);

@@ -1,6 +1,6 @@
 package org.recap.batch.service;
 
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +23,6 @@ public class PurgeExceptionRequestsService {
      * @return status of purging exception requests process
      */
     public Map<String, String> purgeExceptionRequests(String scsbCoreUrl) {
-        return commonService.executePurge(scsbCoreUrl, RecapConstants.PURGE_EXCEPTION_REQUEST_URL);
+        return commonService.executePurge(scsbCoreUrl, ScsbConstants.PURGE_EXCEPTION_REQUEST_URL);
     }
 }
