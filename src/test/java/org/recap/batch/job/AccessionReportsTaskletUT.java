@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.GenerateReportsService;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -43,7 +43,7 @@ public class AccessionReportsTaskletUT extends BaseTestCase {
         StepExecution execution = MetaDataInstanceFactory.createStepExecution();
         execution.setCommitCount(2);
         ChunkContext context = new ChunkContext(new StepContext(execution));
-        Mockito.when(generateReportsService.generateReport(solrClientUrl, createdDate, RecapConstants.GENERATE_ACCESSION_REPORT)).thenReturn(RecapConstants.SUCCESS);
+        Mockito.when(generateReportsService.generateReport(solrClientUrl, createdDate, ScsbConstants.GENERATE_ACCESSION_REPORT)).thenReturn(ScsbConstants.SUCCESS);
         Mockito.when(accessionReportsTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status = accessionReportsTasklet.execute(contribution,context);
         assertNotNull(status);
@@ -58,7 +58,7 @@ public class AccessionReportsTaskletUT extends BaseTestCase {
         execution.setCommitCount(2);
         ChunkContext context = new ChunkContext(new StepContext(execution));
         ReflectionTestUtils.setField(accessionReportsTasklet,"generateReportsService",generateReportsService);
-        Mockito.when(generateReportsService.generateReport(solrClientUrl, createdDate, RecapConstants.GENERATE_ACCESSION_REPORT)).thenReturn(RecapConstants.SUCCESS);
+        Mockito.when(generateReportsService.generateReport(solrClientUrl, createdDate, ScsbConstants.GENERATE_ACCESSION_REPORT)).thenReturn(ScsbConstants.SUCCESS);
         Mockito.when(accessionReportsTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status = accessionReportsTasklet.execute(contribution,context);
         assertNotNull(status);

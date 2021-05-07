@@ -2,8 +2,8 @@ package org.recap.batch.job;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.DataExportJobSequenceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,25 +44,25 @@ public class DataExportJobSequenceTasklet extends JobCommonTasklet implements Ta
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         try {
-            String exportStringDate = jobExecution.getJobParameters().getString(RecapConstants.FROM_DATE);
+            String exportStringDate = jobExecution.getJobParameters().getString(ScsbConstants.FROM_DATE);
             Date createdDate = jobExecution.getCreateTime();
             updateJob(jobExecution,"Data Export Job Sequence Tasklet", Boolean.TRUE);
             String resultStatus = dataExportJobSequenceService.dataExportJobSequence(scsbEtlUrl, createdDate, exportStringDate);
             logger.info("Incremental and delete data export status : {}", resultStatus);
-            if (StringUtils.containsIgnoreCase(RecapCommonConstants.FAIL, resultStatus)) {
-                executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
-                executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.DATA_EXPORT_STATUS_NAME + " " + resultStatus);
-                stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, RecapConstants.DATA_EXPORT_STATUS_NAME + " " + resultStatus));
+            if (StringUtils.containsIgnoreCase(ScsbCommonConstants.FAIL, resultStatus)) {
+                executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
+                executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, ScsbConstants.DATA_EXPORT_STATUS_NAME + " " + resultStatus);
+                stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ScsbConstants.DATA_EXPORT_STATUS_NAME + " " + resultStatus));
             } else {
-                executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.SUCCESS);
-                executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.DATA_EXPORT_STATUS_NAME + " " + resultStatus);
-                stepExecution.setExitStatus(new ExitStatus(RecapConstants.SUCCESS, RecapConstants.DATA_EXPORT_STATUS_NAME + " " + resultStatus));
+                executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.SUCCESS);
+                executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, ScsbConstants.DATA_EXPORT_STATUS_NAME + " " + resultStatus);
+                stepExecution.setExitStatus(new ExitStatus(ScsbConstants.SUCCESS, ScsbConstants.DATA_EXPORT_STATUS_NAME + " " + resultStatus));
             }
         } catch (Exception ex) {
-            logger.error("{} {}", RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
-            executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
-            executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.DATA_EXPORT_STATUS_NAME + " " + ExceptionUtils.getMessage(ex));
-            stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+            executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
+            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, ScsbConstants.DATA_EXPORT_STATUS_NAME + " " + ExceptionUtils.getMessage(ex));
+            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
         }
         return RepeatStatus.FINISHED;
     }

@@ -1,6 +1,6 @@
 package org.recap.batch.job;
 
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
@@ -31,15 +31,15 @@ public class StartOrStopPollingLongRunningJobsTasklet implements Tasklet {
         logger.info("Executing StartOrStopPollingLongRunningJobsTasklet");
         StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
         JobExecution jobExecution = stepExecution.getJobExecution();
-        String action = jobExecution.getJobParameters().getString(RecapConstants.POLLING_ACTION);
-        if (RecapConstants.START.equalsIgnoreCase(action)) {
-            RecapConstants.POLL_LONG_RUNNING_JOBS = true;
+        String action = jobExecution.getJobParameters().getString(ScsbConstants.POLLING_ACTION);
+        if (ScsbConstants.START.equalsIgnoreCase(action)) {
+            ScsbConstants.POLL_LONG_RUNNING_JOBS = true;
             logger.info("Started polling long running jobs");
-            stepExecution.setExitStatus(new ExitStatus(RecapConstants.SUCCESS,  "Started polling long running jobs"));
-        } else if (RecapConstants.STOP.equalsIgnoreCase(action)) {
-            RecapConstants.POLL_LONG_RUNNING_JOBS = false;
+            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.SUCCESS,  "Started polling long running jobs"));
+        } else if (ScsbConstants.STOP.equalsIgnoreCase(action)) {
+            ScsbConstants.POLL_LONG_RUNNING_JOBS = false;
             logger.info("Stopped polling long running jobs");
-            stepExecution.setExitStatus(new ExitStatus(RecapConstants.SUCCESS,  "Stopped polling long running jobs"));
+            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.SUCCESS,  "Stopped polling long running jobs"));
         }
         return RepeatStatus.FINISHED;
     }

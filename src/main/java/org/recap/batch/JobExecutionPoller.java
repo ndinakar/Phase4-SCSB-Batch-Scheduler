@@ -1,8 +1,8 @@
 package org.recap.batch;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.EmailService;
 import org.recap.model.EmailPayLoad;
 import org.recap.model.jpa.JobEntity;
@@ -60,11 +60,11 @@ public class JobExecutionPoller {
             while (true) {
                 try {
                     Thread.sleep(1000 * jobExecutionPollerTime * 60);
-                    if (RecapConstants.POLL_LONG_RUNNING_JOBS) {
+                    if (ScsbConstants.POLL_LONG_RUNNING_JOBS) {
                         sendNotificationMailForLongRunningJobs();
                     }
                 } catch (Exception ex) {
-                    logger.error(RecapCommonConstants.LOG_ERROR, ex);
+                    logger.error(ScsbCommonConstants.LOG_ERROR, ex);
                 }
             }
         }
@@ -87,7 +87,7 @@ public class JobExecutionPoller {
                                 EmailPayLoad emailPayLoad = new EmailPayLoad();
                                 emailPayLoad.setJobName(jobName);
                                 emailPayLoad.setJobDescription(null != jobEntity ? jobEntity.getJobDescription() : null);
-                                emailPayLoad.setJobAction(RecapConstants.STARTED);
+                                emailPayLoad.setJobAction(ScsbConstants.STARTED);
                                 emailPayLoad.setStartDate(jobExecution.getStartTime());
                                 emailPayLoad.setStatus(getRunningStatus(diffTime));
                                 emailPayLoad.setMessage("Job with execution id \'" + jobExecution.getId() + "\' is running longer than the anticipated time.");
@@ -117,7 +117,7 @@ public class JobExecutionPoller {
             } else if (diffMinutes > 0) {
                 jobStatus = jobStatus + diffMinutes + " minute(s).";
             } else {
-                jobStatus = RecapConstants.RUNNING;
+                jobStatus = ScsbConstants.RUNNING;
             }
             return jobStatus;
         }

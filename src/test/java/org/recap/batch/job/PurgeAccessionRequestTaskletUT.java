@@ -4,8 +4,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.PurgeAccessionRequestsService;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -58,8 +58,8 @@ public class PurgeAccessionRequestTaskletUT extends BaseTestCase {
         execution.setCommitCount(2);
         ChunkContext context = new ChunkContext(new StepContext(execution));
         Map<String, String> resultMap= new HashMap<>();
-        resultMap.put(RecapCommonConstants.STATUS, RecapConstants.SUCCESS);
-        resultMap.put(RecapCommonConstants.MESSAGE, RecapConstants.SUCCESS);
+        resultMap.put(ScsbCommonConstants.STATUS, ScsbConstants.SUCCESS);
+        resultMap.put(ScsbCommonConstants.MESSAGE, ScsbConstants.SUCCESS);
 
         ReflectionTestUtils.setField(purgeAccessionRequestTasklet,"purgeAccessionRequestsService",purgeAccessionRequestsService);
         Mockito.when(purgeAccessionRequestsService.purgeAccessionRequests(scsbCircUrl)).thenReturn(resultMap);

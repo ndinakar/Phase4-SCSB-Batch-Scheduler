@@ -1,6 +1,6 @@
 package org.recap.batch.service;
 
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -21,6 +21,6 @@ public class AccessionReconcilationService {
      * @return status of the accession reconciliation process
      */
     public String accessionReconcilation(String scsbCoreUrl) {
-        return commonService.executeService(scsbCoreUrl,  RecapConstants.ACCESSION_RECOCILIATION_URL, HttpMethod.POST);
+        return commonService.executeService(scsbCoreUrl,  ScsbConstants.ACCESSION_RECOCILIATION_URL, HttpMethod.POST);
     }
 }

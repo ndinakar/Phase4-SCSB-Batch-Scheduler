@@ -6,8 +6,8 @@ import org.quartz.Scheduler;
 import org.quartz.TriggerKey;
 import org.quartz.impl.JobDetailImpl;
 import org.quartz.impl.triggers.CronTriggerImpl;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.job.JobCommonTasklet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ public class SchedulerService {
         try {
             boolean validCronExpression = isValidExpression(cronExpression);
             if (!validCronExpression) {
-                return RecapConstants.ERROR_INVALID_CRON_EXPRESSION;
+                return ScsbConstants.ERROR_INVALID_CRON_EXPRESSION;
             } else {
                 JobKey jobKey = new JobKey(jobName);
                 JobDetail jobDetail = scheduler.getJobDetail(jobKey);
@@ -56,7 +56,7 @@ public class SchedulerService {
                     jobCommonTasklet.setJobDetailImpl(jobDetailImpl, jobName, jobLauncher, jobLocator);
                    }
                 CronTriggerImpl trigger = new CronTriggerImpl();
-                trigger.setName(jobName + RecapConstants.TRIGGER_SUFFIX);
+                trigger.setName(jobName + ScsbConstants.TRIGGER_SUFFIX);
                 trigger.setJobKey(jobKey);
                 trigger.setCronExpression(cronExpression);
                 if (null != jobDetail) {
@@ -66,10 +66,10 @@ public class SchedulerService {
                 }
             }
         } catch (Exception ex) {
-            logger.error(RecapCommonConstants.LOG_ERROR, ex);
-            return RecapConstants.ERROR_JOB_FAILED_SCHEDULING;
+            logger.error(ScsbCommonConstants.LOG_ERROR, ex);
+            return ScsbConstants.ERROR_JOB_FAILED_SCHEDULING;
         }
-        return RecapConstants.JOB_SUCCESS_SCHEDULING;
+        return ScsbConstants.JOB_SUCCESS_SCHEDULING;
     }
 
     /**
@@ -83,18 +83,18 @@ public class SchedulerService {
         try {
             boolean validCronExpression = isValidExpression(cronExpression);
             if (!validCronExpression) {
-                return RecapConstants.ERROR_INVALID_CRON_EXPRESSION;
+                return ScsbConstants.ERROR_INVALID_CRON_EXPRESSION;
             } else {
-                TriggerKey triggerKey = new TriggerKey(jobName + RecapConstants.TRIGGER_SUFFIX);
+                TriggerKey triggerKey = new TriggerKey(jobName + ScsbConstants.TRIGGER_SUFFIX);
                 CronTriggerImpl trigger = (CronTriggerImpl) scheduler.getTrigger(triggerKey);
                 trigger.setCronExpression(cronExpression);
                 scheduler.rescheduleJob(triggerKey, trigger);
             }
         } catch (Exception ex) {
-            logger.error(RecapCommonConstants.LOG_ERROR, ex);
-            return RecapConstants.ERROR_JOB_FAILED_RESCHEDULING;
+            logger.error(ScsbCommonConstants.LOG_ERROR, ex);
+            return ScsbConstants.ERROR_JOB_FAILED_RESCHEDULING;
         }
-        return RecapConstants.JOB_SUCCESS_RESCHEDULING;
+        return ScsbConstants.JOB_SUCCESS_RESCHEDULING;
     }
 
     /**
@@ -105,13 +105,13 @@ public class SchedulerService {
      */
     public String unscheduleJob(String jobName) {
         try {
-            TriggerKey triggerKey = new TriggerKey(jobName + RecapConstants.TRIGGER_SUFFIX);
+            TriggerKey triggerKey = new TriggerKey(jobName + ScsbConstants.TRIGGER_SUFFIX);
             scheduler.unscheduleJob(triggerKey);
         } catch (Exception ex) {
-            logger.error(RecapCommonConstants.LOG_ERROR, ex);
-            return RecapConstants.ERROR_JOB_FAILED_UNSCHEDULING;
+            logger.error(ScsbCommonConstants.LOG_ERROR, ex);
+            return ScsbConstants.ERROR_JOB_FAILED_UNSCHEDULING;
         }
-        return RecapConstants.JOB_SUCCESS_UNSCHEDULING;
+        return ScsbConstants.JOB_SUCCESS_UNSCHEDULING;
     }
 
 }

@@ -12,8 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCaseUT;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.UpdateJobDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,17 +78,17 @@ public class JobCommonTaskletUT extends BaseTestCaseUT {
         JobExecution jobExecution = execution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         message.setMessageId("1");
-        message.setBody(RecapCommonConstants.JOB_ID + ":" + jobExecution.getId());
+        message.setBody(ScsbCommonConstants.JOB_ID + ":" + jobExecution.getId());
         exchange.setIn(message);
-        String resultStatus = RecapCommonConstants.JOB_ID + ":" + jobExecution.getId() +"|" + RepeatStatus.FINISHED;
+        String resultStatus = ScsbCommonConstants.JOB_ID + ":" + jobExecution.getId() +"|" + RepeatStatus.FINISHED;
         Mockito.when(camelContext.getRouteController()).thenReturn(routeController);
-        Mockito.doNothing().when(routeController).startRoute(RecapCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE);
-        Mockito.when(camelContext.getEndpoint(RecapCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE)).thenReturn(endpoint);
+        Mockito.doNothing().when(routeController).startRoute(ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE);
+        Mockito.when(camelContext.getEndpoint(ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE)).thenReturn(endpoint);
         Mockito.when(endpoint.createPollingConsumer()).thenReturn(consumer);
         Mockito.when(consumer.receive()).thenReturn(exchange);
         Mockito.when(exchange.getIn()).thenReturn(message);
         Mockito.when(message.getBody()).thenReturn(resultStatus);
-        String status = jobCommonTasklet.getResultStatus(jobExecution, execution, logger, executionContext, RecapCommonConstants.ACCESSION_JOB_INITIATE_QUEUE, RecapCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE, RecapConstants.ACCESSION_STATUS_NAME);
+        String status = jobCommonTasklet.getResultStatus(jobExecution, execution, logger, executionContext, ScsbCommonConstants.ACCESSION_JOB_INITIATE_QUEUE, ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE, ScsbConstants.ACCESSION_STATUS_NAME);
         assertEquals("FINISHED",status);
     }
 
@@ -99,18 +99,18 @@ public class JobCommonTaskletUT extends BaseTestCaseUT {
         JobExecution jobExecution = execution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         message.setMessageId("1");
-        message.setBody(RecapCommonConstants.JOB_ID + ":" + jobExecution.getId());
+        message.setBody(ScsbCommonConstants.JOB_ID + ":" + jobExecution.getId());
         exchange.setIn(message);
         String resultStatus = "test" + RepeatStatus.FINISHED;
         Mockito.when(camelContext.getRouteController()).thenReturn(routeController);
-        Mockito.doNothing().when(routeController).startRoute(RecapCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE);
-        Mockito.when(camelContext.getEndpoint(RecapCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE)).thenReturn(endpoint);
+        Mockito.doNothing().when(routeController).startRoute(ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE);
+        Mockito.when(camelContext.getEndpoint(ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE)).thenReturn(endpoint);
         Mockito.when(endpoint.createPollingConsumer()).thenReturn(consumer);
         Mockito.when(consumer.receive()).thenReturn(exchange);
         Mockito.when(exchange.getIn()).thenReturn(message);
         Mockito.when(message.getBody()).thenReturn(resultStatus);
-        String status = jobCommonTasklet.getResultStatus(jobExecution, execution, logger, executionContext, RecapCommonConstants.ACCESSION_JOB_INITIATE_QUEUE, RecapCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE, RecapConstants.ACCESSION_STATUS_NAME);
-        assertEquals(RecapConstants.FAILURE + " - " + RecapConstants.FAILURE_QUEUE_MESSAGE,status);
+        String status = jobCommonTasklet.getResultStatus(jobExecution, execution, logger, executionContext, ScsbCommonConstants.ACCESSION_JOB_INITIATE_QUEUE, ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE, ScsbConstants.ACCESSION_STATUS_NAME);
+        assertEquals(ScsbConstants.FAILURE + " - " + ScsbConstants.FAILURE_QUEUE_MESSAGE,status);
     }
 
     @Test
@@ -121,10 +121,10 @@ public class JobCommonTaskletUT extends BaseTestCaseUT {
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         Date createdDate = jobExecution.getCreateTime();
         Map<String, String> requestMap = new HashMap<>();
-        requestMap.put(RecapCommonConstants.JOB_ID, String.valueOf(jobExecution.getId()));
-        requestMap.put(RecapCommonConstants.PROCESS_TYPE, RecapCommonConstants.ONGOING_MATCHING_ALGORITHM_JOB);
-        requestMap.put(RecapCommonConstants.CREATED_DATE, createdDate.toString());
-        String status = jobCommonTasklet.getResultStatus(jobExecution, execution, logger, executionContext, RecapCommonConstants.ACCESSION_JOB_INITIATE_QUEUE, RecapCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE, RecapConstants.ACCESSION_STATUS_NAME);
+        requestMap.put(ScsbCommonConstants.JOB_ID, String.valueOf(jobExecution.getId()));
+        requestMap.put(ScsbCommonConstants.PROCESS_TYPE, ScsbCommonConstants.ONGOING_MATCHING_ALGORITHM_JOB);
+        requestMap.put(ScsbCommonConstants.CREATED_DATE, createdDate.toString());
+        String status = jobCommonTasklet.getResultStatus(jobExecution, execution, logger, executionContext, ScsbCommonConstants.ACCESSION_JOB_INITIATE_QUEUE, ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE, ScsbConstants.ACCESSION_STATUS_NAME);
         assertNull(status);
     }
 
@@ -134,7 +134,7 @@ public class JobCommonTaskletUT extends BaseTestCaseUT {
         execution.setCommitCount(2);
         JobExecution jobExecution = execution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
-        ExecutionContext status = jobCommonTasklet.setExecutionContext( executionContext,execution,RecapConstants.SUCCESS);
+        ExecutionContext status = jobCommonTasklet.setExecutionContext( executionContext,execution, ScsbConstants.SUCCESS);
         assertNotNull(status);
     }
     @Test
@@ -143,7 +143,7 @@ public class JobCommonTaskletUT extends BaseTestCaseUT {
         execution.setCommitCount(2);
         JobExecution jobExecution = execution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
-        ExecutionContext status = jobCommonTasklet.setExecutionContext( executionContext,execution,RecapCommonConstants.FAIL);
+        ExecutionContext status = jobCommonTasklet.setExecutionContext( executionContext,execution,ScsbCommonConstants.FAIL);
         assertNotNull(status);
     }
 
@@ -159,7 +159,7 @@ public class JobCommonTaskletUT extends BaseTestCaseUT {
     @Test
     public void getCreatedDate() throws Exception {
         Mockito.when(jobExecution.getJobParameters()).thenReturn(jobParameters);
-        Mockito.when(jobParameters.getString(RecapConstants.FROM_DATE)).thenReturn("2021-01-01");
+        Mockito.when(jobParameters.getString(ScsbConstants.FROM_DATE)).thenReturn("2021-01-01");
         Date createdDate = jobCommonTasklet.getCreatedDate(jobExecution);
         assertNotNull(createdDate);
     }
@@ -167,7 +167,7 @@ public class JobCommonTaskletUT extends BaseTestCaseUT {
     @Test
     public void getCreatedDateParseException() throws Exception {
         Mockito.when(jobExecution.getJobParameters()).thenReturn(jobParameters);
-        Mockito.when(jobParameters.getString(RecapConstants.FROM_DATE)).thenReturn(new Date().toString());
+        Mockito.when(jobParameters.getString(ScsbConstants.FROM_DATE)).thenReturn(new Date().toString());
         Date createdDate = jobCommonTasklet.getCreatedDate(jobExecution);
         assertNull(createdDate);
     }

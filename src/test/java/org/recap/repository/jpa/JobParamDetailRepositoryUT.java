@@ -2,7 +2,7 @@ package org.recap.repository.jpa;
 
 import org.junit.Test;
 import org.recap.BaseTestCase;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.jpa.JobParamEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,9 +19,9 @@ public class JobParamDetailRepositoryUT extends BaseTestCase {
 
     @Test
     public void findByJobName() throws Exception {
-        JobParamEntity byJobName = jobParamDetailRepository.findByJobName(RecapConstants.GENERATE_ACCESSION_REPORT_JOB);
+        JobParamEntity byJobName = jobParamDetailRepository.findByJobName(ScsbConstants.GENERATE_ACCESSION_REPORT_JOB);
         assertNotNull(byJobName);
         assertNotNull(byJobName.getJobName());
-        assertEquals(RecapConstants.GENERATE_ACCESSION_REPORT_JOB, byJobName.getJobName());
+        assertEquals(ScsbConstants.GENERATE_ACCESSION_REPORT_JOB, byJobName.getJobName());
     }
 }

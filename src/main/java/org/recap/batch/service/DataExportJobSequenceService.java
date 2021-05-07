@@ -1,6 +1,6 @@
 package org.recap.batch.service;
 
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.util.JobDataParameterUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -36,7 +36,7 @@ public class DataExportJobSequenceService {
         Map<String, String> requestParameterMap = new HashMap<>();
         commonService.setRequestParameterMap(requestParameterMap, exportStringDate, jobDataParameterUtil, createdDate);
 
-        ResponseEntity<String> responseEntity = new RestTemplate().exchange(scsbEtlUrl + RecapConstants.DATA_EXPORT_JOB_SEQUENCE_URL, HttpMethod.GET, httpEntity, String.class, requestParameterMap);
+        ResponseEntity<String> responseEntity = new RestTemplate().exchange(scsbEtlUrl + ScsbConstants.DATA_EXPORT_JOB_SEQUENCE_URL, HttpMethod.GET, httpEntity, String.class, requestParameterMap);
         return responseEntity.getBody();
     }
 }

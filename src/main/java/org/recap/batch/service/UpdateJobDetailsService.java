@@ -2,7 +2,7 @@ package org.recap.batch.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.quartz.CronExpression;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.jpa.JobEntity;
 import org.recap.repository.jpa.JobDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +55,7 @@ public class UpdateJobDetailsService {
         HttpHeaders headers = commonService.getHttpHeaders();
         HttpEntity<JobEntity> httpEntity = new HttpEntity<>(jobEntity, headers);
 
-        ResponseEntity<String> responseEntity = commonService.getRestTemplate().exchange(solrClientUrl + RecapConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class);
+        ResponseEntity<String> responseEntity = commonService.getRestTemplate().exchange(solrClientUrl + ScsbConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class);
         return responseEntity.getBody();
     }
 }

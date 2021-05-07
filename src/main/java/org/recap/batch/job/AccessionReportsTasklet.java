@@ -1,8 +1,8 @@
 package org.recap.batch.job;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.GenerateReportsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,14 +45,14 @@ public class AccessionReportsTasklet extends JobCommonTasklet implements Tasklet
         try {
             Date createdDate = getCreatedDate(jobExecution);
             updateJob(jobExecution,"Accession Reports Tasklet", Boolean.TRUE);
-            String resultStatus = generateReportsService.generateReport(solrClientUrl, createdDate, RecapConstants.GENERATE_ACCESSION_REPORT_JOB);
+            String resultStatus = generateReportsService.generateReport(solrClientUrl, createdDate, ScsbConstants.GENERATE_ACCESSION_REPORT_JOB);
             logger.info("Accession Report status : {}", resultStatus);
             setExecutionContext(executionContext, stepExecution, resultStatus);
             } catch (Exception ex) {
-            logger.error("{} {}", RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
-            executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
-            executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, RecapConstants.ACCESSION_REPORT_STATUS_NAME + " " + ExceptionUtils.getMessage(ex));
-            stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+            executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
+            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, ScsbConstants.ACCESSION_REPORT_STATUS_NAME + " " + ExceptionUtils.getMessage(ex));
+            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
         }
         return RepeatStatus.FINISHED;
     }

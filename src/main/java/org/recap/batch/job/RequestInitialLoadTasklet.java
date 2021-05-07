@@ -1,8 +1,8 @@
 package org.recap.batch.job;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.RequestInitialLoadService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,10 +46,10 @@ public class RequestInitialLoadTasklet extends JobCommonTasklet implements Taskl
             logger.info("Request Initial Load status : {}", resultStatus);
             setExecutionContext(executionContext, stepExecution, resultStatus);
         } catch (Exception ex) {
-            logger.error("{} {}", RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
-            executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
-            executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, ExceptionUtils.getMessage(ex));
-            stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+            executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
+            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, ExceptionUtils.getMessage(ex));
+            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
         }
         return RepeatStatus.FINISHED;
     }

@@ -9,8 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.recap.BaseTestCase;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.slf4j.Logger;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -59,7 +58,7 @@ public class AccessionTaskletUT  {
         StepContribution contribution = new StepContribution(new StepExecution("AccessionStep", new JobExecution(new JobInstance(123L, "Accession"),new JobParameters())));
         StepExecution execution = MetaDataInstanceFactory.createStepExecution();
         ChunkContext context = new ChunkContext(new StepContext(execution));
-        Mockito.when(accessionTasklet.getResultStatus(Mockito.any(JobExecution.class),Mockito.any(StepExecution.class),Mockito.any(Logger.class),Mockito.any(ExecutionContext.class),Mockito.anyString(),Mockito.anyString(),Mockito.anyString())).thenReturn(RecapConstants.SUCCESS);
+        Mockito.when(accessionTasklet.getResultStatus(Mockito.any(JobExecution.class),Mockito.any(StepExecution.class),Mockito.any(Logger.class),Mockito.any(ExecutionContext.class),Mockito.anyString(),Mockito.anyString(),Mockito.anyString())).thenReturn(ScsbConstants.SUCCESS);
         Mockito.when(accessionTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status = accessionTasklet.execute(contribution,context);
         assertNotNull(status);

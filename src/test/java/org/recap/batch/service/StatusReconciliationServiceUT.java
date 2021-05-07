@@ -6,7 +6,7 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCaseUT;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +35,8 @@ public class StatusReconciliationServiceUT extends BaseTestCaseUT {
                 Matchers.any(HttpMethod.class),
                 Matchers.<HttpEntity<?>> any(),
                 Matchers.<Class<String>> any())).thenReturn(responseEntity);
-        Mockito.when(responseEntity.getBody()).thenReturn(RecapConstants.SUCCESS);
+        Mockito.when(responseEntity.getBody()).thenReturn(ScsbConstants.SUCCESS);
         String status=statusReconciliationService.statusReconciliation("scsbCoreUrl");
-        assertEquals(RecapConstants.SUCCESS,status);
+        assertEquals(ScsbConstants.SUCCESS,status);
     }
 }

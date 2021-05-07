@@ -9,8 +9,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.quartz.JobDataMap;
 import org.quartz.impl.JobDetailImpl;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.UpdateJobDetailsService;
 import org.recap.quartz.QuartzJobLauncher;
 import org.slf4j.Logger;
@@ -65,19 +65,19 @@ public class JobCommonTasklet {
             resultStatus = (String) exchange.getIn().getBody();
             if (StringUtils.isNotBlank(resultStatus)) {
                 String[] resultSplitMessage = resultStatus.split("\\|");
-                if (!resultSplitMessage[0].equalsIgnoreCase(RecapCommonConstants.JOB_ID + ":" + jobExecution.getId())) {
+                if (!resultSplitMessage[0].equalsIgnoreCase(ScsbCommonConstants.JOB_ID + ":" + jobExecution.getId())) {
                     producerTemplate.sendBody(completeQueueName, resultStatus);
-                    resultStatus = RecapConstants.FAILURE + " - " + RecapConstants.FAILURE_QUEUE_MESSAGE;
+                    resultStatus = ScsbConstants.FAILURE + " - " + ScsbConstants.FAILURE_QUEUE_MESSAGE;
                 } else {
                     resultStatus = resultSplitMessage[1];
                 }
             }
         }
         catch (Exception ex) {
-            logger.error("{} {} ",RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
-            executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
-            executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, statusName + " " + ExceptionUtils.getMessage(ex));
-            stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+            logger.error("{} {} ",ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+            executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
+            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, statusName + " " + ExceptionUtils.getMessage(ex));
+            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
         }
         finally {
             if (consumer != null) {
@@ -91,7 +91,7 @@ public class JobCommonTasklet {
         String jobName = jobExecution.getJobInstance().getJobName();
         Date createdDate = jobExecution.getCreateTime();
         if(Boolean.TRUE.equals(check)) {
-            String jobNameParam = (String) jobExecution.getExecutionContext().get(RecapConstants.JOB_NAME);
+            String jobNameParam = (String) jobExecution.getExecutionContext().get(ScsbConstants.JOB_NAME);
             logger.info("Job Parameter in {} : {}" , taskletName , jobNameParam);
             if (!jobName.equalsIgnoreCase(jobNameParam)) {
                 updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
@@ -103,14 +103,14 @@ public class JobCommonTasklet {
     }
 
     public ExecutionContext setExecutionContext(ExecutionContext executionContext, StepExecution stepExecution, String resultStatus) {
-        if (!StringUtils.containsIgnoreCase(resultStatus, RecapConstants.SUCCESS) || StringUtils.containsIgnoreCase(resultStatus, RecapCommonConstants.FAIL)) {
-            executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
-            executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, resultStatus);
-            stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, resultStatus));
+        if (!StringUtils.containsIgnoreCase(resultStatus, ScsbConstants.SUCCESS) || StringUtils.containsIgnoreCase(resultStatus, ScsbCommonConstants.FAIL)) {
+            executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
+            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, resultStatus);
+            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, resultStatus));
         } else {
-            executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.SUCCESS);
-            executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, resultStatus);
-            stepExecution.setExitStatus(new ExitStatus(RecapConstants.SUCCESS, resultStatus));
+            executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.SUCCESS);
+            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, resultStatus);
+            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.SUCCESS, resultStatus));
         }
         return executionContext;
     }
@@ -118,25 +118,25 @@ public class JobCommonTasklet {
         jobDetailImpl.setName(jobName);
         jobDetailImpl.setJobClass(QuartzJobLauncher.class);
         JobDataMap jobDataMap = new JobDataMap();
-        jobDataMap.put(RecapConstants.JOB_NAME, jobName);
-        jobDataMap.put(RecapConstants.JOB_LAUNCHER, jobLauncher);
-        jobDataMap.put(RecapConstants.JOB_LOCATOR, jobLocator);
+        jobDataMap.put(ScsbConstants.JOB_NAME, jobName);
+        jobDataMap.put(ScsbConstants.JOB_LAUNCHER, jobLauncher);
+        jobDataMap.put(ScsbConstants.JOB_LOCATOR, jobLocator);
         jobDetailImpl.setJobDataMap(jobDataMap);
     }
 
     protected Date getCreatedDate(JobExecution jobExecution) {
         Date createdDate = null;
         try {
-            String fromDate = jobExecution.getJobParameters().getString(RecapConstants.FROM_DATE);
+            String fromDate = jobExecution.getJobParameters().getString(ScsbConstants.FROM_DATE);
 
             if (StringUtils.isNotBlank(fromDate)) {
-                SimpleDateFormat dateFormatter = new SimpleDateFormat(RecapConstants.FROM_DATE_FORMAT);
+                SimpleDateFormat dateFormatter = new SimpleDateFormat(ScsbConstants.FROM_DATE_FORMAT);
                 createdDate = dateFormatter.parse(fromDate);
             } else {
                 createdDate = jobExecution.getCreateTime();
             }
         } catch (ParseException e) {
-            logger.error("{} {}", RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(e));
+            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(e));
 
         }
         return createdDate;

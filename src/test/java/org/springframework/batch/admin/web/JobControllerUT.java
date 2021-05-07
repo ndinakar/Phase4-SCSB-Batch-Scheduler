@@ -1,27 +1,19 @@
 package org.springframework.batch.admin.web;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.recap.BaseTestCase;
-import org.recap.RecapConstants;
 import org.springframework.batch.admin.service.JobService;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.batch.core.scope.context.ChunkContext;
-import org.springframework.batch.core.scope.context.StepContext;
 import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
-import org.springframework.validation.support.BindingAwareModelMap;
 
 import javax.batch.operations.NoSuchJobException;
 import javax.servlet.http.HttpServletRequest;

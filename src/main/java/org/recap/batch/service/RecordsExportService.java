@@ -1,6 +1,6 @@
 package org.recap.batch.service;
 
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.spring.ApplicationContextProvider;
 import org.recap.spring.PropertyValueProvider;
 import org.recap.util.JobDataParameterUtil;
@@ -42,9 +42,9 @@ public class RecordsExportService {
         ApplicationContext applicationContext = ApplicationContextProvider.getInstance().getApplicationContext();
         String emailTo = applicationContext.getBean(PropertyValueProvider.class).getProperty(exportInstitution.toLowerCase() + ".email.data.dump.to");
 
-        requestParameterMap.put(RecapConstants.EMAIL_TO_ADDRESS, emailTo);
+        requestParameterMap.put(ScsbConstants.EMAIL_TO_ADDRESS, emailTo);
         commonService.setRequestParameterMap(requestParameterMap, exportStringDate, jobDataParameterUtil, createdDate);
-        ResponseEntity<String> responseEntity = commonService.getRestTemplate().exchange(scsbEtlUrl + RecapConstants.DATA_EXPORT_ETL_URL, HttpMethod.GET, httpEntity, String.class, requestParameterMap);
+        ResponseEntity<String> responseEntity = commonService.getRestTemplate().exchange(scsbEtlUrl + ScsbConstants.DATA_EXPORT_ETL_URL, HttpMethod.GET, httpEntity, String.class, requestParameterMap);
         return responseEntity.getBody();
     }
 }

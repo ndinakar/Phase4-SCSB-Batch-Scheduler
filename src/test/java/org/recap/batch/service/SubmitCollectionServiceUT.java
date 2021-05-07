@@ -4,8 +4,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
+import org.recap.spring.SwaggerAPIProvider;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -38,17 +39,17 @@ public class SubmitCollectionServiceUT extends BaseTestCase {
     @Test
     public void submitCollectionTest() throws Exception {
         HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
+        headers.set(ScsbCommonConstants.API_KEY, SwaggerAPIProvider.getInstance().getSwaggerApiKey());
         HttpEntity httpEntity = new HttpEntity<>(headers);
-        ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(ScsbConstants.SUCCESS, HttpStatus.OK);
         ReflectionTestUtils.setField(submitCollectionService,"commonService",commonService);
         Mockito.when(submitCollectionService.commonService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(submitCollectionService.commonService.getRestTemplate().exchange(scsbCircUrl + RecapConstants.SUBMIT_COLLECTION_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
-        Mockito.when(submitCollectionService.commonService.executeService(scsbCircUrl, RecapConstants.SUBMIT_COLLECTION_URL, HttpMethod.POST)).thenReturn(RecapConstants.SUCCESS);
+        Mockito.when(submitCollectionService.commonService.getRestTemplate().exchange(scsbCircUrl + ScsbConstants.SUBMIT_COLLECTION_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(submitCollectionService.commonService.executeService(scsbCircUrl, ScsbConstants.SUBMIT_COLLECTION_URL, HttpMethod.POST)).thenReturn(ScsbConstants.SUCCESS);
         Mockito.when(submitCollectionService.submitCollection(scsbCircUrl)).thenCallRealMethod();
         String status = submitCollectionService.submitCollection(scsbCircUrl);
         assertNotNull(status);
-        assertEquals(RecapConstants.SUCCESS, status);
+        assertEquals(ScsbConstants.SUCCESS, status);
     }
 
 }

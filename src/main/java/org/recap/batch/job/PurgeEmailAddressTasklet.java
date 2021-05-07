@@ -1,8 +1,8 @@
 package org.recap.batch.job;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.PurgeEmailAddressService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,19 +45,19 @@ public class PurgeEmailAddressTasklet extends JobCommonTasklet implements Taskle
         try {
             updateJob(jobExecution, "PurgeEmailAddressTasklet", Boolean.FALSE);
             Map<String, String> resultMap = purgeEmailAddressService.purgeEmailAddress(scsbCoreUrl);
-            String status = resultMap.get(RecapCommonConstants.STATUS);
-            String message = RecapCommonConstants.PURGE_EDD_REQUEST + ":" + resultMap.get(RecapCommonConstants.PURGE_EDD_REQUEST)
-                    + ", " + RecapCommonConstants.PURGE_PHYSICAL_REQUEST + ":" + resultMap.get(RecapCommonConstants.PURGE_PHYSICAL_REQUEST);
+            String status = resultMap.get(ScsbCommonConstants.STATUS);
+            String message = ScsbCommonConstants.PURGE_EDD_REQUEST + ":" + resultMap.get(ScsbCommonConstants.PURGE_EDD_REQUEST)
+                    + ", " + ScsbCommonConstants.PURGE_PHYSICAL_REQUEST + ":" + resultMap.get(ScsbCommonConstants.PURGE_PHYSICAL_REQUEST);
             logger.info("Purge Email Addresses status : {}", status);
             logger.info("Purge Email Addresses status message : {}", message);
-            executionContext.put(RecapConstants.JOB_STATUS, status);
-            executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, message);
+            executionContext.put(ScsbConstants.JOB_STATUS, status);
+            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, message);
             stepExecution.setExitStatus(new ExitStatus(status, message));
         } catch (Exception ex) {
-            logger.error("{} {}", RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
-            executionContext.put(RecapConstants.JOB_STATUS, RecapConstants.FAILURE);
-            executionContext.put(RecapConstants.JOB_STATUS_MESSAGE, ExceptionUtils.getMessage(ex));
-            stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+            executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
+            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, ExceptionUtils.getMessage(ex));
+            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
         }
         return RepeatStatus.FINISHED;
     }

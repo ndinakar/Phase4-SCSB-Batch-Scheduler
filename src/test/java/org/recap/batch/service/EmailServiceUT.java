@@ -6,7 +6,7 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCaseUT;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.EmailPayLoad;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -42,8 +42,8 @@ public class EmailServiceUT extends BaseTestCaseUT {
                 Matchers.any(HttpMethod.class),
                 Matchers.<HttpEntity<?>> any(),
                 Matchers.<Class<String>> any())).thenReturn(responseEntity);
-        Mockito.when(responseEntity.getBody()).thenReturn(RecapConstants.SUCCESS);
+        Mockito.when(responseEntity.getBody()).thenReturn(ScsbConstants.SUCCESS);
         String status=emailService.sendEmail("solrClientUrl",emailPayLoad);
-        assertEquals(RecapConstants.SUCCESS,status);
+        assertEquals(ScsbConstants.SUCCESS,status);
     }
 }

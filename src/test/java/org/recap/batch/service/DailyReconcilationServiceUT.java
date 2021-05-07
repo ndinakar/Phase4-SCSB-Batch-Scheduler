@@ -4,8 +4,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.batch.SolrIndexRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
+import org.recap.spring.SwaggerAPIProvider;
 
 import java.util.Date;
 
@@ -43,16 +44,16 @@ public class DailyReconcilationServiceUT extends BaseTestCase {
         String jobName  = "DailyReconcilation";
         Date lastExecutedTime = new Date();
         HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
+        headers.set(ScsbCommonConstants.API_KEY, SwaggerAPIProvider.getInstance().getSwaggerApiKey());
         HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(headers);
-        ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(ScsbConstants.SUCCESS, HttpStatus.OK);
         ReflectionTestUtils.setField(dailyReconcilationService,"commonService",commonService);
         Mockito.when(dailyReconcilationService.commonService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(dailyReconcilationService.commonService.getRestTemplate().exchange(solrCircUrl +RecapConstants.DAILY_RECONCILIATION_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
-        Mockito.when(dailyReconcilationService.commonService.executeService(solrCircUrl,  RecapConstants.DAILY_RECONCILIATION_URL, HttpMethod.POST)).thenReturn(responseEntity.getBody());
+        Mockito.when(dailyReconcilationService.commonService.getRestTemplate().exchange(solrCircUrl + ScsbConstants.DAILY_RECONCILIATION_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(dailyReconcilationService.commonService.executeService(solrCircUrl,  ScsbConstants.DAILY_RECONCILIATION_URL, HttpMethod.POST)).thenReturn(responseEntity.getBody());
         Mockito.when(dailyReconcilationService.dailyReconcilation(solrCircUrl)).thenCallRealMethod();
         String status = dailyReconcilationService.dailyReconcilation(solrCircUrl);
         assertNotNull(status);
-        assertEquals(RecapConstants.SUCCESS, status);
+        assertEquals(ScsbConstants.SUCCESS, status);
     }
 }

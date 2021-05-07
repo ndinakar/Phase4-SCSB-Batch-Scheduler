@@ -1,8 +1,8 @@
 package org.recap.batch.job;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.EmailService;
 import org.recap.model.EmailPayLoad;
 import org.recap.model.jpa.JobEntity;
@@ -51,25 +51,25 @@ public class EmailProcessingTasklet extends JobCommonTasklet implements Tasklet 
         try {
             String jobName = jobExecution.getJobInstance().getJobName();
             Date createdDate = jobExecution.getCreateTime();
-            String jobStatus = (String) executionContext.get(RecapConstants.JOB_STATUS);
-            String jobStatusMessage = (String) executionContext.get(RecapConstants.JOB_STATUS_MESSAGE);
+            String jobStatus = (String) executionContext.get(ScsbConstants.JOB_STATUS);
+            String jobStatusMessage = (String) executionContext.get(ScsbConstants.JOB_STATUS_MESSAGE);
 
             JobEntity jobEntity = jobDetailsRepository.findByJobName(jobName);
 
             EmailPayLoad emailPayLoad = new EmailPayLoad();
             emailPayLoad.setJobName(jobName);
             emailPayLoad.setJobDescription(jobEntity.getJobDescription());
-            emailPayLoad.setJobAction(RecapConstants.RAN);
+            emailPayLoad.setJobAction(ScsbConstants.RAN);
             emailPayLoad.setStartDate(createdDate);
             emailPayLoad.setStatus(jobStatus);
             emailPayLoad.setMessage(jobStatusMessage);
 
             String result = emailService.sendEmail(solrClientUrl, emailPayLoad);
             logger.info("Email sending - {}", result);
-            stepExecution.setExitStatus(new ExitStatus(RecapConstants.SUCCESS, RecapConstants.SUCCESS));
+            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.SUCCESS, ScsbConstants.SUCCESS));
         } catch (Exception ex) {
-            logger.error("{} {}", RecapCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
-            stepExecution.setExitStatus(new ExitStatus(RecapConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
         }
         return RepeatStatus.FINISHED;
     }

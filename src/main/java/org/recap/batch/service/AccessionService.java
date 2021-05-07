@@ -1,6 +1,6 @@
 package org.recap.batch.service;
 
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class AccessionService {
      * @return status of the accession process
      */
     public String processAccession(String scsbCoreUrl) {
-        return commonService.executeService(scsbCoreUrl,  RecapConstants.ACCESSION_URL, HttpMethod.GET);
+        return commonService.executeService(scsbCoreUrl,  ScsbConstants.ACCESSION_URL, HttpMethod.GET);
     }
 
 }

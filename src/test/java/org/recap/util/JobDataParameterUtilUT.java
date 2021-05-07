@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.recap.BaseTestCase;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.jpa.JobParamDataEntity;
 import org.recap.model.jpa.JobParamEntity;
 import org.recap.repository.jpa.JobParamDetailRepository;
@@ -31,18 +31,18 @@ public class JobDataParameterUtilUT extends BaseTestCase {
 
     @Test
     public void buildJobRequestParameterMap() throws Exception {
-        String jobName = RecapConstants.GENERATE_ACCESSION_REPORT_JOB;
+        String jobName = ScsbConstants.GENERATE_ACCESSION_REPORT_JOB;
         JobParamEntity jobParamEntity =  new JobParamEntity();
         JobParamDataEntity jobParamDataEntity = new JobParamDataEntity();
-        jobParamDataEntity.setParamName(RecapConstants.FETCH_TYPE);
+        jobParamDataEntity.setParamName(ScsbConstants.FETCH_TYPE);
         jobParamDataEntity.setParamValue("1");
         jobParamEntity.setJobParamDataEntities(Arrays.asList(jobParamDataEntity));
 
         when(jobParamDetailRepository.findByJobName(jobName)).thenReturn(jobParamEntity);
-        Map<String, String> parameterMap = jobDataParameterUtil.buildJobRequestParameterMap(RecapConstants.GENERATE_ACCESSION_REPORT_JOB);
+        Map<String, String> parameterMap = jobDataParameterUtil.buildJobRequestParameterMap(ScsbConstants.GENERATE_ACCESSION_REPORT_JOB);
         assertNotNull(parameterMap);
-        assertTrue(parameterMap.containsKey(RecapConstants.FETCH_TYPE));
-        assertEquals("1",parameterMap.get(RecapConstants.FETCH_TYPE));
+        assertTrue(parameterMap.containsKey(ScsbConstants.FETCH_TYPE));
+        assertEquals("1",parameterMap.get(ScsbConstants.FETCH_TYPE));
     }
 
     @Test

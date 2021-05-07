@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCaseUT;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
@@ -50,7 +50,7 @@ public class StartOrStopPollingLongRunningJobsTaskletUT extends BaseTestCaseUT {
         Mockito.when(stepContext.getStepExecution()).thenReturn(stepExecution);
         Mockito.when(stepExecution.getJobExecution()).thenReturn(jobExecution);
         Mockito.when(jobExecution.getJobParameters()).thenReturn(jobParameters);
-        Mockito.when(jobParameters.getString(RecapConstants.POLLING_ACTION)).thenReturn(RecapConstants.START);
+        Mockito.when(jobParameters.getString(ScsbConstants.POLLING_ACTION)).thenReturn(ScsbConstants.START);
         Mockito.when(startOrStopPollingLongRunningJobsTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status=startOrStopPollingLongRunningJobsTasklet.execute(contribution,context);
         assertEquals(RepeatStatus.FINISHED,status);
@@ -65,7 +65,7 @@ public class StartOrStopPollingLongRunningJobsTaskletUT extends BaseTestCaseUT {
         Mockito.when(stepContext.getStepExecution()).thenReturn(stepExecution);
         Mockito.when(stepExecution.getJobExecution()).thenReturn(jobExecution);
         Mockito.when(jobExecution.getJobParameters()).thenReturn(jobParameters);
-        Mockito.when(jobParameters.getString(RecapConstants.POLLING_ACTION)).thenReturn(RecapConstants.STOP);
+        Mockito.when(jobParameters.getString(ScsbConstants.POLLING_ACTION)).thenReturn(ScsbConstants.STOP);
         Mockito.when(startOrStopPollingLongRunningJobsTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status=startOrStopPollingLongRunningJobsTasklet.execute(contribution,context);
         assertEquals(RepeatStatus.FINISHED,status);

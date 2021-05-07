@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.StatusReconciliationService;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -52,7 +52,7 @@ public class StatusReconcilationTaskletUT extends BaseTestCase {
         execution.setCommitCount(2);
         ChunkContext context = new ChunkContext(new StepContext(execution));
         ReflectionTestUtils.setField(statusReconcilationTasklet,"statusReconciliationService",statusReconciliationService);
-        Mockito.when(statusReconciliationService.statusReconciliation(scsbCoreUrl)).thenReturn(RecapConstants.SUCCESS);
+        Mockito.when(statusReconciliationService.statusReconciliation(scsbCoreUrl)).thenReturn(ScsbConstants.SUCCESS);
         Mockito.when(statusReconcilationTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status = statusReconcilationTasklet.execute(contribution,context);
         assertNotNull(status);

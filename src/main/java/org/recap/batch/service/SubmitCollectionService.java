@@ -1,6 +1,6 @@
 package org.recap.batch.service;
 
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -21,6 +21,6 @@ public class SubmitCollectionService {
      * @return status of the submit collection process.
      */
     public String submitCollection(String scsbCircUrl) {
-        return commonService.executeService(scsbCircUrl,  RecapConstants.SUBMIT_COLLECTION_URL, HttpMethod.POST);
+        return commonService.executeService(scsbCircUrl,  ScsbConstants.SUBMIT_COLLECTION_URL, HttpMethod.POST);
     }
 }

@@ -4,8 +4,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
+import org.recap.spring.SwaggerAPIProvider;
 
 import java.util.Date;
 
@@ -40,17 +41,17 @@ public class AccessionServiceUT extends BaseTestCase{
     @Test
     public void processAccession() throws Exception {
         HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
+        headers.set(ScsbCommonConstants.API_KEY, SwaggerAPIProvider.getInstance().getSwaggerApiKey());
         HttpEntity<Date> httpEntity = new HttpEntity<>(headers);
         ReflectionTestUtils.setField(accessionService,"commonService",commonService);
-        ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(ScsbConstants.SUCCESS, HttpStatus.OK);
         Mockito.when(accessionService.commonService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(accessionService.commonService.getRestTemplate().exchange(solrClientUrl + RecapConstants.ACCESSION_URL, HttpMethod.GET, httpEntity, String.class)).thenReturn(responseEntity);
-        Mockito.when(accessionService.commonService.executeService(solrClientUrl , RecapConstants.ACCESSION_URL, HttpMethod.GET)).thenReturn(RecapConstants.SUCCESS);
+        Mockito.when(accessionService.commonService.getRestTemplate().exchange(solrClientUrl + ScsbConstants.ACCESSION_URL, HttpMethod.GET, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(accessionService.commonService.executeService(solrClientUrl , ScsbConstants.ACCESSION_URL, HttpMethod.GET)).thenReturn(ScsbConstants.SUCCESS);
         Mockito.when(accessionService.processAccession(solrClientUrl)).thenCallRealMethod();
         String status = accessionService.processAccession(solrClientUrl);
         assertNotNull(status);
-        assertEquals(RecapConstants.SUCCESS, status);
+        assertEquals(ScsbConstants.SUCCESS, status);
     }
 
 }

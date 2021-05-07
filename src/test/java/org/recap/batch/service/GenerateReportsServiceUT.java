@@ -4,8 +4,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
-import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
+import org.recap.ScsbCommonConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.batch.SolrIndexRequest;
 import org.recap.util.JobDataParameterUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
+import org.recap.spring.SwaggerAPIProvider;
 
 import java.util.Date;
 
@@ -45,28 +46,28 @@ public class GenerateReportsServiceUT extends BaseTestCase{
     @Test
     public void generateReport() throws Exception {
         SolrIndexRequest solrIndexRequest = new SolrIndexRequest();
-        solrIndexRequest.setProcessType(RecapConstants.GENERATE_ACCESSION_REPORT);
+        solrIndexRequest.setProcessType(ScsbConstants.GENERATE_ACCESSION_REPORT);
         Date createdDate = new Date();
         solrIndexRequest.setCreatedDate(createdDate);
         HttpHeaders headers = getHttpHeaders();
         HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(solrIndexRequest, headers);
-        ResponseEntity<String> responseEntity = new ResponseEntity<>(RecapConstants.SUCCESS, HttpStatus.OK);
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(ScsbConstants.SUCCESS, HttpStatus.OK);
         ReflectionTestUtils.setField(generateReportsService,"commonService",commonService);
         ReflectionTestUtils.setField(generateReportsService,"jobDataParameterUtil",jobDataParameterUtil);
         Mockito.when(generateReportsService.commonService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(generateReportsService.getSolrIndexRequest(createdDate, RecapConstants.GENERATE_ACCESSION_REPORT)).thenReturn(solrIndexRequest);
-        Mockito.when(commonService.getRestTemplate().exchange(solrClientUrl + RecapConstants.GENERATE_REPORT_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(generateReportsService.getSolrIndexRequest(createdDate, ScsbConstants.GENERATE_ACCESSION_REPORT)).thenReturn(solrIndexRequest);
+        Mockito.when(commonService.getRestTemplate().exchange(solrClientUrl + ScsbConstants.GENERATE_REPORT_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
         Mockito.when(jobDataParameterUtil.getFromDate(createdDate)).thenCallRealMethod();
-        Mockito.when(commonService.getResponse(Mockito.any(),Mockito.anyString(),Mockito.anyString(), HttpMethod.POST)).thenReturn(RecapConstants.SUCCESS);
-        Mockito.when(generateReportsService.getSolrIndexRequest(createdDate, RecapConstants.GENERATE_ACCESSION_REPORT)).thenCallRealMethod();
-        Mockito.when(generateReportsService.generateReport(solrClientUrl, createdDate, RecapConstants.GENERATE_ACCESSION_REPORT)).thenCallRealMethod();
-        String status = generateReportsService.generateReport(solrClientUrl, createdDate, RecapConstants.GENERATE_ACCESSION_REPORT);
+        Mockito.when(commonService.getResponse(Mockito.any(),Mockito.anyString(),Mockito.anyString(), HttpMethod.POST)).thenReturn(ScsbConstants.SUCCESS);
+        Mockito.when(generateReportsService.getSolrIndexRequest(createdDate, ScsbConstants.GENERATE_ACCESSION_REPORT)).thenCallRealMethod();
+        Mockito.when(generateReportsService.generateReport(solrClientUrl, createdDate, ScsbConstants.GENERATE_ACCESSION_REPORT)).thenCallRealMethod();
+        String status = generateReportsService.generateReport(solrClientUrl, createdDate, ScsbConstants.GENERATE_ACCESSION_REPORT);
         assertNotNull(status);
-        assertEquals(RecapConstants.SUCCESS, status);
+        assertEquals(ScsbConstants.SUCCESS, status);
     }
     public HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set(RecapCommonConstants.API_KEY, RecapCommonConstants.RECAP);
+        headers.set(ScsbCommonConstants.API_KEY, SwaggerAPIProvider.getInstance().getSwaggerApiKey());
         return headers;
     }
 

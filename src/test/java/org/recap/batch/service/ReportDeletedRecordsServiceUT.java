@@ -5,7 +5,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCaseUT;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.repository.jpa.JobDetailsRepository;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +34,10 @@ public class ReportDeletedRecordsServiceUT extends BaseTestCaseUT {
     @Test
     public void testreportDeletedRecords() {
         Mockito.when(commonService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(restTemplate.exchange("scsbCoreUrl" + RecapConstants.REPORT_DELETED_RECORDS_URL, HttpMethod.GET, null, String.class)).thenReturn(responseEntity);
-        Mockito.when(responseEntity.getBody()).thenReturn(RecapConstants.SUCCESS);
+        Mockito.when(restTemplate.exchange("scsbCoreUrl" + ScsbConstants.REPORT_DELETED_RECORDS_URL, HttpMethod.GET, null, String.class)).thenReturn(responseEntity);
+        Mockito.when(responseEntity.getBody()).thenReturn(ScsbConstants.SUCCESS);
         String status=reportDeletedRecordsService.reportDeletedRecords("scsbCoreUrl");
-        assertEquals(RecapConstants.SUCCESS,status);
+        assertEquals(ScsbConstants.SUCCESS,status);
     }
 
     @Test

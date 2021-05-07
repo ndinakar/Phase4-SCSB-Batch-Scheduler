@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.batch.service.DailyReconcilationService;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -52,7 +52,7 @@ public class DailyReconcilationTaskletUT extends BaseTestCase {
         execution.setCommitCount(2);
         ChunkContext context = new ChunkContext(new StepContext(execution));
         ReflectionTestUtils.setField(dailyReconcilationTasklet,"dailyReconcilationService",dailyReconcilationService);
-        Mockito.when(dailyReconcilationService.dailyReconcilation(scsbCircUrl)).thenReturn(RecapConstants.SUCCESS);
+        Mockito.when(dailyReconcilationService.dailyReconcilation(scsbCircUrl)).thenReturn(ScsbConstants.SUCCESS);
         Mockito.when(dailyReconcilationTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status = dailyReconcilationTasklet.execute(contribution,context);
         assertNotNull(status);
