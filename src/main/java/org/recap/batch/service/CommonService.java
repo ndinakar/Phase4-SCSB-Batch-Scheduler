@@ -5,8 +5,8 @@ import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.model.batch.SolrIndexRequest;
 import org.recap.model.jpa.JobEntity;
-import org.recap.spring.SwaggerAPIProvider;
 import org.recap.util.JobDataParameterUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,6 +20,9 @@ import java.util.Map;
 @Service
 public class CommonService {
 
+    @Value("${scsb.swagger.api.key}")
+    private String apiKey;
+
     /**
      * Gets rest template.
      *
@@ -31,7 +34,7 @@ public class CommonService {
 
     public HttpEntity getHttpEntity() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set(ScsbCommonConstants.API_KEY, SwaggerAPIProvider.getInstance().getSwaggerApiKey());
+        headers.set(ScsbCommonConstants.API_KEY, apiKey);
         return new HttpEntity<>(headers);
     }
 
@@ -44,7 +47,7 @@ public class CommonService {
 
     public HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set(ScsbCommonConstants.API_KEY, SwaggerAPIProvider.getInstance().getSwaggerApiKey());
+        headers.set(ScsbCommonConstants.API_KEY, apiKey);
         return headers;
     }
 
