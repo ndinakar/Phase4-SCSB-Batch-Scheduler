@@ -64,7 +64,6 @@
     </batch:job>
 
     <bean id="accessionReportsTasklet" class="org.recap.batch.job.AccessionReportsTasklet"/>
-    <bean id="cgdRroundTripReportsTasklet" class="org.recap.batch.job.CgdRoundTripReportsTasklet"/>
 
     <batch:job id="Accession" restartable="true">
         <batch:step id="AccessionStep" allow-start-if-complete="true" next="EmailProcessingStep6">
@@ -76,6 +75,17 @@
     </batch:job>
 
     <bean id="accessionTasklet" class="org.recap.batch.job.AccessionTasklet"/>
+
+    <batch:job id="CgdRoundTripReports" restartable="true">
+        <batch:step id="CgdRoundTripReportsStep" allow-start-if-complete="true" next="EmailProcessingStep20">
+            <batch:tasklet ref="cgdRoundTripReportsTasklet"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep20" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="cgdRoundTripReportsTasklet" class="org.recap.batch.job.CgdRoundTripReportsTasklet"/>
 
     <batch:job id="AccessionToDataExportJobsInSequence" restartable="true">
         <batch:step id="AccessionAndMatchingJobsSequenceStartStep" allow-start-if-complete="true">
@@ -103,11 +113,14 @@
         <batch:step id="MatchingAlgorithmJobStep" allow-start-if-complete="true">
             <batch:tasklet ref="matchingAlgorithmTasklet"/>
             <batch:next on="FAILURE" to="EmailProcessingStep"/>
-            <batch:next on="SUCCESS" to="cgdRroundTripReportsJobStep"/>
+            <batch:next on="SUCCESS" to="CgdRoundTripReportsDecision"/>
         </batch:step>
-        <batch:step id="cgdRroundTripReportsJobStep" allow-start-if-complete="true">
-            <batch:tasklet ref="cgdRroundTripReportsTasklet"/>
-            <batch:next on="SUCCESS" to="DataExportDecision"/>
+        <batch:decision id="CgdRoundTripReportsDecision" decider="cgdRoundTripReportsExecutionDecider">
+            <batch:next on="FAILED" to="DataExportDecision" />
+            <batch:next on="COMPLETED" to="CgdRoundTripReportsJobStep" />
+        </batch:decision>
+        <batch:step id="CgdRoundTripReportsJobStep" allow-start-if-complete="true" next="DataExportDecision">
+            <batch:tasklet ref="cgdRoundTripReportsTasklet"/>
         </batch:step>
         <batch:decision id="DataExportDecision" decider="dataExportExecutionDecider">
             <batch:next on="FAILED" to="EmailProcessingStep" />
@@ -126,6 +139,8 @@
     <bean id="dataExportExecutionDecider" class="org.recap.batch.flow.DataExportExecutionDecider"/>
 
     <bean id="submitCollectionExecutionDecider" class="org.recap.batch.flow.SubmitCollectionExecutionDecider"/>
+
+    <bean id="cgdRoundTripReportsExecutionDecider" class="org.recap.batch.flow.CgdRoundTripReportsExecutionDecider"/>
 
     <bean id="jobSequenceTasklet" class="org.recap.batch.job.JobSequenceTasklet"/>
 
