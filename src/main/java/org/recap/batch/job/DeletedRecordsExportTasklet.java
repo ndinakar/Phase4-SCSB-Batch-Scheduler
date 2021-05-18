@@ -34,10 +34,13 @@ public class DeletedRecordsExportTasklet extends JobCommonTasklet {
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         try {
-            String exportStringDate = jobExecution.getJobParameters().getString(ScsbConstants.FROM_DATE);
-            Date createdDate = jobExecution.getCreateTime();
-            updateJob(jobExecution, "DeletedRecordsExport" + StringUtils.capitalize(exportInstitution.toLowerCase()) + "Tasklet", check);
-            String resultStatus = recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT + StringUtils.capitalize(exportInstitution.toLowerCase()), createdDate, exportStringDate, exportInstitution);
+            String resultStatus = ScsbConstants.NO_REQUESTING_INSTITUTION;
+            if (StringUtils.isNotBlank(exportInstitution)) {
+                String exportStringDate = jobExecution.getJobParameters().getString(ScsbConstants.FROM_DATE);
+                Date createdDate = jobExecution.getCreateTime();
+                updateJob(jobExecution, "DeletedRecordsExport" + StringUtils.capitalize(exportInstitution.toLowerCase()) + "Tasklet", check);
+                resultStatus = recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT + StringUtils.capitalize(exportInstitution.toLowerCase()), createdDate, exportStringDate, exportInstitution);
+            }
             logger.info("Deleted Records Export {} status : {}", exportInstitution, resultStatus);
             setExecutionContext(executionContext, stepExecution, resultStatus);
         } catch (Exception ex) {

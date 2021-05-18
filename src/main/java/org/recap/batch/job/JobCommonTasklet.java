@@ -13,6 +13,7 @@ import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.UpdateJobDetailsService;
 import org.recap.quartz.QuartzJobLauncher;
+import org.recap.util.JobDataParameterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 public class JobCommonTasklet {
 
@@ -53,6 +55,9 @@ public class JobCommonTasklet {
 
     @Autowired
     protected UpdateJobDetailsService updateJobDetailsService;
+
+    @Autowired
+    protected JobDataParameterUtil jobDataParameterUtil;
 
     public String getResultStatus(JobExecution jobExecution, StepExecution stepExecution, Logger logger, ExecutionContext executionContext, String initialQueueName, String completeQueueName, String statusName) throws IOException {
         String resultStatus = null;
@@ -140,6 +145,20 @@ public class JobCommonTasklet {
 
         }
         return createdDate;
+    }
+
+    public String getExportInstitutionFromParameters(JobExecution jobExecution) {
+        String exportInstitution = null;
+        try {
+            exportInstitution = jobExecution.getJobParameters().getString(ScsbCommonConstants.INSTITUTION);
+            if (StringUtils.isBlank(exportInstitution)) {
+                Map<String, String> requestParameterMap = jobDataParameterUtil.buildJobRequestParameterMap(jobExecution.getJobInstance().getJobName());
+                exportInstitution = requestParameterMap.get(ScsbCommonConstants.INSTITUTION);
+            }
+        } catch (Exception e) {
+            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(e));
+        }
+        return exportInstitution;
     }
     
 }
