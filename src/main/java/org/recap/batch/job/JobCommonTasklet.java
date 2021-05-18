@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.quartz.JobDataMap;
 import org.quartz.impl.JobDetailImpl;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.UpdateJobDetailsService;
@@ -35,16 +36,16 @@ public class JobCommonTasklet {
 
     private static final Logger logger = LoggerFactory.getLogger(JobCommonTasklet.class);
 
-    @Value("${scsb.solr.doc.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_SOLR_DOC_URL + "}")
     protected String solrClientUrl;
 
-    @Value("${scsb.circ.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_CIRC_URL + "}")
     protected String scsbCircUrl;
 
-    @Value("${scsb.core.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_CORE_URL + "}")
     protected String scsbCoreUrl;
 
-    @Value("${scsb.etl.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_ETL_URL + "}")
     protected String scsbEtlUrl;
 
     @Autowired

@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +21,7 @@ public class IdentifyPendingRequestServiceUT {
     @Mock
     CommonService commonService;
 
-    @Value("${scsb.circ.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_CIRC_URL + "}")
     protected String scsbCircUrl;
 
     @Mock

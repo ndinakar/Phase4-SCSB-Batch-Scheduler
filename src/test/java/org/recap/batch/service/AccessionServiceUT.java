@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +27,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class AccessionServiceUT extends BaseTestCase{
 
-    @Value("${scsb.solr.doc.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_SOLR_DOC_URL + "}")
     String solrClientUrl;
 
     @Mock

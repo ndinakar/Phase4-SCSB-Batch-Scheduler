@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.model.batch.SolrIndexRequest;
@@ -28,7 +29,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class GenerateReportsServiceUT extends BaseTestCase{
 
-    @Value("${scsb.solr.doc.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_SOLR_DOC_URL + "}")
     String solrClientUrl;
 
     @Mock

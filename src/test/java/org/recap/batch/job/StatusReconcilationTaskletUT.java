@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.StatusReconciliationService;
 import org.springframework.batch.core.*;
@@ -26,7 +27,7 @@ public class StatusReconcilationTaskletUT extends BaseTestCase {
     @Mock
     StatusReconciliationService statusReconciliationService;
 
-    @Value("${scsb.core.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_CORE_URL + "}")
     String scsbCoreUrl;
 
     @Mock

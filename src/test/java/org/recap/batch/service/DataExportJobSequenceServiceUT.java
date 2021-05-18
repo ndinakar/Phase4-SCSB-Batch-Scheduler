@@ -6,6 +6,7 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbConstants;
 import org.recap.util.JobDataParameterUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +22,7 @@ import java.util.Map;
 //@PrepareForTest({org.springframework.web.client.RestTemplate.class,DataExportJobSequenceService.class})
 public class DataExportJobSequenceServiceUT extends BaseTestCase  {
 
-    @Value("${scsb.etl.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_ETL_URL + "}")
     private String scsbEtlUrl;
 
 
