@@ -34,10 +34,13 @@ public class IncrementalExportTasklet extends JobCommonTasklet {
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         try {
-            String exportStringDate = jobExecution.getJobParameters().getString(ScsbConstants.FROM_DATE);
-            Date createdDate = jobExecution.getCreateTime();
-            updateJob(jobExecution, "IncrementalExport" + StringUtils.capitalize(exportInstitution.toLowerCase()) + "Tasklet", Boolean.TRUE);
-            String resultStatus = recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.INCREMENTAL_RECORDS_EXPORT + StringUtils.capitalize(exportInstitution.toLowerCase()), createdDate, exportStringDate, exportInstitution);
+            String resultStatus = ScsbConstants.NO_REQUESTING_INSTITUTION;
+            if (StringUtils.isNotBlank(exportInstitution)) {
+                String exportStringDate = jobExecution.getJobParameters().getString(ScsbConstants.FROM_DATE);
+                Date createdDate = jobExecution.getCreateTime();
+                updateJob(jobExecution, "IncrementalExport" + StringUtils.capitalize(exportInstitution.toLowerCase()) + "Tasklet", Boolean.TRUE);
+                resultStatus = recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.INCREMENTAL_RECORDS_EXPORT + StringUtils.capitalize(exportInstitution.toLowerCase()), createdDate, exportStringDate, exportInstitution);
+            }
             logger.info("Incremental Export {} status : {}", exportInstitution, resultStatus);
             setExecutionContext(executionContext, stepExecution, resultStatus);
         } catch (Exception ex) {

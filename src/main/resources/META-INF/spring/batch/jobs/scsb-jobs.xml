@@ -289,6 +289,28 @@
 
     <bean id="dataExportJobSequenceTasklet" class="org.recap.batch.job.DataExportJobSequenceTasklet"/>
 
+    <batch:job id="IncrementalRecordsExport" restartable="true">
+        <batch:step id="IncrementalExportStep" allow-start-if-complete="true" next="EmailProcessingStep21">
+            <batch:tasklet ref="incrementalExportTasklet"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep21" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="incrementalExportTasklet" class="org.recap.batch.job.IncrementalExportForInstitutionTasklet"/>
+
+    <batch:job id="DeletedRecordsExport" restartable="true">
+        <batch:step id="DeletedRecordsExportStep" allow-start-if-complete="true" next="EmailProcessingStep22">
+            <batch:tasklet ref="deletedRecordsExportTasklet"/>
+        </batch:step>
+        <batch:step id="EmailProcessingStep22" allow-start-if-complete="true">
+            <batch:tasklet ref="emailProcessingTasklet"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="deletedRecordsExportTasklet" class="org.recap.batch.job.DeletedRecordsExportForInstitutionTasklet"/>
+
     <batch:job id="CheckAndNotifyPendingRequest" restartable="true">
         <batch:step id="CheckAndNotifyPendingRequestStep" allow-start-if-complete="true">
             <batch:tasklet ref="checkAndNotifyPendingRequestTasklet"/>
