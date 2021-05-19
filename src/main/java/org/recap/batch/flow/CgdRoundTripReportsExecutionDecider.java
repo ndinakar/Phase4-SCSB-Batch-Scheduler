@@ -1,5 +1,6 @@
 package org.recap.batch.flow;
 
+import org.recap.PropertyKeyConstants;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.job.flow.FlowExecutionStatus;
@@ -11,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
  */
 public class CgdRoundTripReportsExecutionDecider implements JobExecutionDecider {
 
-    @Value("${include.cgd.round.trip.reports.in.sequence.job}")
+    @Value("${" + PropertyKeyConstants.INCLUDE_CGD_ROUND_TRIP_REPORTS_IN_SEQUENCE_JOB + "}")
     private boolean includeCgdRoundTripReportsInSequenceJob;
 
     /**

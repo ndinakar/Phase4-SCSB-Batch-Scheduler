@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.model.batch.SolrIndexRequest;
@@ -27,7 +28,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class DailyReconcilationServiceUT extends BaseTestCase {
 
-    @Value("${scsb.circ.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_CIRC_URL + "}")
     String solrCircUrl;
 
     @Mock

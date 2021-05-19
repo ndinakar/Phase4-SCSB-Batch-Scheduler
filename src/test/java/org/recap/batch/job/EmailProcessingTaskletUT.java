@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.EmailService;
@@ -41,7 +42,7 @@ public class EmailProcessingTaskletUT extends BaseTestCase {
     @Mock
     EmailService emailService;
 
-    @Value("${scsb.solr.doc.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_SOLR_DOC_URL + "}")
     String solrClientUrl;
 
     @Mock

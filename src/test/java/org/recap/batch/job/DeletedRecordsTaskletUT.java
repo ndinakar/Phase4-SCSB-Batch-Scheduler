@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
+import org.recap.PropertyKeyConstants;
 import org.recap.batch.service.ReportDeletedRecordsService;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -25,7 +26,7 @@ public class DeletedRecordsTaskletUT extends BaseTestCase {
     @Mock
     ReportDeletedRecordsService reportDeletedRecordsService;
 
-    @Value("${scsb.circ.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_CIRC_URL + "}")
     String scsbCircUrl;
 
     @Mock

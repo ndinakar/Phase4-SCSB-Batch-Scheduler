@@ -4,6 +4,7 @@ import org.junit.Ignore;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.util.JobDataParameterUtil;
@@ -22,7 +23,7 @@ public class RecordsExportServiceUT  extends BaseTestCase {
     @Mock
     RecordsExportService recordsExportService;
 
-    @Value("${scsb.etl.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_ETL_URL + "}")
     private String scsbEtlUrl;
 
     @Mock

@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.PurgeAccessionRequestsService;
@@ -30,7 +31,7 @@ public class PurgeAccessionRequestTaskletUT extends BaseTestCase {
     @Mock
     PurgeAccessionRequestsService purgeAccessionRequestsService;
 
-    @Value("${scsb.circ.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_CIRC_URL + "}")
     String scsbCircUrl;
 
     @Mock

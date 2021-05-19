@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +21,7 @@ public class DeletedRecordsExportServiceUT {
     @Mock
     RecordsExportService recordsExportService;
 
-    @Value("${scsb.etl.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_ETL_URL + "}")
     private String scsbEtlUrl;
 
     Date createdDate = new Date(System.currentTimeMillis());

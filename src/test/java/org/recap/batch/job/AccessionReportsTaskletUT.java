@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.GenerateReportsService;
 import org.springframework.batch.core.*;
@@ -28,7 +29,7 @@ public class AccessionReportsTaskletUT extends BaseTestCase {
     @Mock
     GenerateReportsService generateReportsService;
 
-    @Value("${scsb.solr.doc.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_SOLR_DOC_URL + "}")
     String solrClientUrl;
 
     @Mock
