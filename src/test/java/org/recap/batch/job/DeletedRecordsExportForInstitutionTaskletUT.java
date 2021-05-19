@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCaseUT;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.RecordsExportService;
@@ -32,7 +33,7 @@ public class DeletedRecordsExportForInstitutionTaskletUT extends BaseTestCaseUT 
 
     private static final Logger logger = LoggerFactory.getLogger(DeletedRecordsExportForInstitutionTaskletUT.class);
 
-    @Value("${scsb.etl.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_ETL_URL + "}")
     String scsbEtlUrl;
 
     @Mock

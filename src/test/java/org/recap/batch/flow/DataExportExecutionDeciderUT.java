@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.recap.PropertyKeyConstants;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.job.flow.FlowExecutionStatus;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -26,7 +27,7 @@ public class DataExportExecutionDeciderUT {
     @Mock
     DataExportExecutionDecider dataExportExecutionDecider;
 
-    @Value("${include.data.export.in.sequence.job}")
+    @Value("${" + PropertyKeyConstants.INCLUDE_DATA_EXPORT_IN_SEQUENCE_JOB + "}")
     private boolean includeDataExportInSequenceJob;
 
     @Test

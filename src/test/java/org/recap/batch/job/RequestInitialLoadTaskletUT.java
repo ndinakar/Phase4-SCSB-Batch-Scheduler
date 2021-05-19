@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.RequestInitialLoadService;
 import org.springframework.batch.core.*;
@@ -26,7 +27,7 @@ public class RequestInitialLoadTaskletUT extends BaseTestCase {
     @Mock
     RequestInitialLoadService requestInitialLoadService;
 
-    @Value("${scsb.circ.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_CIRC_URL + "}")
     String scsbCircUrl;
 
     @Mock

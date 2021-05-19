@@ -3,6 +3,7 @@ package org.recap.batch.flow;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.recap.PropertyKeyConstants;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.job.flow.FlowExecutionStatus;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -23,7 +24,7 @@ public class CgdRoundTripReportsExecutionDeciderUT {
     @Mock
     CgdRoundTripReportsExecutionDecider cgdRoundTripReportsExecutionDecider;
 
-    @Value("${include.cgd.round.trip.reports.in.sequence.job}")
+    @Value("${" + PropertyKeyConstants.INCLUDE_CGD_ROUND_TRIP_REPORTS_IN_SEQUENCE_JOB + "}")
     private boolean includeCgdRoundTripReportsInSequenceJob;
 
     @Test

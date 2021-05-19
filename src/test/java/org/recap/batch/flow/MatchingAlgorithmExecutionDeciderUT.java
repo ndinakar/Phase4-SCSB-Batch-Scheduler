@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.recap.PropertyKeyConstants;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.job.flow.FlowExecutionStatus;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -26,7 +27,7 @@ public class MatchingAlgorithmExecutionDeciderUT {
     @Mock
     MatchingAlgorithmExecutionDecider matchingAlgorithmExecutionDecider;
 
-    @Value("${include.matching.algorithm.in.sequence.job}")
+    @Value("${" + PropertyKeyConstants.INCLUDE_MATCHING_ALGORITHM_IN_SEQUENCE_JOB + "}")
     private boolean includeMatchingAlgorithmInSequenceJob;
 
     @Test

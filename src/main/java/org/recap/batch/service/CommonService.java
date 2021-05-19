@@ -1,6 +1,7 @@
 package org.recap.batch.service;
 
 import org.apache.commons.lang.StringUtils;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.model.batch.SolrIndexRequest;
@@ -20,7 +21,7 @@ import java.util.Map;
 @Service
 public class CommonService {
 
-    @Value("${scsb.swagger.api.key}")
+    @Value("${" + PropertyKeyConstants.SCSB_SWAGGER_API_KEY + "}")
     private String apiKey;
 
     /**

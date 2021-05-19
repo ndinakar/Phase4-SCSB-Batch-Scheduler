@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +17,7 @@ import static org.junit.Assert.assertNotNull;
 @Ignore
 public class IncrementalExportNyplServiceUT extends BaseTestCase {
 
-    @Value("${scsb.etl.url}")
+    @Value("${" + PropertyKeyConstants.SCSB_ETL_URL + "}")
     private String scsbEtlUrl;
 
     @Mock

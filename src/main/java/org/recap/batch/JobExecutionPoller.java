@@ -1,6 +1,7 @@
 package org.recap.batch;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.EmailService;
@@ -45,7 +46,7 @@ public class JobExecutionPoller {
      * @param jobDetailsRepository   the job details repository
      */
     @Autowired
-    public JobExecutionPoller(@Value("${long.running.jobs.poller.time.in.minutes}") Long jobExecutionPollerTime, JobExplorer jobExplorer, @Value("${scsb.solr.doc.url}") String solrClientUrl, EmailService emailService, JobDetailsRepository jobDetailsRepository) {
+    public JobExecutionPoller(@Value("${" + PropertyKeyConstants.LONG_RUNNING_JOBS_POLLER_TIME_IN_MINUTES + "}") Long jobExecutionPollerTime, JobExplorer jobExplorer, @Value("${" + PropertyKeyConstants.SCSB_SOLR_DOC_URL + "}") String solrClientUrl, EmailService emailService, JobDetailsRepository jobDetailsRepository) {
         this.jobExecutionPollerTime = jobExecutionPollerTime;
         this.jobExplorer = jobExplorer;
         this.solrClientUrl = solrClientUrl;
