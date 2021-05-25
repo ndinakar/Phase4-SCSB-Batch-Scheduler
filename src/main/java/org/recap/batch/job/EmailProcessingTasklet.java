@@ -4,9 +4,9 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.EmailService;
+import org.recap.batch.service.ScsbJobService;
 import org.recap.model.EmailPayLoad;
-import org.recap.model.jpa.JobEntity;
-import org.recap.repository.jpa.JobDetailsRepository;
+import org.recap.model.job.JobDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
@@ -32,7 +32,7 @@ public class EmailProcessingTasklet extends JobCommonTasklet implements Tasklet 
     private EmailService emailService;
 
     @Autowired
-    private JobDetailsRepository jobDetailsRepository;
+    private ScsbJobService scsbJobService;
 
     /**
      * This method starts the execution of the email processing job.
@@ -54,11 +54,11 @@ public class EmailProcessingTasklet extends JobCommonTasklet implements Tasklet 
             String jobStatus = (String) executionContext.get(ScsbConstants.JOB_STATUS);
             String jobStatusMessage = (String) executionContext.get(ScsbConstants.JOB_STATUS_MESSAGE);
 
-            JobEntity jobEntity = jobDetailsRepository.findByJobName(jobName);
+            JobDto jobDto = scsbJobService.getJobByName(jobName);
 
             EmailPayLoad emailPayLoad = new EmailPayLoad();
             emailPayLoad.setJobName(jobName);
-            emailPayLoad.setJobDescription(jobEntity.getJobDescription());
+            emailPayLoad.setJobDescription(jobDto.getJobDescription());
             emailPayLoad.setJobAction(ScsbConstants.RAN);
             emailPayLoad.setStartDate(createdDate);
             emailPayLoad.setStatus(jobStatus);

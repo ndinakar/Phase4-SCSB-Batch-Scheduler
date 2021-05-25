@@ -1,23 +1,18 @@
 package org.recap.batch;
 
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.recap.BaseTestCase;
-import org.recap.model.jpa.JobEntity;
-import org.recap.repository.jpa.JobDetailsRepository;
+import org.recap.batch.service.ScsbJobService;
+import org.recap.model.job.JobDto;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.NoSuchJobException;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.scope.context.StepContext;
 import org.springframework.batch.test.MetaDataInstanceFactory;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.*;
 
@@ -28,10 +23,10 @@ public class JobExecutionPollerUT extends BaseTestCase {
     JobExecutionPoller jobExecutionPoller;
 
     @Mock
-    JobDetailsRepository jobDetailsRepository;
+    ScsbJobService scsbJobService;
 
     @Mock
-    JobEntity jobEntity;
+    JobDto jobDto;
 
 
 
@@ -97,8 +92,8 @@ public class JobExecutionPollerUT extends BaseTestCase {
             }
         };
 
-        Mockito.when(jobDetailsRepository.findByJobName("test")).thenReturn(jobEntity);
-        jobExecutionPoller=new JobExecutionPoller(0L,jobExplorer,null,null,jobDetailsRepository);
+        Mockito.when(scsbJobService.getJobByName("test")).thenReturn(jobDto);
+        jobExecutionPoller=new JobExecutionPoller(0L,jobExplorer,null,null,scsbJobService);
 
     }
 }

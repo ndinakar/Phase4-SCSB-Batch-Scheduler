@@ -9,8 +9,8 @@ import org.mockito.MockitoAnnotations;
 import org.quartz.Scheduler;
 import org.recap.BaseTestCaseUT;
 import org.recap.ScsbConstants;
-import org.recap.model.jpa.JobEntity;
-import org.recap.repository.jpa.JobDetailsRepository;
+import org.recap.batch.service.ScsbJobService;
+import org.recap.model.job.JobDto;
 import org.springframework.batch.core.configuration.JobLocator;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -29,10 +29,10 @@ public class QuartzJobsInitializerUT extends BaseTestCaseUT {
     QuartzJobsInitializer mockquartzJobsInitializer;
 
     @Mock
-    JobDetailsRepository jobDetailsRepository;
-
+    ScsbJobService scsbJobService;
+    
     @Mock
-    JobEntity jobEntity;
+    JobDto jobDto;
 
     @Mock
     JobLauncher jobLauncher;
@@ -49,17 +49,17 @@ public class QuartzJobsInitializerUT extends BaseTestCaseUT {
         ReflectionTestUtils.setField(mockquartzJobsInitializer,"jobLocator",jobLocator);
         ReflectionTestUtils.setField(mockquartzJobsInitializer,"scheduler",scheduler);
         ReflectionTestUtils.setField(mockquartzJobsInitializer,"jobLauncher",jobLauncher);
-        ReflectionTestUtils.setField(mockquartzJobsInitializer,"jobDetailsRepository",jobDetailsRepository);
-        List<JobEntity> jobEntities=new ArrayList<>();
-        jobEntities.add(jobEntity);
-        Mockito.when(jobEntity.getCronExpression()).thenReturn("* * * * * ? *");
-        Mockito.when(jobDetailsRepository.findAll()).thenReturn(jobEntities);
+        ReflectionTestUtils.setField(mockquartzJobsInitializer,"scsbJobService",scsbJobService);
+        List<JobDto> jobDtos=new ArrayList<>();
+        jobDtos.add(jobDto);
+        Mockito.when(jobDto.getCronExpression()).thenReturn("* * * * * ? *");
+        Mockito.when(scsbJobService.getAllJobs()).thenReturn(jobDtos);
     }
 
    @Test
     public void testInitializeJobsUnscheduled() {
-        Mockito.when(jobEntity.getStatus()).thenReturn(ScsbConstants.UNSCHEDULED);
-        Mockito.when(jobEntity.getJobName()).thenReturn(ScsbConstants.UNSCHEDULED);
+        Mockito.when(jobDto.getStatus()).thenReturn(ScsbConstants.UNSCHEDULED);
+        Mockito.when(jobDto.getJobName()).thenReturn(ScsbConstants.UNSCHEDULED);
         mockquartzJobsInitializer.initializeJobs();
         assertTrue(true);
     }
@@ -67,16 +67,16 @@ public class QuartzJobsInitializerUT extends BaseTestCaseUT {
 
     @Test
     public void testInitializeJobsScheduled() {
-        Mockito.when(jobEntity.getStatus()).thenReturn(ScsbConstants.SCHEDULE);
-        Mockito.when(jobEntity.getJobName()).thenReturn(ScsbConstants.SCHEDULE);
+        Mockito.when(jobDto.getStatus()).thenReturn(ScsbConstants.SCHEDULE);
+        Mockito.when(jobDto.getJobName()).thenReturn(ScsbConstants.SCHEDULE);
         mockquartzJobsInitializer.initializeJobs();
         assertTrue(true);
     }
 
     @Test
     public void testInitializeJobsException() throws Exception {
-        Mockito.when(jobEntity.getStatus()).thenReturn(ScsbConstants.SCHEDULE);
-        Mockito.when(jobEntity.getJobName()).thenReturn(ScsbConstants.SCHEDULE);
+        Mockito.when(jobDto.getStatus()).thenReturn(ScsbConstants.SCHEDULE);
+        Mockito.when(jobDto.getJobName()).thenReturn(ScsbConstants.SCHEDULE);
         Mockito.when(scheduler.scheduleJob(Mockito.any(),Mockito.any())).thenThrow(NullPointerException.class);
         mockquartzJobsInitializer.initializeJobs();
         assertTrue(true);

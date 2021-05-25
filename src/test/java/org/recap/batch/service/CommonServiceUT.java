@@ -9,7 +9,7 @@ import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.model.batch.SolrIndexRequest;
-import org.recap.model.jpa.JobEntity;
+import org.recap.model.job.JobDto;
 import org.recap.util.JobDataParameterUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -96,13 +96,12 @@ public class CommonServiceUT extends BaseTestCase {
     }
     @Ignore
     public void testpendingRequest() throws Exception {
-        JobEntity jobEntity=new JobEntity();
-        jobEntity.setJobDescription(ScsbConstants.CHECK_PENDING_REQUEST_IN_DB);
-        jobEntity.setStatus((ScsbConstants.SUCCESS));
-        jobEntity.setId(1);
+        JobDto jobDto=new JobDto();
+        jobDto.setJobDescription(ScsbConstants.CHECK_PENDING_REQUEST_IN_DB);
+        jobDto.setStatus((ScsbConstants.SUCCESS));
         HttpHeaders headers = new HttpHeaders();
         headers.set(ScsbCommonConstants.API_KEY, SwaggerAPIProvider.getInstance().getSwaggerApiKey());
-        HttpEntity<JobEntity> httpEntity = new HttpEntity<>(headers);
+        HttpEntity<JobDto> httpEntity = new HttpEntity<>(headers);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(ScsbConstants.SUCCESS, HttpStatus.OK);
         Mockito.when(commonService.getHttpHeaders()).thenCallRealMethod();
         Mockito.when(commonService.getRestTemplate()).thenReturn(restTemplate);

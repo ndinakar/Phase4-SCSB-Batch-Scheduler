@@ -39,7 +39,7 @@ public class CheckAndNotifyPendingRequestTaskletUT extends BaseTestCase {
         StepExecution execution = MetaDataInstanceFactory.createStepExecution();
         execution.setCommitCount(2);
         ChunkContext context = new ChunkContext(new StepContext(execution));
-        Mockito.when(checkAndNotifyPendingRequestService.checkPendingMsgesInQueue(scsbCircUrl)).thenThrow(new NullPointerException());
+        Mockito.when(checkAndNotifyPendingRequestService.checkPendingMessagesInQueue(scsbCircUrl)).thenThrow(new NullPointerException());
         Mockito.when(checkAndNotifyPendingRequestTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status = checkAndNotifyPendingRequestTasklet.execute(contribution,context);
         assertNotNull(status);
@@ -53,7 +53,7 @@ public class CheckAndNotifyPendingRequestTaskletUT extends BaseTestCase {
         execution.setCommitCount(2);
         ChunkContext context = new ChunkContext(new StepContext(execution));
         ReflectionTestUtils.setField(checkAndNotifyPendingRequestTasklet,"checkAndNotifyPendingRequestService",checkAndNotifyPendingRequestService);
-        Mockito.when(checkAndNotifyPendingRequestService.checkPendingMsgesInQueue(scsbCircUrl)).thenReturn(ScsbConstants.SUCCESS);
+        Mockito.when(checkAndNotifyPendingRequestService.checkPendingMessagesInQueue(scsbCircUrl)).thenReturn(ScsbConstants.SUCCESS);
         Mockito.when(checkAndNotifyPendingRequestTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status = checkAndNotifyPendingRequestTasklet.execute(contribution,context);
         assertNotNull(status);

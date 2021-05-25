@@ -5,10 +5,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.recap.BaseTestCase;
 import org.recap.ScsbConstants;
-import org.recap.model.jpa.JobParamDataEntity;
-import org.recap.model.jpa.JobParamEntity;
-import org.recap.repository.jpa.JobParamDetailRepository;
-
+import org.recap.batch.service.ScsbJobService;
+import org.recap.model.job.JobParamDataDto;
+import org.recap.model.job.JobParamDto;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
@@ -27,18 +26,19 @@ public class JobDataParameterUtilUT extends BaseTestCase {
     JobDataParameterUtil jobDataParameterUtil;
 
     @Mock
-    JobParamDetailRepository jobParamDetailRepository;
+    ScsbJobService scsbJobService;
 
     @Test
     public void buildJobRequestParameterMap() throws Exception {
         String jobName = ScsbConstants.GENERATE_ACCESSION_REPORT_JOB;
-        JobParamEntity jobParamEntity =  new JobParamEntity();
-        JobParamDataEntity jobParamDataEntity = new JobParamDataEntity();
-        jobParamDataEntity.setParamName(ScsbConstants.FETCH_TYPE);
-        jobParamDataEntity.setParamValue("1");
-        jobParamEntity.setJobParamDataEntities(Arrays.asList(jobParamDataEntity));
+        JobParamDto jobParamDto = new JobParamDto();
+        jobParamDto.setJobName(jobName);
+        JobParamDataDto jobParamDataDto = new JobParamDataDto();
+        jobParamDataDto.setParamName(ScsbConstants.FETCH_TYPE);
+        jobParamDataDto.setParamValue("1");
+        jobParamDto.setJobParamDataDtos(Arrays.asList(jobParamDataDto));
 
-        when(jobParamDetailRepository.findByJobName(jobName)).thenReturn(jobParamEntity);
+        when(scsbJobService.getJobParamsByJobName(jobName)).thenReturn(jobParamDto);
         Map<String, String> parameterMap = jobDataParameterUtil.buildJobRequestParameterMap(ScsbConstants.GENERATE_ACCESSION_REPORT_JOB);
         assertNotNull(parameterMap);
         assertTrue(parameterMap.containsKey(ScsbConstants.FETCH_TYPE));

@@ -42,7 +42,7 @@ public class CheckAndNotifyPendingRequestTasklet extends JobCommonTasklet implem
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         try {
             updateJob(jobExecution, "CheckAndNotifyPendingRequestTasklet", Boolean.FALSE);
-            checkAndNotifyPendingRequestService.checkPendingMsgesInQueue(scsbCircUrl);
+            checkAndNotifyPendingRequestService.checkPendingMessagesInQueue(scsbCircUrl);
         } catch (Exception ex) {
             logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
             executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);

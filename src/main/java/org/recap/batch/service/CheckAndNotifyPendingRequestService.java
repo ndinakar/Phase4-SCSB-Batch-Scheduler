@@ -13,14 +13,13 @@ public class CheckAndNotifyPendingRequestService {
     @Autowired
     private CommonService commonService;
 
-
     /**
-     * Check pending msges in queue string.
+     * Check pending messages in queue string.
      *
      * @param scsbCircUrl the scsb circ url
      * @return the string
      */
-    public String checkPendingMsgesInQueue(String scsbCircUrl) {
+    public String checkPendingMessagesInQueue(String scsbCircUrl) {
         return commonService.pendingRequest(scsbCircUrl, ScsbConstants.NOTIFY_IF_PENDING_REQUEST);
     }
 

@@ -9,8 +9,8 @@ import org.quartz.impl.triggers.CronTriggerImpl;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.job.JobCommonTasklet;
-import org.recap.model.jpa.JobEntity;
-import org.recap.repository.jpa.JobDetailsRepository;
+import org.recap.batch.service.ScsbJobService;
+import org.recap.model.job.JobDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.configuration.JobLocator;
@@ -32,7 +32,7 @@ public class QuartzJobsInitializer {
 
     private JobLauncher jobLauncher;
     private JobLocator jobLocator;
-    private JobDetailsRepository jobDetailsRepository;
+    private ScsbJobService scsbJobService;
     private Scheduler scheduler;
 
     /**
@@ -40,14 +40,14 @@ public class QuartzJobsInitializer {
      *
      * @param jobLauncher          the job launcher
      * @param jobLocator           the job locator
-     * @param jobDetailsRepository the job details repository
+     * @param scsbJobService       the scsb job service
      * @param scheduler            the scheduler
      */
     @Autowired
-    public QuartzJobsInitializer(JobLauncher jobLauncher, JobLocator jobLocator, JobDetailsRepository jobDetailsRepository, Scheduler scheduler) {
+    public QuartzJobsInitializer(JobLauncher jobLauncher, JobLocator jobLocator, ScsbJobService scsbJobService, Scheduler scheduler) {
         this.jobLauncher = jobLauncher;
         this.jobLocator = jobLocator;
-        this.jobDetailsRepository = jobDetailsRepository;
+        this.scsbJobService = scsbJobService;
         this.scheduler = scheduler;
         initializeJobs();
     }
@@ -59,37 +59,42 @@ public class QuartzJobsInitializer {
      */
     public void initializeJobs() {
         logger.info("Initializing jobs");
-        List<JobEntity> jobEntities = jobDetailsRepository.findAll();
-        if (CollectionUtils.isNotEmpty(jobEntities)) {
-            for (JobEntity jobEntity : jobEntities) {
-                String jobName = jobEntity.getJobName();
-                String jobStatus = jobEntity.getStatus();
-                String cronExpression = jobEntity.getCronExpression();
-                try {
-                    JobDetailImpl jobDetailImpl = new JobDetailImpl();
-                    JobCommonTasklet jobCommonTasklet = new JobCommonTasklet();
-                    jobCommonTasklet.setJobDetailImpl(jobDetailImpl, jobName, jobLauncher, jobLocator);
-                    if (StringUtils.isNotBlank(cronExpression) && isValidExpression(cronExpression) && !ScsbConstants.UNSCHEDULED.equalsIgnoreCase(jobStatus)) {
-                        JobKey jobKey = new JobKey(jobName);
-                        jobDetailImpl.setKey(jobKey);
-                        CronTriggerImpl trigger = new CronTriggerImpl();
-                        trigger.setName(jobName + ScsbConstants.TRIGGER_SUFFIX);
-                        trigger.setJobKey(jobKey);
-                        trigger.setCronExpression(cronExpression);
-                        scheduler.scheduleJob(jobDetailImpl, trigger);
-                        logger.info("Job {} is initialized.", jobName);
-                    } else {
-                        logger.info("Job {} has invalid cron expression and unscheduled state.", jobName);
-                        JobKey jobKey = new JobKey(jobName);
-                        jobDetailImpl.setKey(jobKey);
-                        jobDetailImpl.setDurability(true);
-                        scheduler.addJob(jobDetailImpl, true);
+        try {
+            List<JobDto> jobDtoList = scsbJobService.getAllJobs();
+            if (CollectionUtils.isNotEmpty(jobDtoList)) {
+                for (JobDto jobDto : jobDtoList) {
+                    String jobName = jobDto.getJobName();
+                    String jobStatus = jobDto.getStatus();
+                    String cronExpression = jobDto.getCronExpression();
+                    try {
+                        JobDetailImpl jobDetailImpl = new JobDetailImpl();
+                        JobCommonTasklet jobCommonTasklet = new JobCommonTasklet();
+                        jobCommonTasklet.setJobDetailImpl(jobDetailImpl, jobName, jobLauncher, jobLocator);
+                        if (StringUtils.isNotBlank(cronExpression) && isValidExpression(cronExpression) && !ScsbConstants.UNSCHEDULED.equalsIgnoreCase(jobStatus)) {
+                            JobKey jobKey = new JobKey(jobName);
+                            jobDetailImpl.setKey(jobKey);
+                            CronTriggerImpl trigger = new CronTriggerImpl();
+                            trigger.setName(jobName + ScsbConstants.TRIGGER_SUFFIX);
+                            trigger.setJobKey(jobKey);
+                            trigger.setCronExpression(cronExpression);
+                            scheduler.scheduleJob(jobDetailImpl, trigger);
+                            logger.info("Job {} is initialized.", jobName);
+                        } else {
+                            logger.info("Job {} has invalid cron expression and unscheduled state.", jobName);
+                            JobKey jobKey = new JobKey(jobName);
+                            jobDetailImpl.setKey(jobKey);
+                            jobDetailImpl.setDurability(true);
+                            scheduler.addJob(jobDetailImpl, true);
+                        }
+                    } catch (Exception ex) {
+                        logger.error("Initializing job {} Failed.", jobName);
+                        logger.error(ScsbCommonConstants.LOG_ERROR, ex);
                     }
-                } catch (Exception ex) {
-                    logger.error("Initializing job {} Failed.", jobName);
-                    logger.error(ScsbCommonConstants.LOG_ERROR, ex);
                 }
             }
+        } catch (Exception ex) {
+            logger.error("Failed to initialize jobs to Quartz Scheduler. Could not fetch jobs from server.");
+            logger.error(ScsbCommonConstants.LOG_ERROR, ex);
         }
     }
 }

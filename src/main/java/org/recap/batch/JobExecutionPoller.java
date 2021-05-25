@@ -5,9 +5,9 @@ import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.EmailService;
+import org.recap.batch.service.ScsbJobService;
 import org.recap.model.EmailPayLoad;
-import org.recap.model.jpa.JobEntity;
-import org.recap.repository.jpa.JobDetailsRepository;
+import org.recap.model.job.JobDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobExecution;
@@ -34,7 +34,7 @@ public class JobExecutionPoller {
     private JobExplorer jobExplorer;
     private String solrClientUrl;
     private EmailService emailService;
-    private JobDetailsRepository jobDetailsRepository;
+    private ScsbJobService scsbJobService;
 
     /**
      * Instantiates a new Job execution poller.
@@ -43,15 +43,15 @@ public class JobExecutionPoller {
      * @param jobExplorer            the job explorer
      * @param solrClientUrl          the solr client url
      * @param emailService           the email service
-     * @param jobDetailsRepository   the job details repository
+     * @param scsbJobService         the scsb job service
      */
     @Autowired
-    public JobExecutionPoller(@Value("${" + PropertyKeyConstants.LONG_RUNNING_JOBS_POLLER_TIME_IN_MINUTES + "}") Long jobExecutionPollerTime, JobExplorer jobExplorer, @Value("${" + PropertyKeyConstants.SCSB_SOLR_DOC_URL + "}") String solrClientUrl, EmailService emailService, JobDetailsRepository jobDetailsRepository) {
+    public JobExecutionPoller(@Value("${" + PropertyKeyConstants.LONG_RUNNING_JOBS_POLLER_TIME_IN_MINUTES + "}") Long jobExecutionPollerTime, JobExplorer jobExplorer, @Value("${" + PropertyKeyConstants.SCSB_SOLR_DOC_URL + "}") String solrClientUrl, EmailService emailService, ScsbJobService scsbJobService) {
         this.jobExecutionPollerTime = jobExecutionPollerTime;
         this.jobExplorer = jobExplorer;
         this.solrClientUrl = solrClientUrl;
         this.emailService = emailService;
-        this.jobDetailsRepository = jobDetailsRepository;
+        this.scsbJobService = scsbJobService;
         new JobExecutionThread().start();
     }
 
@@ -80,14 +80,14 @@ public class JobExecutionPoller {
                 for (String jobName : jobNames) {
                     Set<JobExecution> runningJobExecutions = jobExplorer.findRunningJobExecutions(jobName);
                     if (CollectionUtils.isNotEmpty(runningJobExecutions)) {
-                        JobEntity jobEntity = jobDetailsRepository.findByJobName(jobName);
+                        JobDto jobDto = scsbJobService.getJobByName(jobName);
                         for (JobExecution jobExecution : runningJobExecutions) {
                             long diffTime = new Date().getTime() - jobExecution.getStartTime().getTime();
                             long diffMinutes = TimeUnit.MILLISECONDS.toMinutes(diffTime);
                             if (diffMinutes >= jobExecutionPollerTime) {
                                 EmailPayLoad emailPayLoad = new EmailPayLoad();
                                 emailPayLoad.setJobName(jobName);
-                                emailPayLoad.setJobDescription(null != jobEntity ? jobEntity.getJobDescription() : null);
+                                emailPayLoad.setJobDescription(null != jobDto ? jobDto.getJobDescription() : null);
                                 emailPayLoad.setJobAction(ScsbConstants.STARTED);
                                 emailPayLoad.setStartDate(jobExecution.getStartTime());
                                 emailPayLoad.setStatus(getRunningStatus(diffTime));

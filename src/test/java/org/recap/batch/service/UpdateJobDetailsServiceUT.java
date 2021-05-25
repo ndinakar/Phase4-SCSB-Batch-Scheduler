@@ -8,8 +8,7 @@ import org.mockito.Mockito;
 import org.recap.BaseTestCaseUT;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
-import org.recap.model.jpa.JobEntity;
-import org.recap.repository.jpa.JobDetailsRepository;
+import org.recap.model.job.JobDto;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +28,10 @@ public class UpdateJobDetailsServiceUT extends BaseTestCaseUT {
     RestTemplate restTemplate;
 
     @Mock
-    JobDetailsRepository jobDetailsRepository;
+    ScsbJobService scsbJobService;
 
     @Mock
-    JobEntity jobEntity;
+    JobDto jobDto;
 
     @InjectMocks
     UpdateJobDetailsService updateJobDetailsService;
@@ -46,8 +45,8 @@ public class UpdateJobDetailsServiceUT extends BaseTestCaseUT {
 
     @Test
     public void testUpdateJobDetailsService() throws Exception {
-        Mockito.when(jobDetailsRepository.findByJobName(ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS)).thenReturn(jobEntity);
-        Mockito.when(jobEntity.getCronExpression()).thenReturn("* * * * * ? *");
+        Mockito.when(scsbJobService.getJobByName(ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS)).thenReturn(jobDto);
+        Mockito.when(jobDto.getCronExpression()).thenReturn("* * * * * ? *");
         Mockito.when(commonService.getRestTemplate()).thenReturn(restTemplate);
         Mockito.when(restTemplate.exchange( Matchers.anyString(),
                 Matchers.any(HttpMethod.class),

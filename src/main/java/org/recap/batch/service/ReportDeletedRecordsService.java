@@ -1,7 +1,6 @@
 package org.recap.batch.service;
 
 import org.recap.ScsbConstants;
-import org.recap.repository.jpa.JobDetailsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +18,7 @@ public class ReportDeletedRecordsService {
     private static final Logger logger = LoggerFactory.getLogger(ReportDeletedRecordsService.class);
 
     @Autowired
-    private JobDetailsRepository jobDetailsRepository;
-
-    @Autowired
     private CommonService commonService;
-
-
-    /**
-     * Gets job details repository.
-     *
-     * @return the job details repository
-     */
-    public JobDetailsRepository getJobDetailsRepository() {
-        return jobDetailsRepository;
-    }
 
     /**
      * This method makes a rest call to scsb-circ microservice to report about the deleted records, in important transaction tables in SCSB.

@@ -5,7 +5,6 @@ import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.model.batch.SolrIndexRequest;
-import org.recap.model.jpa.JobEntity;
 import org.recap.util.JobDataParameterUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -34,22 +33,19 @@ public class CommonService {
     }
 
     public HttpEntity getHttpEntity() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(ScsbCommonConstants.API_KEY, apiKey);
-        return new HttpEntity<>(headers);
-    }
-
-    public String executeService(String url, String jobUrl, HttpMethod httpMethod)
-    {
-        HttpEntity httpEntity = getHttpEntity();
-        ResponseEntity<String> responseEntity = getRestTemplate().exchange(url + jobUrl, httpMethod, httpEntity, String.class);
-        return responseEntity.getBody();
+        return new HttpEntity<>(getHttpHeaders());
     }
 
     public HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.set(ScsbCommonConstants.API_KEY, apiKey);
         return headers;
+    }
+
+    public String executeService(String url, String jobUrl, HttpMethod httpMethod) {
+        HttpEntity httpEntity = getHttpEntity();
+        ResponseEntity<String> responseEntity = getRestTemplate().exchange(url + jobUrl, httpMethod, httpEntity, String.class);
+        return responseEntity.getBody();
     }
 
     public  Map<String, String> executePurge(String scsbCircUrl, String url) {
@@ -59,12 +55,12 @@ public class CommonService {
     }
 
     public String pendingRequest(String url, String jobUrl) {
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<JobEntity> httpEntity = new HttpEntity<>(headers);
-        ResponseEntity<String> responseEntity = getRestTemplate().exchange(url + jobUrl, HttpMethod.POST, httpEntity, String.class);
+        HttpEntity httpEntity = getHttpEntity();
+        ResponseEntity<String> responseEntity = getRestTemplate().exchange(url + jobUrl, HttpMethod.GET, httpEntity, String.class);
         return responseEntity.getBody();
     }
-    public String  getResponse(SolrIndexRequest solrIndexRequest, String solrClientUrl, String url, HttpMethod httpMethod) {
+
+    public String getResponse(SolrIndexRequest solrIndexRequest, String solrClientUrl, String url, HttpMethod httpMethod) {
         HttpHeaders headers = getHttpHeaders();
         HttpEntity<SolrIndexRequest> httpEntity = new HttpEntity<>(solrIndexRequest, headers);
         ResponseEntity<String> responseEntity = getRestTemplate().exchange(solrClientUrl + url, httpMethod, httpEntity, String.class);

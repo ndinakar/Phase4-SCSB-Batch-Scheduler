@@ -38,7 +38,7 @@ public class CheckAndNotifyPendingRequestServiceUT extends BaseTestCaseUT {
                 Matchers.<HttpEntity<?>> any(),
                 Matchers.<Class<String>> any())).thenReturn(responseEntity);
         Mockito.when(responseEntity.getBody()).thenReturn(ScsbConstants.SUCCESS);
-        String status=checkAndNotifyPendingRequestService.checkPendingMsgesInQueue("scsbCircUrl");
+        String status=checkAndNotifyPendingRequestService.checkPendingMessagesInQueue("scsbCircUrl");
         assertEquals(ScsbConstants.SUCCESS,status);
 
     }
