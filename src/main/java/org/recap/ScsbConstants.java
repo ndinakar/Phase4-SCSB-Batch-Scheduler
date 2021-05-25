@@ -35,6 +35,9 @@ public class ScsbConstants {
     public static final String ACCESSION_URL = "sharedCollection/ongoingAccessionJob";
     public static final String BATCH_JOB_EMAIL_URL = "batchJobEmailService/batchJobEmail";
     public static final String UPDATE_JOB_URL = "updateJobService/updateJob";
+    public static final String GET_ALL_JOBS_URL = "updateJobService/getAllJobs";
+    public static final String GET_JOB_BY_NAME_URL = "updateJobService/getJobByName";
+    public static final String GET_JOB_PARAMS_BY_JOB_NAME_URL = "updateJobService/getJobParamsByJobName";
     public static final String DAILY_RECONCILIATION_URL = "/dailyReconciliation/startDailyReconciliation";
     public static final String ACCESSION_RECOCILIATION_URL = "/accessionReconciliation/startAccessionReconciliation";
     public static final String STATUS_RECONCILIATION_URL = "/statusReconciliation/itemStatusReconciliation";

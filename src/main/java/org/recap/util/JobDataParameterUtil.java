@@ -2,12 +2,11 @@ package org.recap.util;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.recap.ScsbConstants;
-import org.recap.model.jpa.JobParamDataEntity;
-import org.recap.model.jpa.JobParamEntity;
-import org.recap.repository.jpa.JobParamDetailRepository;
+import org.recap.batch.service.ScsbJobService;
+import org.recap.model.job.JobParamDataDto;
+import org.recap.model.job.JobParamDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,11 +19,8 @@ import java.util.Map;
 @Service
 public class JobDataParameterUtil {
 
-    /**
-     * The Job param detail repository.
-     */
     @Autowired
-    JobParamDetailRepository jobParamDetailRepository;
+    private ScsbJobService scsbJobService;
 
     /**
      * This method builds the job parameters from the database and builds a map.
@@ -34,10 +30,10 @@ public class JobDataParameterUtil {
      */
     public Map<String, String> buildJobRequestParameterMap(String jobName) {
         Map<String, String> parameterMap = new HashMap<>();
-        JobParamEntity jobParamEntity = jobParamDetailRepository.findByJobName(jobName);
-        if (CollectionUtils.isNotEmpty(jobParamEntity.getJobParamDataEntities())) {
-            for (JobParamDataEntity jobParamDataEntity : jobParamEntity.getJobParamDataEntities()) {
-                parameterMap.put(jobParamDataEntity.getParamName(), jobParamDataEntity.getParamValue());
+        JobParamDto jobParamDto = scsbJobService.getJobParamsByJobName(jobName);
+        if (CollectionUtils.isNotEmpty(jobParamDto.getJobParamDataDtos())) {
+            for (JobParamDataDto jobParamDataDto : jobParamDto.getJobParamDataDtos()) {
+                parameterMap.put(jobParamDataDto.getParamName(), jobParamDataDto.getParamValue());
             }
         }
         return parameterMap;

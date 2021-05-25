@@ -8,9 +8,9 @@ import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.EmailService;
+import org.recap.batch.service.ScsbJobService;
 import org.recap.model.EmailPayLoad;
-import org.recap.model.jpa.JobEntity;
-import org.recap.repository.jpa.JobDetailsRepository;
+import org.recap.model.job.JobDto;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.scope.context.StepContext;
@@ -34,10 +34,10 @@ import static org.junit.Assert.assertNotNull;
 public class EmailProcessingTaskletUT extends BaseTestCase {
 
     @Mock
-    JobEntity jobEntity;
+    JobDto jobDto;
 
     @Mock
-    JobDetailsRepository jobDetailsRepository;
+    ScsbJobService scsbJobService;
 
     @Mock
     EmailService emailService;
@@ -62,13 +62,13 @@ public class EmailProcessingTaskletUT extends BaseTestCase {
         String jobStatusMessage = (String) executionContext.get(ScsbConstants.JOB_STATUS_MESSAGE);
         EmailPayLoad emailPayLoad = new EmailPayLoad();
         emailPayLoad.setJobName(jobName);
-        emailPayLoad.setJobDescription(jobEntity.getJobDescription());
+        emailPayLoad.setJobDescription(jobDto.getJobDescription());
         emailPayLoad.setJobAction(ScsbConstants.RAN);
         emailPayLoad.setStartDate(createdDate);
         emailPayLoad.setStatus(jobStatus);
         emailPayLoad.setMessage(jobStatusMessage);
         Mockito.when(emailService.sendEmail(solrClientUrl, emailPayLoad)).thenReturn(String.valueOf(emailPayLoad));
-        Mockito.when(jobDetailsRepository.findByJobName(jobName)).thenReturn(jobEntity);
+        Mockito.when(scsbJobService.getJobByName(jobName)).thenReturn(jobDto);
         Mockito.when(emailProcessingTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status = emailProcessingTasklet.execute(contribution,context);
         assertNotNull(status);
@@ -103,9 +103,9 @@ public class EmailProcessingTaskletUT extends BaseTestCase {
         assertNotNull(emailPayLoad.getStartDate());
         assertNotNull(emailPayLoad.getStatus());
         assertNotNull(emailPayLoad.getJobName());
-        ReflectionTestUtils.setField(emailProcessingTasklet,"jobDetailsRepository",jobDetailsRepository);
+        ReflectionTestUtils.setField(emailProcessingTasklet,"scsbJobService",scsbJobService);
         ReflectionTestUtils.setField(emailProcessingTasklet,"emailService",emailService);
-        Mockito.when(jobDetailsRepository.findByJobName(jobName)).thenReturn(jobEntity);
+        Mockito.when(scsbJobService.getJobByName(jobName)).thenReturn(jobDto);
         Mockito.when(emailService.sendEmail(solrClientUrl, emailPayLoad)).thenReturn(String.valueOf(emailPayLoad));
         Mockito.when(emailProcessingTasklet.execute(contribution,context)).thenCallRealMethod();
         RepeatStatus status = emailProcessingTasklet.execute(contribution,context);
