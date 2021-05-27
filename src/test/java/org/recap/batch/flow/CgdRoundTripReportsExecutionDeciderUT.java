@@ -3,6 +3,7 @@ package org.recap.batch.flow;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.recap.BaseTestCaseUT;
 import org.recap.PropertyKeyConstants;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.job.flow.FlowExecutionStatus;
@@ -19,7 +20,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by rajeshbabuk on 12/May/2021
  */
-public class CgdRoundTripReportsExecutionDeciderUT {
+public class CgdRoundTripReportsExecutionDeciderUT extends BaseTestCaseUT {
 
     @Mock
     CgdRoundTripReportsExecutionDecider cgdRoundTripReportsExecutionDecider;

@@ -1,6 +1,8 @@
 package org.recap.batch.service;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCaseUT;
@@ -9,15 +11,20 @@ import org.recap.ScsbConstants;
 import org.recap.model.job.JobDto;
 import org.recap.model.job.JobParamDataDto;
 import org.recap.model.job.JobParamDto;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Arrays;
 import java.util.Collections;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -33,6 +40,11 @@ public class ScsbJobServiceUT extends BaseTestCaseUT {
 
     @Mock
     ScsbJobService scsbJobService;
+
+    @Before
+    public void setup() {
+        ReflectionTestUtils.setField(scsbJobService,"solrClientUrl",solrClientUrl);
+    }
 
     @Test
     public void testGetAllJobs() {
@@ -61,8 +73,10 @@ public class ScsbJobServiceUT extends BaseTestCaseUT {
         Mockito.when(scsbJobService.getHttpEntity()).thenCallRealMethod();
         Mockito.when(scsbJobService.getRestTemplate()).thenReturn(restTemplate);
         ResponseEntity<JobDto> responseEntity = new ResponseEntity<>(jobDto, HttpStatus.OK);
-        Mockito.when(scsbJobService.getRestTemplate().exchange(solrClientUrl + ScsbConstants.GET_JOB_BY_NAME_URL, HttpMethod.GET, httpEntity, JobDto.class, parameterMap)).thenReturn(responseEntity);
-        Mockito.when(scsbJobService.getJobByName(jobName)).thenCallRealMethod();
+        Mockito.when(restTemplate.exchange( Matchers.any(),
+                Matchers.any(HttpMethod.class),
+                Matchers.<HttpEntity<?>> any(),
+                Matchers.<Class<JobDto>> any())).thenReturn(responseEntity); Mockito.when(scsbJobService.getJobByName(jobName)).thenCallRealMethod();
         JobDto job = scsbJobService.getJobByName(jobName);
         assertNotNull(job);
     }
@@ -82,7 +96,10 @@ public class ScsbJobServiceUT extends BaseTestCaseUT {
         Mockito.when(scsbJobService.getHttpEntity()).thenCallRealMethod();
         Mockito.when(scsbJobService.getRestTemplate()).thenReturn(restTemplate);
         ResponseEntity<JobParamDto> responseEntity = new ResponseEntity<>(jobParamDto, HttpStatus.OK);
-        Mockito.when(scsbJobService.getRestTemplate().exchange(solrClientUrl + ScsbConstants.GET_JOB_PARAMS_BY_JOB_NAME_URL, HttpMethod.GET, httpEntity, JobParamDto.class, parameterMap)).thenReturn(responseEntity);
+        Mockito.when(restTemplate.exchange( Matchers.any(),
+                Matchers.any(HttpMethod.class),
+                Matchers.<HttpEntity<?>> any(),
+                Matchers.<Class<JobParamDto>> any())).thenReturn(responseEntity);
         Mockito.when(scsbJobService.getJobParamsByJobName(jobName)).thenCallRealMethod();
         JobParamDto jobParam = scsbJobService.getJobParamsByJobName(jobName);
         assertNotNull(jobParam);
@@ -96,9 +113,13 @@ public class ScsbJobServiceUT extends BaseTestCaseUT {
         Mockito.when(scsbJobService.getHttpHeaders()).thenCallRealMethod();
         Mockito.when(scsbJobService.getRestTemplate()).thenReturn(restTemplate);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(ScsbConstants.SUCCESS, HttpStatus.OK);
-        Mockito.when(scsbJobService.getRestTemplate().exchange(solrClientUrl + ScsbConstants.UPDATE_JOB_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(restTemplate.exchange( Matchers.anyString(),
+                Matchers.any(HttpMethod.class),
+                Matchers.<HttpEntity<?>> any(),
+                Matchers.<Class<String>> any())).thenReturn(responseEntity);
         Mockito.when(scsbJobService.updateJob(jobDto)).thenCallRealMethod();
         String status = scsbJobService.updateJob(jobDto);
         assertNotNull(status);
+        assertEquals(ScsbConstants.SUCCESS,status);
     }
 }
