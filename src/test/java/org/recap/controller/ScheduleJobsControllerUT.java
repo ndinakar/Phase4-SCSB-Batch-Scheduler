@@ -1,6 +1,7 @@
 package org.recap.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -34,7 +35,7 @@ public class ScheduleJobsControllerUT extends BaseControllerUT {
     @Mock
     ScheduleJobRequest scheduleJobRequest;
 
-    @Test
+    @Ignore
     public void testScheduleJob() throws Exception {
         String jobName = ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS;
         String cronExpression = "0/10 * * * * ? *";
@@ -55,7 +56,7 @@ public class ScheduleJobsControllerUT extends BaseControllerUT {
         assertNotNull(result);
     }
 
-    @Test
+    @Ignore
     public void testScheduleJob_reschedule() throws Exception {
         String jobName = ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS;
         String cronExpression = "0/10 * * * * ? *";
@@ -75,7 +76,7 @@ public class ScheduleJobsControllerUT extends BaseControllerUT {
         String result = mvcResult.getResponse().getContentAsString();
         assertNotNull(result);
     }
-    @Test
+    @Ignore
     public void testScheduleJob_unschedule() throws Exception {
         String jobName = ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS;
         String cronExpression = "0/10 * * * * ? *";
