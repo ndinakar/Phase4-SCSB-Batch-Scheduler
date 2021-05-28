@@ -53,6 +53,7 @@ public class UpdateJobDetailsServiceUT extends BaseTestCaseUT {
                 Matchers.<HttpEntity<?>> any(),
                 Matchers.<Class<String>> any())).thenReturn(responseEntity);
         Mockito.when(responseEntity.getBody()).thenReturn(ScsbConstants.SUCCESS);
+        Mockito.when(scsbJobService.updateJob(Mockito.any())).thenReturn(ScsbConstants.SUCCESS);
         String status = updateJobDetailsService.updateJob("solrClientUrl", ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS, new Date(), 1l);
         assertNotNull(status);
         assertEquals(ScsbConstants.SUCCESS, status);

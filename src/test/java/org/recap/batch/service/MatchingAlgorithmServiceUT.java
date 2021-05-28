@@ -55,7 +55,7 @@ public class MatchingAlgorithmServiceUT extends BaseTestCase {
         Mockito.when(matchingAlgorithmService.commonService.getRestTemplate()).thenReturn(restTemplate);
         Mockito.when(matchingAlgorithmService.getSolrIndexRequest(createdDate)).thenReturn(solrIndexRequest);
         Mockito.when(matchingAlgorithmService.commonService.getRestTemplate().exchange(solrClientUrl + ScsbConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
-        Mockito.when(matchingAlgorithmService.commonService.getResponse(Mockito.any(),Mockito.anyString(),Mockito.anyString(), HttpMethod.POST)).thenReturn(responseEntity.getBody());
+        Mockito.when(matchingAlgorithmService.commonService.getResponse(Mockito.any(),Mockito.anyString(),Mockito.anyString(), Mockito.any())).thenReturn(responseEntity.getBody());
         Mockito.when(matchingAlgorithmService.getSolrIndexRequest(createdDate)).thenCallRealMethod();
 
         Mockito.when(matchingAlgorithmService.initiateMatchingAlgorithm(solrClientUrl, createdDate)).thenCallRealMethod();

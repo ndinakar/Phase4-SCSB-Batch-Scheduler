@@ -59,7 +59,7 @@ public class GenerateReportsServiceUT extends BaseTestCase{
         Mockito.when(generateReportsService.getSolrIndexRequest(createdDate, ScsbConstants.GENERATE_ACCESSION_REPORT)).thenReturn(solrIndexRequest);
         Mockito.when(commonService.getRestTemplate().exchange(solrClientUrl + ScsbConstants.GENERATE_REPORT_URL, HttpMethod.POST, httpEntity, String.class)).thenReturn(responseEntity);
         Mockito.when(jobDataParameterUtil.getFromDate(createdDate)).thenCallRealMethod();
-        Mockito.when(commonService.getResponse(Mockito.any(),Mockito.anyString(),Mockito.anyString(), HttpMethod.POST)).thenReturn(ScsbConstants.SUCCESS);
+        Mockito.when(commonService.getResponse(Mockito.any(),Mockito.anyString(),Mockito.anyString(),Mockito.any())).thenReturn(ScsbConstants.SUCCESS);
         Mockito.when(generateReportsService.getSolrIndexRequest(createdDate, ScsbConstants.GENERATE_ACCESSION_REPORT)).thenCallRealMethod();
         Mockito.when(generateReportsService.generateReport(solrClientUrl, createdDate, ScsbConstants.GENERATE_ACCESSION_REPORT)).thenCallRealMethod();
         String status = generateReportsService.generateReport(solrClientUrl, createdDate, ScsbConstants.GENERATE_ACCESSION_REPORT);

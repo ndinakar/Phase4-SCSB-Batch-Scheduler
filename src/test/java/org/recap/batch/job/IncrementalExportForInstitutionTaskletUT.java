@@ -99,7 +99,6 @@ public class IncrementalExportForInstitutionTaskletUT extends BaseTestCaseUT {
         JobExecution jobExecution = execution.getJobExecution();
         String exportStringDate = jobExecution.getJobParameters().getString(ScsbConstants.FROM_DATE);
         Date createdDate = jobExecution.getCreateTime();
-        Mockito.when(jobExecution.getJobParameters().getString(ScsbCommonConstants.INSTITUTION)).thenReturn(ScsbCommonConstants.PRINCETON);
         Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.INCREMENTAL_RECORDS_EXPORT_PUL, createdDate, exportStringDate, ScsbCommonConstants.PRINCETON)).thenThrow(new NullPointerException());
         Mockito.when(incrementalExportForInstitutionTasklet.executeIncrementalExport(context, logger, ScsbCommonConstants.PRINCETON)).thenCallRealMethod();
         ReflectionTestUtils.setField(incrementalExportForInstitutionTasklet, "recordsExportService", null);
