@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.recap.BaseTestCaseUT;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.model.ScheduleJobRequest;
@@ -13,15 +14,14 @@ import org.recap.model.ScheduleJobResponse;
 import org.recap.quartz.SchedulerService;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Created by rajeshbabuk on 19/4/17.
  */
-public class ScheduleJobsControllerUT extends BaseControllerUT {
+public class ScheduleJobsControllerUT extends BaseTestCaseUT {
 
     @Mock
     ScheduleJobsController scheduleJobsController;
@@ -35,66 +35,48 @@ public class ScheduleJobsControllerUT extends BaseControllerUT {
     @Mock
     ScheduleJobRequest scheduleJobRequest;
 
-    @Ignore
+    @Test
     public void testScheduleJob() throws Exception {
-        String jobName = ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS;
-        String cronExpression = "0/10 * * * * ? *";
-        ScheduleJobRequest scheduleJobRequest = new ScheduleJobRequest();
-        scheduleJobRequest.setJobName(jobName);
+        ScheduleJobRequest scheduleJobRequest = getScheduleJobRequest();
+        Mockito.when(schedulerService.scheduleJob(Mockito.anyString(),Mockito.anyString())).thenReturn(ScsbConstants.JOB_SUCCESS_SCHEDULING);
+        ScheduleJobResponse scheduleJobResponse =mockscheduleJobsController.scheduleJob(scheduleJobRequest);
+        assertNotNull(scheduleJobResponse);
+        assertEquals(ScsbConstants.JOB_SUCCESS_SCHEDULING,scheduleJobResponse.getMessage());
+    }
+
+    private ScheduleJobRequest getScheduleJobRequest() {
+        ScheduleJobRequest scheduleJobRequest=new ScheduleJobRequest();
         scheduleJobRequest.setScheduleType(ScsbConstants.SCHEDULE);
-        scheduleJobRequest.setCronExpression(cronExpression);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        MvcResult mvcResult = this.mockMvc.perform(post("/scheduleService/scheduleJob")
-                .headers(getHttpHeaders())
-                .contentType(contentType)
-                .content(objectMapper.writeValueAsString(scheduleJobRequest)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        String result = mvcResult.getResponse().getContentAsString();
-        assertNotNull(result);
+        scheduleJobRequest.setJobName(ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS);
+        scheduleJobRequest.setCronExpression("0/10 * * * * ? *");
+        scheduleJobRequest.setJobId(1);
+        assertNotNull(scheduleJobRequest.getScheduleType());
+        assertNotNull(scheduleJobRequest.getJobId());
+        assertNotNull(scheduleJobRequest.getJobName());
+        assertNotNull(scheduleJobRequest.getCronExpression());
+        return scheduleJobRequest;
     }
 
-    @Ignore
+    @Test
     public void testScheduleJob_reschedule() throws Exception {
-        String jobName = ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS;
-        String cronExpression = "0/10 * * * * ? *";
-        ScheduleJobRequest scheduleJobRequest = new ScheduleJobRequest();
-        scheduleJobRequest.setJobName(jobName);
-        scheduleJobRequest.setScheduleType(ScsbConstants.RESCHEDULE);
-        scheduleJobRequest.setCronExpression(cronExpression);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        MvcResult mvcResult = this.mockMvc.perform(post("/scheduleService/scheduleJob")
-                .headers(getHttpHeaders())
-                .contentType(contentType)
-                .content(objectMapper.writeValueAsString(scheduleJobRequest)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        String result = mvcResult.getResponse().getContentAsString();
-        assertNotNull(result);
+        Mockito.when(schedulerService.rescheduleJob(Mockito.anyString(),Mockito.anyString())).thenReturn(ScsbConstants.JOB_SUCCESS_RESCHEDULING);
+        Mockito.when(scheduleJobRequest.getScheduleType()).thenReturn(ScsbConstants.RESCHEDULE);
+        Mockito.when(scheduleJobRequest.getJobName()).thenReturn(ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS);
+        Mockito.when(scheduleJobRequest.getCronExpression()).thenReturn("0/10 * * * * ? *");
+        ScheduleJobResponse scheduleJobResponse =mockscheduleJobsController.scheduleJob(scheduleJobRequest);
+        assertNotNull(scheduleJobResponse);
+        assertEquals(ScsbConstants.JOB_SUCCESS_RESCHEDULING,scheduleJobResponse.getMessage());
     }
-    @Ignore
+
+    @Test
     public void testScheduleJob_unschedule() throws Exception {
-        String jobName = ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS;
-        String cronExpression = "0/10 * * * * ? *";
-        ScheduleJobRequest scheduleJobRequest = new ScheduleJobRequest();
-        scheduleJobRequest.setJobName(jobName);
-        scheduleJobRequest.setScheduleType(ScsbConstants.UNSCHEDULE);
-        scheduleJobRequest.setCronExpression(cronExpression);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        MvcResult mvcResult = this.mockMvc.perform(post("/scheduleService/scheduleJob")
-                .headers(getHttpHeaders())
-                .contentType(contentType)
-                .content(objectMapper.writeValueAsString(scheduleJobRequest)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        String result = mvcResult.getResponse().getContentAsString();
-        assertNotNull(result);
+        Mockito.when(schedulerService.unscheduleJob(Mockito.anyString())).thenReturn(ScsbConstants.JOB_SUCCESS_UNSCHEDULING);
+        Mockito.when(scheduleJobRequest.getScheduleType()).thenReturn(ScsbConstants.UNSCHEDULE);
+        Mockito.when(scheduleJobRequest.getJobName()).thenReturn(ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS);
+        Mockito.when(scheduleJobRequest.getCronExpression()).thenReturn("0/10 * * * * ? *");
+        ScheduleJobResponse scheduleJobResponse =mockscheduleJobsController.scheduleJob(scheduleJobRequest);
+        assertNotNull(scheduleJobResponse);
+        assertEquals(ScsbConstants.JOB_SUCCESS_UNSCHEDULING,scheduleJobResponse.getMessage());
     }
 
     @Test

@@ -8,11 +8,13 @@ import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCaseUT;
 import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
-import org.recap.ScsbConstants;
 import org.recap.batch.service.RecordsExportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobInstance;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.scope.context.StepContext;
@@ -49,63 +51,18 @@ public class DeletedRecordsExportForInstitutionTaskletUT extends BaseTestCaseUT 
         ReflectionTestUtils.setField(deletedRecordsExportForInstitutionTasklet, "recordsExportService", recordsExportService);
     }
 
-
     @Test
-    public void testExecute_cul() throws Exception {
+    public void testExecute() throws Exception {
+        StepContribution contribution = new StepContribution(new StepExecution("cgdRroundTripReportsTasklet", new JobExecution(new JobInstance(123L, "job"),new JobParameters())));
         StepExecution execution = MetaDataInstanceFactory.createStepExecution();
         execution.setCommitCount(2);
         ChunkContext context = new ChunkContext(new StepContext(execution));
-        JobExecution jobExecution = execution.getJobExecution();
-        Date createdDate = jobExecution.getCreateTime();
-        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT_NYPL, createdDate, null, ScsbCommonConstants.COLUMBIA)).thenReturn(ScsbConstants.SUCCESS);
-        Mockito.when(deletedRecordsExportForInstitutionTasklet.executeDeletedRecordsExport(context, logger, ScsbCommonConstants.COLUMBIA, true)).thenCallRealMethod();
-        RepeatStatus status = deletedRecordsExportForInstitutionTasklet.executeDeletedRecordsExport(context, logger, ScsbCommonConstants.COLUMBIA, true);
+        Mockito.when(deletedRecordsExportForInstitutionTasklet.execute(contribution,context)).thenCallRealMethod();
+        Mockito.when(deletedRecordsExportForInstitutionTasklet.executeDeletedRecordsExport(Mockito.any(),Mockito.any(),Mockito.anyString(),Mockito.any())).thenReturn(RepeatStatus.FINISHED);
+        Mockito.when(deletedRecordsExportForInstitutionTasklet.getExportInstitutionFromParameters(Mockito.any())).thenReturn(ScsbCommonConstants.PRINCETON);
+        RepeatStatus status = deletedRecordsExportForInstitutionTasklet.execute(contribution,context);
         assertNotNull(status);
-        assertEquals(RepeatStatus.FINISHED, status);
-    }
-
-    @Test
-    public void testExecute_pul() throws Exception {
-        StepExecution execution = MetaDataInstanceFactory.createStepExecution();
-        execution.setCommitCount(2);
-        ChunkContext context = new ChunkContext(new StepContext(execution));
-        JobExecution jobExecution = execution.getJobExecution();
-        Date createdDate = jobExecution.getCreateTime();
-        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT_PUL, createdDate, null, ScsbCommonConstants.PRINCETON)).thenReturn(ScsbConstants.SUCCESS);
-        Mockito.when(deletedRecordsExportForInstitutionTasklet.executeDeletedRecordsExport(context, logger, ScsbCommonConstants.PRINCETON, true)).thenCallRealMethod();
-        RepeatStatus status = deletedRecordsExportForInstitutionTasklet.executeDeletedRecordsExport(context, logger, ScsbCommonConstants.PRINCETON, true);
-        assertNotNull(status);
-        assertEquals(RepeatStatus.FINISHED, status);
-    }
-
-    @Test
-    public void testExecute_nypl() throws Exception {
-        StepExecution execution = MetaDataInstanceFactory.createStepExecution();
-        execution.setCommitCount(2);
-        ChunkContext context = new ChunkContext(new StepContext(execution));
-        JobExecution jobExecution = execution.getJobExecution();
-        Date createdDate = jobExecution.getCreateTime();
-        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT_NYPL, createdDate, null, ScsbCommonConstants.NYPL)).thenReturn(ScsbConstants.SUCCESS);
-        Mockito.when(deletedRecordsExportForInstitutionTasklet.executeDeletedRecordsExport(context, logger, ScsbCommonConstants.NYPL, true)).thenCallRealMethod();
-        RepeatStatus status = deletedRecordsExportForInstitutionTasklet.executeDeletedRecordsExport(context, logger, ScsbCommonConstants.NYPL, true);
-        assertNotNull(status);
-        assertEquals(RepeatStatus.FINISHED, status);
-    }
-
-    @Test
-    public void testExecute_exception() throws Exception {
-        ReflectionTestUtils.setField(deletedRecordsExportForInstitutionTasklet, "recordsExportService", null);
-        StepExecution execution = MetaDataInstanceFactory.createStepExecution();
-        execution.setCommitCount(2);
-        ChunkContext context = new ChunkContext(new StepContext(execution));
-        JobExecution jobExecution = execution.getJobExecution();
-        String exportStringDate = jobExecution.getJobParameters().getString(ScsbConstants.FROM_DATE);
-        Date createdDate = jobExecution.getCreateTime();
-        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT_NYPL, createdDate, exportStringDate, ScsbCommonConstants.PRINCETON)).thenThrow(NullPointerException.class);
-        Mockito.when(deletedRecordsExportForInstitutionTasklet.executeDeletedRecordsExport(context, logger, ScsbCommonConstants.PRINCETON, true)).thenCallRealMethod();
-        RepeatStatus status = deletedRecordsExportForInstitutionTasklet.executeDeletedRecordsExport(context, logger, ScsbCommonConstants.PRINCETON, true);
-        assertNotNull(status);
-        assertEquals(RepeatStatus.FINISHED, status);
+        assertEquals(status,RepeatStatus.FINISHED);
     }
 
 }

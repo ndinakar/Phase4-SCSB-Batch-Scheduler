@@ -15,9 +15,11 @@ import org.recap.BaseTestCaseUT;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.UpdateJobDetailsService;
+import org.recap.util.JobDataParameterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.item.ExecutionContext;
@@ -70,6 +72,12 @@ public class JobCommonTaskletUT extends BaseTestCaseUT {
 
     @Mock
     JobParameters jobParameters;
+
+    @Mock
+    JobDataParameterUtil jobDataParameterUtil;
+
+    @Mock
+    JobInstance jobInstance;
 
     @Test
     public void getResultStatus() throws Exception {
@@ -170,6 +178,33 @@ public class JobCommonTaskletUT extends BaseTestCaseUT {
         Mockito.when(jobParameters.getString(ScsbConstants.FROM_DATE)).thenReturn(new Date().toString());
         Date createdDate = jobCommonTasklet.getCreatedDate(jobExecution);
         assertNull(createdDate);
+    }
+
+    @Test
+    public void getExportInstitutionFromParameters() throws Exception {
+        Map<String, String> parameterMap = new HashMap<>();
+        parameterMap.put(ScsbCommonConstants.INSTITUTION,ScsbCommonConstants.PRINCETON);
+        Mockito.when(jobExecution.getJobParameters()).thenReturn(jobParameters);
+        Mockito.when(jobParameters.getString(ScsbCommonConstants.INSTITUTION)).thenReturn("");
+        Mockito.when(jobExecution.getJobInstance()).thenReturn(jobInstance);
+        Mockito.when(jobInstance.getJobName()).thenReturn(ScsbCommonConstants.INSTITUTION);
+        Mockito.when(jobDataParameterUtil.buildJobRequestParameterMap(Mockito.anyString())).thenReturn(parameterMap);
+        String exportInstitution=jobCommonTasklet.getExportInstitutionFromParameters(jobExecution);
+        assertEquals(ScsbCommonConstants.PRINCETON,exportInstitution);
+    }
+
+
+    @Test
+    public void getExportInstitutionFromParametersException() throws Exception {
+        Map<String, String> parameterMap = new HashMap<>();
+        parameterMap.put(ScsbCommonConstants.INSTITUTION,ScsbCommonConstants.PRINCETON);
+        Mockito.when(jobExecution.getJobParameters()).thenReturn(jobParameters);
+        Mockito.when(jobParameters.getString(ScsbCommonConstants.INSTITUTION)).thenReturn("");
+        Mockito.when(jobExecution.getJobInstance()).thenReturn(jobInstance);
+        Mockito.when(jobInstance.getJobName()).thenReturn(ScsbCommonConstants.INSTITUTION);
+        Mockito.when(jobDataParameterUtil.buildJobRequestParameterMap(Mockito.anyString())).thenThrow(NullPointerException.class);
+        String exportInstitution=jobCommonTasklet.getExportInstitutionFromParameters(jobExecution);
+        assertEquals("",exportInstitution);
     }
 
 }
