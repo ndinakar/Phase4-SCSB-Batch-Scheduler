@@ -28,7 +28,7 @@ public class ScsbConstants {
     public static final String MATCHING_ALGORITHM_URL = "ongoingMatchingAlgorithmService/ongoingMatchingAlgorithmJob";
     public static final String GENERATE_REPORT_URL = "generateReportService/generateReports";
     public static final String REPORT_DELETED_RECORDS_URL = "reportDeleted/records";
-    public static final String DATA_EXPORT_ETL_URL = "dataDump/exportDataDump/?institutionCodes={institutionCodes}&requestingInstitutionCode={requestingInstitutionCode}&fetchType={fetchType}&outputFormat={outputFormat}&date={date}&emailToAddress={emailToAddress}";
+    public static final String DATA_EXPORT_ETL_URL = "dataDump/exportDataDump/?institutionCodes={institutionCodes}&requestingInstitutionCode={requestingInstitutionCode}&imsDepositoryCodes={imsDepositoryCodes}&fetchType={fetchType}&outputFormat={outputFormat}&date={date}&emailToAddress={emailToAddress}&userName={userName}";
     public static final String DATA_EXPORT_JOB_SEQUENCE_URL = "dataDumpSequence/exportDataDumpSequence/?date={date}";
 
 
@@ -68,6 +68,8 @@ public class ScsbConstants {
     public static final String FROM_DATE = "fromDate";
     public static final String FROM_DATE_FORMAT = "yyyy-MM-dd";
     public static final String EMAIL_TO_ADDRESS = "emailToAddress";
+    public static final String USER_NAME = "userName";
+    public static final String SCHEDULER = "SCHEDULER";
 
     public static final String JOB_STATUS = "JobStatus";
     public static final String JOB_STATUS_MESSAGE = "JobStatusMessage";
