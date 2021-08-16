@@ -1,7 +1,5 @@
 package org.recap.batch.job;
 
-import org.recap.ScsbCommonConstants;
-import org.recap.ScsbConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepContribution;
