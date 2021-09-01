@@ -4,12 +4,10 @@ import org.apache.camel.Endpoint;
 import org.apache.camel.Exchange;
 import org.apache.camel.PollingConsumer;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
@@ -69,10 +67,7 @@ public class MatchingAlgorithmTasklet extends  JobCommonTasklet implements Taskl
             logger.info("Job Id : {} Matching Algorithm Job Result Status : {}", jobExecution.getId(), resultStatus);
             setExecutionContext(executionContext, stepExecution, ScsbConstants.MATCHING_ALGORITHM_STATUS_NAME + " " + resultStatus);
         } catch (Exception ex) {
-            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
-            executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
-            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, ScsbConstants.MATCHING_ALGORITHM_STATUS_NAME + " " + ExceptionUtils.getMessage(ex));
-            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+            updateExecutionExceptionStatus(stepExecution, executionContext, ex, ScsbConstants.MATCHING_ALGORITHM_STATUS_NAME);
         }
         finally {
             if(consumer != null) {

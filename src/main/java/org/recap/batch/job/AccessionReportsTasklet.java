@@ -1,12 +1,9 @@
 package org.recap.batch.job;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.GenerateReportsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
@@ -44,15 +41,12 @@ public class AccessionReportsTasklet extends JobCommonTasklet implements Tasklet
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         try {
             Date createdDate = getCreatedDate(jobExecution);
-            updateJob(jobExecution,"Accession Reports Tasklet", Boolean.TRUE);
+            updateJob(jobExecution, "Accession Reports Tasklet", Boolean.TRUE);
             String resultStatus = generateReportsService.generateReport(solrClientUrl, createdDate, ScsbConstants.GENERATE_ACCESSION_REPORT_JOB);
             logger.info("Accession Report status : {}", resultStatus);
             setExecutionContext(executionContext, stepExecution, resultStatus);
-            } catch (Exception ex) {
-            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
-            executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
-            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, ScsbConstants.ACCESSION_REPORT_STATUS_NAME + " " + ExceptionUtils.getMessage(ex));
-            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+        } catch (Exception ex) {
+            updateExecutionExceptionStatus(stepExecution, executionContext, ex, ScsbConstants.ACCESSION_REPORT_STATUS_NAME);
         }
         return RepeatStatus.FINISHED;
     }

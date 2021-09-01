@@ -1,12 +1,9 @@
 package org.recap.batch.job;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.ReportDeletedRecordsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
@@ -50,10 +47,7 @@ public class DeletedRecordsTasklet extends JobCommonTasklet implements Tasklet {
             logger.info("Deleted records status : {} " , resultStatus);
             setExecutionContext(executionContext, stepExecution, resultStatus);
         } catch (Exception ex) {
-            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
-            executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
-            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, ExceptionUtils.getMessage(ex));
-            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+            updateExecutionExceptionStatus(stepExecution, executionContext, ex, ScsbConstants.DELETED_RECORDS_STATUS_NAME);
         }
         return RepeatStatus.FINISHED;
     }

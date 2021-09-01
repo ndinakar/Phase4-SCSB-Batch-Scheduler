@@ -1,7 +1,6 @@
 package org.recap.batch.job;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.DataExportJobSequenceService;
@@ -59,10 +58,7 @@ public class DataExportJobSequenceTasklet extends JobCommonTasklet implements Ta
                 stepExecution.setExitStatus(new ExitStatus(ScsbConstants.SUCCESS, ScsbConstants.DATA_EXPORT_STATUS_NAME + " " + resultStatus));
             }
         } catch (Exception ex) {
-            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
-            executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
-            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, ScsbConstants.DATA_EXPORT_STATUS_NAME + " " + ExceptionUtils.getMessage(ex));
-            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+            updateExecutionExceptionStatus(stepExecution, executionContext, ex, ScsbConstants.DATA_EXPORT_STATUS_NAME);
         }
         return RepeatStatus.FINISHED;
     }

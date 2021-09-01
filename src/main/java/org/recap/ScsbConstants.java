@@ -54,12 +54,6 @@ public class ScsbConstants {
     public static final String NOTIFY_IF_PENDING_REQUEST = "/notifyPendingRequest/sendEmailForPendingRequest";
     public static final String CHECK_PENDING_REQUEST_IN_DB = "/identifyPendingRequest/identifyAndNotifyPendingRequests";
 
-    public static final String INCREMENTAL_RECORDS_EXPORT_PUL = "IncrementalRecordsExportPul";
-    public static final String INCREMENTAL_RECORDS_EXPORT_CUL = "IncrementalRecordsExportCul";
-    public static final String INCREMENTAL_RECORDS_EXPORT_NYPL = "IncrementalRecordsExportNypl";
-    public static final String DELETED_RECORDS_EXPORT_PUL = "DeletedRecordsExportPul";
-    public static final String DELETED_RECORDS_EXPORT_CUL = "DeletedRecordsExportCul";
-    public static final String DELETED_RECORDS_EXPORT_NYPL = "DeletedRecordsExportNypl";
     public static final String DELETED_RECORDS_EXPORT = "DeletedRecordsExport";
     public static final String INCREMENTAL_RECORDS_EXPORT = "IncrementalRecordsExport";
     public static final String DATE = "date";
@@ -80,6 +74,18 @@ public class ScsbConstants {
     public static final String SUBMIT_COLLECTION_STATUS_NAME = "[Submit Collection]";
     public static final String MATCHING_ALGORITHM_STATUS_NAME = "[Ongoing Matching Algorithm]";
     public static final String DATA_EXPORT_STATUS_NAME = "[Data Export]";
+    public static final String ACCESSION_RECONCILIATION_STATUS_NAME = "[Accession Reconciliation]";
+    public static final String CGD_ROUND_TRIP_REPORTS_STATUS_NAME = "[CGD Round Trip Reports]";
+    public static final String CHECK_AND_NOTIFY_PENDING_REQUEST_STATUS_NAME = "[Check And Notify Pending Request]";
+    public static final String IDENTIFY_AND_NOTIFY_PENDING_REQUEST_STATUS_NAME = "[Identify And Notify Pending Request]";
+    public static final String DAILY_RECONCILIATION_STATUS_NAME = "[Daily Reconciliation]";
+    public static final String DELETED_RECORDS_STATUS_NAME = "[Deleted Records]";
+    public static final String JOB_SEQUENCE_STATUS_NAME = "[Job Sequence]";
+    public static final String PURGE_ACCESSION_REQUEST_STATUS_NAME = "[Purge Accession Request]";
+    public static final String PURGE_EXCEPTION_REQUEST_STATUS_NAME = "[Purge Exception Request]";
+    public static final String PURGE_EMAIL_ADDRESS_STATUS_NAME = "[Purge Email Address]";
+    public static final String REQUEST_INITIAL_LOAD_STATUS_NAME = "[Request Initial Load]";
+    public static final String STATUS_RECONCILIATION_STATUS_NAME = "[Status Reconciliation]";
 
     public static final String RAN = "ran";
     public static final String STARTED = "started";

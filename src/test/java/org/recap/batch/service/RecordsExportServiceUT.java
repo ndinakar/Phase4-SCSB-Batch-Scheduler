@@ -1,5 +1,6 @@
 package org.recap.batch.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Ignore;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -48,13 +49,15 @@ public class RecordsExportServiceUT  extends BaseTestCase {
         ReflectionTestUtils.setField(recordsExportService,"commonService",commonService);
         ReflectionTestUtils.setField(recordsExportService,"jobDataParameterUtil",jobDataParameterUtil);
         Mockito.when(commonService.getHttpEntity()).thenCallRealMethod();
-        Mockito.when(jobDataParameterUtil.buildJobRequestParameterMap(ScsbConstants.DELETED_RECORDS_EXPORT_PUL)).thenReturn(requestParameterMap);
+        String exportInstitution = ScsbCommonConstants.PRINCETON;
+        String jobName = ScsbConstants.DELETED_RECORDS_EXPORT + StringUtils.capitalize(exportInstitution.toLowerCase());
+        Mockito.when(jobDataParameterUtil.buildJobRequestParameterMap(jobName)).thenReturn(requestParameterMap);
         commonService.setRequestParameterMap(requestParameterMap, exportStringDate, jobDataParameterUtil, createdDate);
         Mockito.when(commonService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(restTemplate.exchange(scsbEtlUrl + ScsbConstants.DELETED_RECORDS_EXPORT_PUL, HttpMethod.GET, httpEntity, String.class)).thenReturn(responseEntity);
+        Mockito.when(restTemplate.exchange(scsbEtlUrl + jobName, HttpMethod.GET, httpEntity, String.class)).thenReturn(responseEntity);
 
-        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT_PUL,createdDate,exportStringDate,"PUL")).thenCallRealMethod();
-        String status=recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT_PUL,createdDate,exportStringDate,"PUL");
+        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, jobName,createdDate,exportStringDate,"PUL")).thenCallRealMethod();
+        String status=recordsExportService.exportRecords(scsbEtlUrl, jobName,createdDate,exportStringDate,"PUL");
 
     }
 }
