@@ -1,12 +1,9 @@
 package org.recap.batch.job;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.IdentifyPendingRequestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
@@ -41,10 +38,7 @@ public class IdentifyAndNotifyPendingRequestTasklet extends JobCommonTasklet imp
             updateJob(jobExecution,"IdentifyAndNotifyPendingRequestTasklet", Boolean.FALSE);
             identifyPendingRequestService.identifyPendingRequestService(scsbCircUrl);
         } catch (Exception ex) {
-            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
-            executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
-            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, ExceptionUtils.getMessage(ex));
-            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+            updateExecutionExceptionStatus(stepExecution, executionContext, ex, ScsbConstants.IDENTIFY_AND_NOTIFY_PENDING_REQUEST_STATUS_NAME);
         }
         return RepeatStatus.FINISHED;
     }

@@ -1,12 +1,9 @@
 package org.recap.batch.job;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.RecordsExportService;
 import org.slf4j.Logger;
-import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -44,10 +41,7 @@ public class IncrementalExportTasklet extends JobCommonTasklet {
             logger.info("Incremental Export {} status : {}", exportInstitution, resultStatus);
             setExecutionContext(executionContext, stepExecution, resultStatus);
         } catch (Exception ex) {
-            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
-            executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
-            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, ExceptionUtils.getMessage(ex));
-            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+            updateExecutionExceptionStatus(stepExecution, executionContext, ex, ScsbConstants.INCREMENTAL_RECORDS_EXPORT + "-" + exportInstitution);
         }
         return RepeatStatus.FINISHED;
     }

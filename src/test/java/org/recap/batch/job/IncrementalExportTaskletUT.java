@@ -1,5 +1,6 @@
 package org.recap.batch.job;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -51,59 +52,33 @@ public class IncrementalExportTaskletUT extends BaseTestCaseUT {
     }
 
     @Test
-    public void testExecute_cul() throws Exception {
+    public void testExecuteIncrementalExport() throws Exception {
         StepExecution execution = MetaDataInstanceFactory.createStepExecution();
         execution.setCommitCount(2);
         ChunkContext context = new ChunkContext(new StepContext(execution));
         JobExecution jobExecution = execution.getJobExecution();
         Date createdDate = jobExecution.getCreateTime();
-        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.INCREMENTAL_RECORDS_EXPORT_CUL, createdDate, null, ScsbCommonConstants.COLUMBIA)).thenReturn(ScsbConstants.SUCCESS);
-        Mockito.when(incrementalExportTasklet.executeIncrementalExport(context,logger,ScsbCommonConstants.COLUMBIA)).thenCallRealMethod();
-        RepeatStatus status = incrementalExportTasklet.executeIncrementalExport(context,logger,ScsbCommonConstants.COLUMBIA);
+        String exportInstitution = ScsbCommonConstants.PRINCETON;
+        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.INCREMENTAL_RECORDS_EXPORT + StringUtils.capitalize(exportInstitution.toLowerCase()),createdDate, null, exportInstitution)).thenReturn(ScsbConstants.SUCCESS);
+        Mockito.when(incrementalExportTasklet.executeIncrementalExport(context,logger,exportInstitution)).thenCallRealMethod();
+        RepeatStatus status = incrementalExportTasklet.executeIncrementalExport(context,logger,exportInstitution);
         assertNotNull(status);
         assertEquals(RepeatStatus.FINISHED,status);
     }
 
     @Test
-    public void testExecute_pul() throws Exception {
-        StepExecution execution = MetaDataInstanceFactory.createStepExecution();
-        execution.setCommitCount(2);
-        ChunkContext context = new ChunkContext(new StepContext(execution));
-        JobExecution jobExecution = execution.getJobExecution();
-        Date createdDate = jobExecution.getCreateTime();
-        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.INCREMENTAL_RECORDS_EXPORT_PUL,createdDate, null, ScsbCommonConstants.PRINCETON)).thenReturn(ScsbConstants.SUCCESS);
-        Mockito.when(incrementalExportTasklet.executeIncrementalExport(context,logger,ScsbCommonConstants.PRINCETON)).thenCallRealMethod();
-        RepeatStatus status = incrementalExportTasklet.executeIncrementalExport(context,logger,ScsbCommonConstants.PRINCETON);
-        assertNotNull(status);
-        assertEquals(RepeatStatus.FINISHED,status);
-    }
-
-    @Test
-    public void testExecute_nypl() throws Exception {
-        StepExecution execution = MetaDataInstanceFactory.createStepExecution();
-        execution.setCommitCount(2);
-        ChunkContext context = new ChunkContext(new StepContext(execution));
-        JobExecution jobExecution = execution.getJobExecution();
-        Date createdDate = jobExecution.getCreateTime();
-        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.INCREMENTAL_RECORDS_EXPORT_NYPL,createdDate, null, ScsbCommonConstants.NYPL)).thenReturn(ScsbConstants.SUCCESS);
-        Mockito.when(incrementalExportTasklet.executeIncrementalExport(context,logger,ScsbCommonConstants.NYPL)).thenCallRealMethod();
-        RepeatStatus status = incrementalExportTasklet.executeIncrementalExport(context,logger,ScsbCommonConstants.NYPL);
-        assertNotNull(status);
-        assertEquals(RepeatStatus.FINISHED,status);
-    }
-
-    @Test
-    public void testExecute_exception() throws Exception {
+    public void testExecuteIncrementalExportException() throws Exception {
         StepExecution execution = MetaDataInstanceFactory.createStepExecution();
         execution.setCommitCount(2);
         ChunkContext context = new ChunkContext(new StepContext(execution));
         JobExecution jobExecution = execution.getJobExecution();
         String exportStringDate = jobExecution.getJobParameters().getString(ScsbConstants.FROM_DATE);
         Date createdDate = jobExecution.getCreateTime();
-        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.INCREMENTAL_RECORDS_EXPORT_PUL, createdDate, exportStringDate, ScsbCommonConstants.PRINCETON)).thenThrow(new NullPointerException());
-        Mockito.when(incrementalExportTasklet.executeIncrementalExport(context,logger,ScsbCommonConstants.PRINCETON)).thenCallRealMethod();
+        String exportInstitution = ScsbCommonConstants.PRINCETON;
+        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.INCREMENTAL_RECORDS_EXPORT + StringUtils.capitalize(exportInstitution.toLowerCase()), createdDate, exportStringDate, exportInstitution)).thenThrow(new NullPointerException());
+        Mockito.when(incrementalExportTasklet.executeIncrementalExport(context,logger,exportInstitution)).thenCallRealMethod();
         ReflectionTestUtils.setField(incrementalExportTasklet,"recordsExportService",null);
-        RepeatStatus status = incrementalExportTasklet.executeIncrementalExport(context,logger,ScsbCommonConstants.PRINCETON);
+        RepeatStatus status = incrementalExportTasklet.executeIncrementalExport(context,logger,exportInstitution);
         assertNotNull(status);
         assertEquals(RepeatStatus.FINISHED,status);
     }

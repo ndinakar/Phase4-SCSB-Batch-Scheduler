@@ -161,5 +161,12 @@ public class JobCommonTasklet {
         }
         return exportInstitution;
     }
+
+    public void updateExecutionExceptionStatus(StepExecution stepExecution, ExecutionContext executionContext, Exception ex, String exceptionCustomMsg) {
+        logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+        executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
+        executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, exceptionCustomMsg + " " + ExceptionUtils.getMessage(ex));
+        stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+    }
     
 }

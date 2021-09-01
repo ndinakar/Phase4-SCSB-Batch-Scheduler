@@ -1,7 +1,5 @@
 package org.recap.batch.job;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,10 +37,7 @@ public class JobSequenceTasklet extends JobCommonTasklet implements Tasklet {
             updateJob(jobExecution, "JobSequenceTasklet", Boolean.FALSE);
             stepExecution.setExitStatus(new ExitStatus(ScsbConstants.SUCCESS, ScsbConstants.SUCCESS));
         } catch (Exception ex) {
-            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
-            executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
-            executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, ExceptionUtils.getMessage(ex));
-            stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
+            updateExecutionExceptionStatus(stepExecution, executionContext, ex, ScsbConstants.JOB_SEQUENCE_STATUS_NAME);
         }
         return RepeatStatus.FINISHED;
     }
