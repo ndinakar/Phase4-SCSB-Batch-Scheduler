@@ -1,5 +1,6 @@
 package org.recap.quartz;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.quartz.JobKey;
@@ -11,8 +12,6 @@ import org.recap.ScsbConstants;
 import org.recap.batch.job.JobCommonTasklet;
 import org.recap.batch.service.ScsbJobService;
 import org.recap.model.job.JobDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.configuration.JobLocator;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +24,9 @@ import static org.quartz.CronExpression.isValidExpression;
 /**
  * Created by rajeshbabuk on 28/3/17.
  */
+@Slf4j
 @Component
 public class QuartzJobsInitializer {
-
-    private static final Logger logger = LoggerFactory.getLogger(QuartzJobsInitializer.class);
 
     private JobLauncher jobLauncher;
     private JobLocator jobLocator;
@@ -58,7 +56,7 @@ public class QuartzJobsInitializer {
      * The jobs with cron expression are added to scheduler with a trigger.
      */
     public void initializeJobs() {
-        logger.info("Initializing jobs");
+        log.info("Initializing jobs");
         try {
             List<JobDto> jobDtoList = scsbJobService.getAllJobs();
             if (CollectionUtils.isNotEmpty(jobDtoList)) {
@@ -78,23 +76,23 @@ public class QuartzJobsInitializer {
                             trigger.setJobKey(jobKey);
                             trigger.setCronExpression(cronExpression);
                             scheduler.scheduleJob(jobDetailImpl, trigger);
-                            logger.info("Job {} is initialized.", jobName);
+                            log.info("Job {} is initialized.", jobName);
                         } else {
-                            logger.info("Job {} has invalid cron expression and unscheduled state.", jobName);
+                            log.info("Job {} has invalid cron expression and unscheduled state.", jobName);
                             JobKey jobKey = new JobKey(jobName);
                             jobDetailImpl.setKey(jobKey);
                             jobDetailImpl.setDurability(true);
                             scheduler.addJob(jobDetailImpl, true);
                         }
                     } catch (Exception ex) {
-                        logger.error("Initializing job {} Failed.", jobName);
-                        logger.error(ScsbCommonConstants.LOG_ERROR, ex);
+                        log.error("Initializing job {} Failed.", jobName);
+                        log.error(ScsbCommonConstants.LOG_ERROR, ex);
                     }
                 }
             }
         } catch (Exception ex) {
-            logger.error("Failed to initialize jobs to Quartz Scheduler. Could not fetch jobs from server.");
-            logger.error(ScsbCommonConstants.LOG_ERROR, ex);
+            log.error("Failed to initialize jobs to Quartz Scheduler. Could not fetch jobs from server.");
+            log.error(ScsbCommonConstants.LOG_ERROR, ex);
         }
     }
 }

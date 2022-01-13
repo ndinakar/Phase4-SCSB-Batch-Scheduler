@@ -1,12 +1,11 @@
 package org.recap.quartz;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.recap.ScsbCommonConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -14,14 +13,15 @@ import org.springframework.batch.core.configuration.JobLocator;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * Created by rajeshbabuk on 28/3/17.
  */
-@Getter
-@Setter
+@Data
+@Slf4j
+@EqualsAndHashCode(callSuper=false)
 public class QuartzJobLauncher extends QuartzJobBean {
-
-    private static final Logger logger = LoggerFactory.getLogger(QuartzJobLauncher.class);
 
     private String jobName;
     private JobLauncher jobLauncher;
@@ -40,9 +40,9 @@ public class QuartzJobLauncher extends QuartzJobBean {
             JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
             jobParametersBuilder.addLong("time", System.currentTimeMillis());
             JobExecution jobExecution = jobLauncher.run(job, jobParametersBuilder.toJobParameters());
-            logger.info("{}_{} was completed successfully. Status : {}", job.getName(), jobExecution.getId(), jobExecution.getStatus());
+            log.info("{}_{} was completed successfully. Status : {}", job.getName(), jobExecution.getId(), jobExecution.getStatus());
         } catch (Exception exception) {
-            logger.error(ScsbCommonConstants.LOG_ERROR, exception);
+            log.error(ScsbCommonConstants.LOG_ERROR, exception);
         }
     }
 }

@@ -1,11 +1,10 @@
 package org.recap.batch.job;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.DataExportJobSequenceService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepContribution;
@@ -21,9 +20,8 @@ import java.util.Date;
 /**
  * Created by rajeshbabuk on 10/7/17.
  */
+@Slf4j
 public class DataExportJobSequenceTasklet extends JobCommonTasklet implements Tasklet {
-
-    private static final Logger logger = LoggerFactory.getLogger(DataExportJobSequenceTasklet.class);
 
     @Autowired
     private DataExportJobSequenceService dataExportJobSequenceService;
@@ -38,7 +36,7 @@ public class DataExportJobSequenceTasklet extends JobCommonTasklet implements Ta
      */
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        logger.info("Executing DataExportJobSequenceTasklet");
+        log.info("Executing DataExportJobSequenceTasklet");
         StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
@@ -47,7 +45,7 @@ public class DataExportJobSequenceTasklet extends JobCommonTasklet implements Ta
             Date createdDate = jobExecution.getCreateTime();
             updateJob(jobExecution,"Data Export Job Sequence Tasklet", Boolean.TRUE);
             String resultStatus = dataExportJobSequenceService.dataExportJobSequence(scsbEtlUrl, createdDate, exportStringDate);
-            logger.info("Incremental and delete data export status : {}", resultStatus);
+            log.info("Incremental and delete data export status : {}", resultStatus);
             if (StringUtils.containsIgnoreCase(ScsbCommonConstants.FAIL, resultStatus)) {
                 executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
                 executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, ScsbConstants.DATA_EXPORT_STATUS_NAME + " " + resultStatus);

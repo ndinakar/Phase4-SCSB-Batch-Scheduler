@@ -1,5 +1,6 @@
 package org.recap.quartz;
 
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
@@ -9,8 +10,6 @@ import org.quartz.impl.triggers.CronTriggerImpl;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.job.JobCommonTasklet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.configuration.JobLocator;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +20,9 @@ import static org.quartz.CronExpression.isValidExpression;
 /**
  * Created by rajeshbabuk on 3/4/17.
  */
+@Slf4j
 @Service
 public class SchedulerService {
-
-    private static final Logger logger = LoggerFactory.getLogger(SchedulerService.class);
 
     @Autowired
     private Scheduler scheduler;
@@ -66,7 +64,7 @@ public class SchedulerService {
                 }
             }
         } catch (Exception ex) {
-            logger.error(ScsbCommonConstants.LOG_ERROR, ex);
+            log.error(ScsbCommonConstants.LOG_ERROR, ex);
             return ScsbConstants.ERROR_JOB_FAILED_SCHEDULING;
         }
         return ScsbConstants.JOB_SUCCESS_SCHEDULING;
@@ -91,7 +89,7 @@ public class SchedulerService {
                 scheduler.rescheduleJob(triggerKey, trigger);
             }
         } catch (Exception ex) {
-            logger.error(ScsbCommonConstants.LOG_ERROR, ex);
+            log.error(ScsbCommonConstants.LOG_ERROR, ex);
             return ScsbConstants.ERROR_JOB_FAILED_RESCHEDULING;
         }
         return ScsbConstants.JOB_SUCCESS_RESCHEDULING;
@@ -108,7 +106,7 @@ public class SchedulerService {
             TriggerKey triggerKey = new TriggerKey(jobName + ScsbConstants.TRIGGER_SUFFIX);
             scheduler.unscheduleJob(triggerKey);
         } catch (Exception ex) {
-            logger.error(ScsbCommonConstants.LOG_ERROR, ex);
+            log.error(ScsbCommonConstants.LOG_ERROR, ex);
             return ScsbConstants.ERROR_JOB_FAILED_UNSCHEDULING;
         }
         return ScsbConstants.JOB_SUCCESS_UNSCHEDULING;

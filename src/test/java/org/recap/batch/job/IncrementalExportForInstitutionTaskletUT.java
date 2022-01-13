@@ -30,8 +30,6 @@ import static org.junit.Assert.assertNotNull;
  */
 public class IncrementalExportForInstitutionTaskletUT extends BaseTestCaseUT {
 
-    private static final Logger logger = LoggerFactory.getLogger(IncrementalExportForInstitutionTaskletUT.class);
-
     @Value("${" + PropertyKeyConstants.SCSB_ETL_URL + "}")
     String scsbEtlUrl;
 

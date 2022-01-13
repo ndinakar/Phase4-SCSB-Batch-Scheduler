@@ -1,5 +1,6 @@
 package org.recap.batch.job;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,8 +32,8 @@ import static org.junit.Assert.assertNotNull;
  * Created by Anitha V on 14/7/20.
  */
 
+@Slf4j
 public class DeletedRecordsExportTaskletUT extends BaseTestCaseUT {
-    private static final Logger logger = LoggerFactory.getLogger(IncrementalExportTaskletUT.class);
 
     @Value("${" + PropertyKeyConstants.SCSB_ETL_URL + "}")
     String scsbEtlUrl;
@@ -59,8 +60,8 @@ public class DeletedRecordsExportTaskletUT extends BaseTestCaseUT {
         Date createdDate = jobExecution.getCreateTime();
         String exportInstitution = ScsbCommonConstants.PRINCETON;
         Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT + StringUtils.capitalize(exportInstitution.toLowerCase()),createdDate, null, exportInstitution)).thenReturn(ScsbConstants.SUCCESS);
-        Mockito.when(deletedRecordsExportTasklet.executeDeletedRecordsExport(context,logger,exportInstitution,true)).thenCallRealMethod();
-        RepeatStatus status = deletedRecordsExportTasklet.executeDeletedRecordsExport(context,logger,exportInstitution,true);
+        Mockito.when(deletedRecordsExportTasklet.executeDeletedRecordsExport(context,log,exportInstitution,true)).thenCallRealMethod();
+        RepeatStatus status = deletedRecordsExportTasklet.executeDeletedRecordsExport(context,log,exportInstitution,true);
         assertNotNull(status);
         assertEquals(RepeatStatus.FINISHED,status);
     }
@@ -76,8 +77,8 @@ public class DeletedRecordsExportTaskletUT extends BaseTestCaseUT {
         Date createdDate = jobExecution.getCreateTime();
         String exportInstitution = ScsbCommonConstants.PRINCETON;
         Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.DELETED_RECORDS_EXPORT + StringUtils.capitalize(exportInstitution.toLowerCase()),createdDate, exportStringDate, exportInstitution)).thenThrow(NullPointerException.class);
-        Mockito.when(deletedRecordsExportTasklet.executeDeletedRecordsExport(context,logger,exportInstitution,true)).thenCallRealMethod();
-        RepeatStatus status = deletedRecordsExportTasklet.executeDeletedRecordsExport(context,logger,exportInstitution,true);
+        Mockito.when(deletedRecordsExportTasklet.executeDeletedRecordsExport(context,log,exportInstitution,true)).thenCallRealMethod();
+        RepeatStatus status = deletedRecordsExportTasklet.executeDeletedRecordsExport(context,log,exportInstitution,true);
         assertNotNull(status);
         assertEquals(RepeatStatus.FINISHED,status);
     }

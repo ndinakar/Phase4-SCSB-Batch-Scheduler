@@ -1,5 +1,6 @@
 package org.recap.batch.job;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Endpoint;
 import org.apache.camel.Exchange;
@@ -16,7 +17,6 @@ import org.recap.batch.service.UpdateJobDetailsService;
 import org.recap.quartz.QuartzJobLauncher;
 import org.recap.util.JobDataParameterUtil;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
@@ -32,9 +32,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
+@Slf4j
 public class JobCommonTasklet {
-
-    private static final Logger logger = LoggerFactory.getLogger(JobCommonTasklet.class);
 
     @Value("${" + PropertyKeyConstants.SCSB_SOLR_DOC_URL + "}")
     protected String solrClientUrl;
@@ -98,7 +97,7 @@ public class JobCommonTasklet {
         Date createdDate = jobExecution.getCreateTime();
         if(Boolean.TRUE.equals(check)) {
             String jobNameParam = (String) jobExecution.getExecutionContext().get(ScsbConstants.JOB_NAME);
-            logger.info("Job Parameter in {} : {}" , taskletName , jobNameParam);
+            log.info("Job Parameter in {} : {}" , taskletName , jobNameParam);
             if (!jobName.equalsIgnoreCase(jobNameParam)) {
                 updateJobDetailsService.updateJob(solrClientUrl, jobName, createdDate, jobInstanceId);
             }
@@ -142,7 +141,7 @@ public class JobCommonTasklet {
                 createdDate = jobExecution.getCreateTime();
             }
         } catch (ParseException e) {
-            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(e));
+            log.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(e));
 
         }
         return createdDate;
@@ -157,13 +156,13 @@ public class JobCommonTasklet {
                 exportInstitution = requestParameterMap.get(ScsbCommonConstants.INSTITUTION);
             }
         } catch (Exception e) {
-            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(e));
+            log.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(e));
         }
         return exportInstitution;
     }
 
     public void updateExecutionExceptionStatus(StepExecution stepExecution, ExecutionContext executionContext, Exception ex, String exceptionCustomMsg) {
-        logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+        log.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
         executionContext.put(ScsbConstants.JOB_STATUS, ScsbConstants.FAILURE);
         executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, exceptionCustomMsg + " " + ExceptionUtils.getMessage(ex));
         stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));

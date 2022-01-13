@@ -1,10 +1,9 @@
 package org.recap.batch.job;
 
+import lombok.extern.slf4j.Slf4j;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.PurgeAccessionRequestsService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepContribution;
@@ -20,9 +19,8 @@ import java.util.Map;
 /**
  * Created by rajeshbabuk on 22/5/17.
  */
+@Slf4j
 public class PurgeAccessionRequestTasklet extends JobCommonTasklet implements Tasklet {
-
-    private static final Logger logger = LoggerFactory.getLogger(PurgeAccessionRequestTasklet.class);
 
     @Autowired
     private PurgeAccessionRequestsService purgeAccessionRequestsService;
@@ -37,7 +35,7 @@ public class PurgeAccessionRequestTasklet extends JobCommonTasklet implements Ta
      */
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        logger.info("Executing PurgeAccessionRequestTasklet");
+        log.info("Executing PurgeAccessionRequestTasklet");
         StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
@@ -46,8 +44,8 @@ public class PurgeAccessionRequestTasklet extends JobCommonTasklet implements Ta
             Map<String, String> resultMap = purgeAccessionRequestsService.purgeAccessionRequests(scsbCoreUrl);
             String status = resultMap.get(ScsbCommonConstants.STATUS);
             String message = resultMap.get(ScsbCommonConstants.MESSAGE);
-            logger.info("Purge Accession Requests status : {}", status);
-            logger.info("Purge Accession Requests status message : {}", message);
+            log.info("Purge Accession Requests status : {}", status);
+            log.info("Purge Accession Requests status message : {}", message);
             executionContext.put(ScsbConstants.JOB_STATUS, status);
             executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, message);
             stepExecution.setExitStatus(new ExitStatus(status, message));

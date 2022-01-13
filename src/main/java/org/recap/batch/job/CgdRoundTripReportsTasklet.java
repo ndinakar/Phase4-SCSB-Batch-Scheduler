@@ -1,9 +1,8 @@
 package org.recap.batch.job;
 
+import lombok.extern.slf4j.Slf4j;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.GenerateReportsService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
@@ -18,9 +17,8 @@ import java.util.Date;
 /**
  * Created by angelind on 2/5/17.
  */
+@Slf4j
 public class CgdRoundTripReportsTasklet extends JobCommonTasklet implements Tasklet {
-
-    private static final Logger logger = LoggerFactory.getLogger(CgdRoundTripReportsTasklet.class);
 
     @Autowired
     private GenerateReportsService generateReportsService;
@@ -35,7 +33,7 @@ public class CgdRoundTripReportsTasklet extends JobCommonTasklet implements Task
      */
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        logger.info("Executing CdgRoundTripReportsTasklet");
+        log.info("Executing CdgRoundTripReportsTasklet");
         StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
@@ -43,7 +41,7 @@ public class CgdRoundTripReportsTasklet extends JobCommonTasklet implements Task
             Date createdDate = getCreatedDate(jobExecution);
             updateJob(jobExecution, "cgdRroundTripReportsTasklet", Boolean.TRUE);
             String resultStatus = generateReportsService.generateCgdReport(solrClientUrl, createdDate, ScsbConstants.GENERATE_CDG_ROUND_TRIP_REPORT_JOB);
-            logger.info("CdgRoundTrip Report status : {}", resultStatus);
+            log.info("CdgRoundTrip Report status : {}", resultStatus);
             setExecutionContext(executionContext, stepExecution, resultStatus);
         } catch (Exception ex) {
             updateExecutionExceptionStatus(stepExecution, executionContext, ex, ScsbConstants.CGD_ROUND_TRIP_REPORTS_STATUS_NAME);

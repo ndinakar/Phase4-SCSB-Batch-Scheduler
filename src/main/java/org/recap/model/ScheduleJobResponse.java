@@ -1,15 +1,14 @@
 package org.recap.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+
 
 import java.util.Date;
 
 /**
  * Created by rajeshbabuk on 5/4/17.
  */
-@Getter
-@Setter
+@Data
 public class ScheduleJobResponse {
     private String message;
     private Date nextRunTime;

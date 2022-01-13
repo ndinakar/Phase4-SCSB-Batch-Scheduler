@@ -33,7 +33,6 @@ import static org.junit.Assert.assertNotNull;
  */
 public class DeletedRecordsExportForInstitutionTaskletUT extends BaseTestCaseUT {
 
-    private static final Logger logger = LoggerFactory.getLogger(DeletedRecordsExportForInstitutionTaskletUT.class);
 
     @Value("${" + PropertyKeyConstants.SCSB_ETL_URL + "}")
     String scsbEtlUrl;

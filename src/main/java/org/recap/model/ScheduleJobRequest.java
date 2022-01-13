@@ -1,13 +1,13 @@
 package org.recap.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+
 
 /**
  * Created by rajeshbabuk on 5/4/17.
  */
-@Getter
-@Setter
+
+@Data
 public class ScheduleJobRequest {
     private Integer jobId;
     private String jobName;
