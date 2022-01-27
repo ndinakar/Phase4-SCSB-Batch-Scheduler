@@ -1,5 +1,6 @@
 package org.recap.batch.job;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Endpoint;
 import org.apache.camel.Exchange;
@@ -35,10 +36,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-
+@Slf4j
 public class JobCommonTaskletUT extends BaseTestCaseUT {
-
-    private static final Logger logger = LoggerFactory.getLogger(JobCommonTaskletUT.class);
 
     @InjectMocks
     JobCommonTasklet jobCommonTasklet;
@@ -96,7 +95,7 @@ public class JobCommonTaskletUT extends BaseTestCaseUT {
         Mockito.when(consumer.receive()).thenReturn(exchange);
         Mockito.when(exchange.getIn()).thenReturn(message);
         Mockito.when(message.getBody()).thenReturn(resultStatus);
-        String status = jobCommonTasklet.getResultStatus(jobExecution, execution, logger, executionContext, ScsbCommonConstants.ACCESSION_JOB_INITIATE_QUEUE, ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE, ScsbConstants.ACCESSION_STATUS_NAME);
+        String status = jobCommonTasklet.getResultStatus(jobExecution, execution, log, executionContext, ScsbCommonConstants.ACCESSION_JOB_INITIATE_QUEUE, ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE, ScsbConstants.ACCESSION_STATUS_NAME);
         assertEquals("FINISHED",status);
     }
 
@@ -117,7 +116,7 @@ public class JobCommonTaskletUT extends BaseTestCaseUT {
         Mockito.when(consumer.receive()).thenReturn(exchange);
         Mockito.when(exchange.getIn()).thenReturn(message);
         Mockito.when(message.getBody()).thenReturn(resultStatus);
-        String status = jobCommonTasklet.getResultStatus(jobExecution, execution, logger, executionContext, ScsbCommonConstants.ACCESSION_JOB_INITIATE_QUEUE, ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE, ScsbConstants.ACCESSION_STATUS_NAME);
+        String status = jobCommonTasklet.getResultStatus(jobExecution, execution, log, executionContext, ScsbCommonConstants.ACCESSION_JOB_INITIATE_QUEUE, ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE, ScsbConstants.ACCESSION_STATUS_NAME);
         assertEquals(ScsbConstants.FAILURE + " - " + ScsbConstants.FAILURE_QUEUE_MESSAGE,status);
     }
 
@@ -132,7 +131,7 @@ public class JobCommonTaskletUT extends BaseTestCaseUT {
         requestMap.put(ScsbCommonConstants.JOB_ID, String.valueOf(jobExecution.getId()));
         requestMap.put(ScsbCommonConstants.PROCESS_TYPE, ScsbCommonConstants.ONGOING_MATCHING_ALGORITHM_JOB);
         requestMap.put(ScsbCommonConstants.CREATED_DATE, createdDate.toString());
-        String status = jobCommonTasklet.getResultStatus(jobExecution, execution, logger, executionContext, ScsbCommonConstants.ACCESSION_JOB_INITIATE_QUEUE, ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE, ScsbConstants.ACCESSION_STATUS_NAME);
+        String status = jobCommonTasklet.getResultStatus(jobExecution, execution, log, executionContext, ScsbCommonConstants.ACCESSION_JOB_INITIATE_QUEUE, ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE, ScsbConstants.ACCESSION_STATUS_NAME);
         assertNull(status);
     }
 

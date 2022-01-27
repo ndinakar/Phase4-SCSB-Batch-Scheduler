@@ -1,5 +1,6 @@
 package org.recap.batch.job;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,10 +31,8 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by Anitha V on 14/7/20.
  */
-
+@Slf4j
 public class IncrementalExportTaskletUT extends BaseTestCaseUT {
-    
-    private static final Logger logger = LoggerFactory.getLogger(IncrementalExportTaskletUT.class);
 
     @Value("${" + PropertyKeyConstants.SCSB_ETL_URL + "}")
     String scsbEtlUrl;
@@ -60,8 +59,8 @@ public class IncrementalExportTaskletUT extends BaseTestCaseUT {
         Date createdDate = jobExecution.getCreateTime();
         String exportInstitution = ScsbCommonConstants.PRINCETON;
         Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.INCREMENTAL_RECORDS_EXPORT + StringUtils.capitalize(exportInstitution.toLowerCase()),createdDate, null, exportInstitution)).thenReturn(ScsbConstants.SUCCESS);
-        Mockito.when(incrementalExportTasklet.executeIncrementalExport(context,logger,exportInstitution)).thenCallRealMethod();
-        RepeatStatus status = incrementalExportTasklet.executeIncrementalExport(context,logger,exportInstitution);
+        Mockito.when(incrementalExportTasklet.executeIncrementalExport(context,log,exportInstitution)).thenCallRealMethod();
+        RepeatStatus status = incrementalExportTasklet.executeIncrementalExport(context,log,exportInstitution);
         assertNotNull(status);
         assertEquals(RepeatStatus.FINISHED,status);
     }
@@ -76,9 +75,9 @@ public class IncrementalExportTaskletUT extends BaseTestCaseUT {
         Date createdDate = jobExecution.getCreateTime();
         String exportInstitution = ScsbCommonConstants.PRINCETON;
         Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, ScsbConstants.INCREMENTAL_RECORDS_EXPORT + StringUtils.capitalize(exportInstitution.toLowerCase()), createdDate, exportStringDate, exportInstitution)).thenThrow(new NullPointerException());
-        Mockito.when(incrementalExportTasklet.executeIncrementalExport(context,logger,exportInstitution)).thenCallRealMethod();
+        Mockito.when(incrementalExportTasklet.executeIncrementalExport(context,log,exportInstitution)).thenCallRealMethod();
         ReflectionTestUtils.setField(incrementalExportTasklet,"recordsExportService",null);
-        RepeatStatus status = incrementalExportTasklet.executeIncrementalExport(context,logger,exportInstitution);
+        RepeatStatus status = incrementalExportTasklet.executeIncrementalExport(context,log,exportInstitution);
         assertNotNull(status);
         assertEquals(RepeatStatus.FINISHED,status);
     }

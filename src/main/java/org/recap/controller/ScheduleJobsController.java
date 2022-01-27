@@ -1,5 +1,6 @@
 package org.recap.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.quartz.CronExpression;
 import org.recap.ScsbCommonConstants;
@@ -7,8 +8,6 @@ import org.recap.ScsbConstants;
 import org.recap.model.ScheduleJobRequest;
 import org.recap.model.ScheduleJobResponse;
 import org.recap.quartz.SchedulerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,11 +19,10 @@ import java.util.Date;
 /**
  * Created by rajeshbabuk on 5/4/17.
  */
+@Slf4j
 @RestController
 @RequestMapping("/scheduleService")
 public class ScheduleJobsController {
-
-    private static final Logger logger = LoggerFactory.getLogger(ScheduleJobsController.class);
 
     @Autowired
     private SchedulerService schedulerService;
@@ -52,7 +50,7 @@ public class ScheduleJobsController {
                 scheduleJobResponse.setNextRunTime(cronExpression.getNextValidTimeAfter(new Date()));
             }
         } catch (Exception exception) {
-            logger.error(ScsbCommonConstants.LOG_ERROR, exception);
+            log.error(ScsbCommonConstants.LOG_ERROR, exception);
             message = exception.getMessage();
         }
         scheduleJobResponse.setMessage(message);

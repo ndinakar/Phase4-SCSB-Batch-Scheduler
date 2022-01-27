@@ -1,10 +1,9 @@
 package org.recap.batch.job;
 
+import lombok.extern.slf4j.Slf4j;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.PurgeEmailAddressService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepContribution;
@@ -20,9 +19,8 @@ import java.util.Map;
 /**
  * Created by rajeshbabuk on 28/3/17.
  */
+@Slf4j
 public class PurgeEmailAddressTasklet extends JobCommonTasklet implements Tasklet {
-
-    private static final Logger logger = LoggerFactory.getLogger(PurgeEmailAddressTasklet.class);
 
     @Autowired
     private PurgeEmailAddressService purgeEmailAddressService;
@@ -37,7 +35,7 @@ public class PurgeEmailAddressTasklet extends JobCommonTasklet implements Taskle
      */
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        logger.info("Executing PurgeEmailAddressTasklet");
+        log.info("Executing PurgeEmailAddressTasklet");
         StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
@@ -47,8 +45,8 @@ public class PurgeEmailAddressTasklet extends JobCommonTasklet implements Taskle
             String status = resultMap.get(ScsbCommonConstants.STATUS);
             String message = ScsbCommonConstants.PURGE_EDD_REQUEST + ":" + resultMap.get(ScsbCommonConstants.PURGE_EDD_REQUEST)
                     + ", " + ScsbCommonConstants.PURGE_PHYSICAL_REQUEST + ":" + resultMap.get(ScsbCommonConstants.PURGE_PHYSICAL_REQUEST);
-            logger.info("Purge Email Addresses status : {}", status);
-            logger.info("Purge Email Addresses status message : {}", message);
+            log.info("Purge Email Addresses status : {}", status);
+            log.info("Purge Email Addresses status message : {}", message);
             executionContext.put(ScsbConstants.JOB_STATUS, status);
             executionContext.put(ScsbConstants.JOB_STATUS_MESSAGE, message);
             stepExecution.setExitStatus(new ExitStatus(status, message));

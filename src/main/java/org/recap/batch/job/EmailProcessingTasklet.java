@@ -1,5 +1,6 @@
 package org.recap.batch.job;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
@@ -7,8 +8,6 @@ import org.recap.batch.service.EmailService;
 import org.recap.batch.service.ScsbJobService;
 import org.recap.model.EmailPayLoad;
 import org.recap.model.job.JobDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepContribution;
@@ -24,9 +23,8 @@ import java.util.Date;
 /**
  * Created by rajeshbabuk on 10/4/17.
  */
+@Slf4j
 public class EmailProcessingTasklet extends JobCommonTasklet implements Tasklet {
-
-    private static final Logger logger = LoggerFactory.getLogger(EmailProcessingTasklet.class);
 
     @Autowired
     private EmailService emailService;
@@ -44,7 +42,7 @@ public class EmailProcessingTasklet extends JobCommonTasklet implements Tasklet 
      */
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        logger.info("Sending Email");
+        log.info("Sending Email");
         StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
@@ -65,10 +63,10 @@ public class EmailProcessingTasklet extends JobCommonTasklet implements Tasklet 
             emailPayLoad.setMessage(jobStatusMessage);
 
             String result = emailService.sendEmail(solrClientUrl, emailPayLoad);
-            logger.info("Email sending - {}", result);
+            log.info("Email sending - {}", result);
             stepExecution.setExitStatus(new ExitStatus(ScsbConstants.SUCCESS, ScsbConstants.SUCCESS));
         } catch (Exception ex) {
-            logger.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
+            log.error("{} {}", ScsbCommonConstants.LOG_ERROR, ExceptionUtils.getMessage(ex));
             stepExecution.setExitStatus(new ExitStatus(ScsbConstants.FAILURE, ExceptionUtils.getFullStackTrace(ex)));
         }
         return RepeatStatus.FINISHED;

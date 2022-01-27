@@ -1,8 +1,7 @@
 package org.recap.batch.job;
 
+import lombok.extern.slf4j.Slf4j;
 import org.recap.ScsbConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepContribution;
@@ -15,10 +14,8 @@ import org.springframework.batch.repeat.RepeatStatus;
 /**
  * Created by angelind on 8/5/17.
  */
+@Slf4j
 public class JobSequenceTasklet extends JobCommonTasklet implements Tasklet {
-
-    private static final Logger logger = LoggerFactory.getLogger(JobSequenceTasklet.class);
-
     /**
      * This method starts the execution of sequential processing job.
      * @param contribution StepContribution
@@ -28,7 +25,7 @@ public class JobSequenceTasklet extends JobCommonTasklet implements Tasklet {
      */
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        logger.info("Executing JobSequenceTasklet");
+        log.info("Executing JobSequenceTasklet");
         StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();

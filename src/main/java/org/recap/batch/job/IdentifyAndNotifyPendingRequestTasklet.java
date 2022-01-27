@@ -1,9 +1,8 @@
 package org.recap.batch.job;
 
+import lombok.extern.slf4j.Slf4j;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.IdentifyPendingRequestService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
@@ -13,9 +12,8 @@ import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Slf4j
 public class IdentifyAndNotifyPendingRequestTasklet extends JobCommonTasklet implements Tasklet {
-
-    private static final Logger logger = LoggerFactory.getLogger(IdentifyAndNotifyPendingRequestTasklet.class);
 
     @Autowired
     private IdentifyPendingRequestService identifyPendingRequestService;
@@ -30,7 +28,7 @@ public class IdentifyAndNotifyPendingRequestTasklet extends JobCommonTasklet imp
      */
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        logger.info("Identifying requests that are in Pending status ...");
+        log.info("Identifying requests that are in Pending status ...");
         StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();

@@ -1,5 +1,6 @@
 package org.recap.batch;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
@@ -8,8 +9,6 @@ import org.recap.batch.service.EmailService;
 import org.recap.batch.service.ScsbJobService;
 import org.recap.model.EmailPayLoad;
 import org.recap.model.job.JobDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.NoSuchJobException;
@@ -25,10 +24,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by rajeshbabuk on 28/7/17.
  */
+@Slf4j
 @Component
 public class JobExecutionPoller {
-
-    private static final Logger logger = LoggerFactory.getLogger(JobExecutionPoller.class);
 
     private Long jobExecutionPollerTime;
     private JobExplorer jobExplorer;
@@ -65,7 +63,7 @@ public class JobExecutionPoller {
                         sendNotificationMailForLongRunningJobs();
                     }
                 } catch (Exception ex) {
-                    logger.error(ScsbCommonConstants.LOG_ERROR, ex);
+                    log.error(ScsbCommonConstants.LOG_ERROR, ex);
                 }
             }
         }
@@ -93,7 +91,7 @@ public class JobExecutionPoller {
                                 emailPayLoad.setStatus(getRunningStatus(diffTime));
                                 emailPayLoad.setMessage("Job with execution id \'" + jobExecution.getId() + "\' is running longer than the anticipated time.");
                                 String result = emailService.sendEmail(solrClientUrl, emailPayLoad);
-                                logger.info("Email sending - {}", result);
+                                log.info("Email sending - {}", result);
                             }
                         }
                     }

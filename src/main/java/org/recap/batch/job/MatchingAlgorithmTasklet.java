@@ -1,13 +1,12 @@
 package org.recap.batch.job;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Endpoint;
 import org.apache.camel.Exchange;
 import org.apache.camel.PollingConsumer;
 import org.apache.commons.lang.StringUtils;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
@@ -23,9 +22,8 @@ import java.util.Map;
 /**
  * Created by rajeshbabuk on 3/4/17.
  */
+@Slf4j
 public class MatchingAlgorithmTasklet extends  JobCommonTasklet implements Tasklet{
-
-    private static final Logger logger = LoggerFactory.getLogger(MatchingAlgorithmTasklet.class);
 
     /**
      * This method starts the execution of the matching algorithm job.
@@ -37,7 +35,7 @@ public class MatchingAlgorithmTasklet extends  JobCommonTasklet implements Taskl
      */
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        logger.info("Executing MatchingAlgorithmTasklet");
+        log.info("Executing MatchingAlgorithmTasklet");
         StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
@@ -64,7 +62,7 @@ public class MatchingAlgorithmTasklet extends  JobCommonTasklet implements Taskl
                     resultStatus = resultSplitMessage[1];
                 }
             }
-            logger.info("Job Id : {} Matching Algorithm Job Result Status : {}", jobExecution.getId(), resultStatus);
+            log.info("Job Id : {} Matching Algorithm Job Result Status : {}", jobExecution.getId(), resultStatus);
             setExecutionContext(executionContext, stepExecution, ScsbConstants.MATCHING_ALGORITHM_STATUS_NAME + " " + resultStatus);
         } catch (Exception ex) {
             updateExecutionExceptionStatus(stepExecution, executionContext, ex, ScsbConstants.MATCHING_ALGORITHM_STATUS_NAME);

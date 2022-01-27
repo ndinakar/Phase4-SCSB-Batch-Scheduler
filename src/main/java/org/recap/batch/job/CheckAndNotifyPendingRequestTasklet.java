@@ -1,9 +1,8 @@
 package org.recap.batch.job;
 
+import lombok.extern.slf4j.Slf4j;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.CheckAndNotifyPendingRequestService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
@@ -16,9 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Created by angelind on 14/9/17.
  */
+@Slf4j
 public class CheckAndNotifyPendingRequestTasklet extends JobCommonTasklet implements Tasklet {
-
-    private static final Logger logger = LoggerFactory.getLogger(CheckAndNotifyPendingRequestTasklet.class);
 
     @Autowired
     private CheckAndNotifyPendingRequestService checkAndNotifyPendingRequestService;
@@ -33,7 +31,7 @@ public class CheckAndNotifyPendingRequestTasklet extends JobCommonTasklet implem
      */
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        logger.info("Executing CheckAndNotifyPendingRequestTasklet");
+        log.info("Executing CheckAndNotifyPendingRequestTasklet");
         StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
