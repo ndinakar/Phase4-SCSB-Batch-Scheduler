@@ -1,7 +1,7 @@
 buildscript {
 	ext {
-		springBootVersion = '2.5.8'
-		set('springCloudVersion', "2020.0.5")
+		springBootVersion = '2.6.2'
+		set('springCloudVersion', "2021.0.0")
 	}
 	repositories {
 		mavenCentral()
@@ -12,7 +12,7 @@ buildscript {
 }
 
 plugins {
-	id 'org.springframework.boot' version '2.5.8'
+	id 'org.springframework.boot' version '2.6.2'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id "org.sonarqube" version "3.3"
@@ -26,8 +26,8 @@ jar {
 	archiveBaseName = 'phase4-scsb-batch-scheduler'
 	archiveVersion = '0.0.1-SNAPSHOT'
 }
-sourceCompatibility = 1.11
-targetCompatibility = 1.11
+sourceCompatibility = 1.17
+targetCompatibility = 1.17
 
 repositories {
 	mavenCentral()
@@ -123,9 +123,9 @@ task scsbBatchSchedulerJavadocs(type: Javadoc) {
 
 }
 
-bootJar {
+/* bootJar {
 	layered()
-}
+} */
 
 jar {
 	enabled = false
