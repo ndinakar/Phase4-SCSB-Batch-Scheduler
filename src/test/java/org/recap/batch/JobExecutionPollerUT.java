@@ -31,7 +31,7 @@ public class JobExecutionPollerUT extends BaseTestCase {
 
 
     @Test
-    public void testJobExecutionPolle() throws Exception {
+    public void testJobExecutionPollerWithDiffHours() throws Exception {
         JobExplorer jobExplorer=new JobExplorer() {
             @Override
             public List<JobInstance> getJobInstances(String jobName, int start, int count) {
@@ -68,7 +68,76 @@ public class JobExecutionPollerUT extends BaseTestCase {
                 Date date=new Date();
                 Calendar calender = Calendar.getInstance();
                 calender.setTime(date);
-                calender.add(Calendar.HOUR, -4);
+                calender.add(Calendar.HOUR, -26);
+                jobexe.setStartTime(calender.getTime());
+                set.add(jobexe);
+                return set;
+            }
+
+
+
+            @Override
+            public List<String> getJobNames() {
+                List<String> list=new ArrayList<>();
+                list.add("test");
+                return list;
+            }
+
+            @Override
+            public List<JobInstance> findJobInstancesByJobName(String jobName, int start, int count) {
+                return null;
+            }
+
+            @Override
+            public int getJobInstanceCount(String jobName) throws NoSuchJobException {
+                return 0;
+            }
+        };
+
+        Mockito.when(scsbJobService.getJobByName("test")).thenReturn(jobDto);
+        jobExecutionPoller=new JobExecutionPoller(0L,jobExplorer,null,null,scsbJobService);
+
+    }
+
+    @Test
+    public void testJobExecutionPollerMillSec() throws Exception {
+        JobExplorer jobExplorer=new JobExplorer() {
+            @Override
+            public List<JobInstance> getJobInstances(String jobName, int start, int count) {
+                return null;
+            }
+
+            @Override
+            public JobExecution getJobExecution(Long executionId) {
+                return null;
+            }
+
+            @Override
+            public StepExecution getStepExecution(Long jobExecutionId, Long stepExecutionId) {
+                return null;
+            }
+
+            @Override
+            public JobInstance getJobInstance(Long instanceId) {
+                return null;
+            }
+
+            @Override
+            public List<JobExecution> getJobExecutions(JobInstance jobInstance) {
+                return null;
+            }
+
+            @Override
+            public Set<JobExecution> findRunningJobExecutions(String jobName) {
+                StepContribution contribution = new StepContribution(new StepExecution("StatusReconcilationStep", new JobExecution(new JobInstance(123L, "job"),new JobParameters())));
+                StepExecution execution = MetaDataInstanceFactory.createStepExecution();
+                ChunkContext context = new ChunkContext(new StepContext(execution));
+                Set<JobExecution> set=new HashSet<>();
+                JobExecution jobexe=execution.getJobExecution();
+                Date date=new Date();
+                Calendar calender = Calendar.getInstance();
+                calender.setTime(date);
+                calender.add(Calendar.MILLISECOND, -0);
                 jobexe.setStartTime(calender.getTime());
                 set.add(jobexe);
                 return set;
@@ -96,4 +165,138 @@ public class JobExecutionPollerUT extends BaseTestCase {
         jobExecutionPoller=new JobExecutionPoller(0L,jobExplorer,null,null,scsbJobService);
 
     }
+
+    @Test
+    public void testJobExecutionPoller() throws Exception {
+        JobExplorer jobExplorer=new JobExplorer() {
+            @Override
+            public List<JobInstance> getJobInstances(String jobName, int start, int count) {
+                return null;
+            }
+
+            @Override
+            public JobExecution getJobExecution(Long executionId) {
+                return null;
+            }
+
+            @Override
+            public StepExecution getStepExecution(Long jobExecutionId, Long stepExecutionId) {
+                return null;
+            }
+
+            @Override
+            public JobInstance getJobInstance(Long instanceId) {
+                return null;
+            }
+
+            @Override
+            public List<JobExecution> getJobExecutions(JobInstance jobInstance) {
+                return null;
+            }
+
+            @Override
+            public Set<JobExecution> findRunningJobExecutions(String jobName) {
+                StepContribution contribution = new StepContribution(new StepExecution("StatusReconcilationStep", new JobExecution(new JobInstance(123L, "job"),new JobParameters())));
+                StepExecution execution = MetaDataInstanceFactory.createStepExecution();
+                ChunkContext context = new ChunkContext(new StepContext(execution));
+                Set<JobExecution> set=new HashSet<>();
+                JobExecution jobexe=execution.getJobExecution();
+                Date date=new Date();
+                Calendar calender = Calendar.getInstance();
+                calender.setTime(date);
+                calender.add(Calendar.HOUR, -10);
+                jobexe.setStartTime(calender.getTime());
+                set.add(jobexe);
+                return set;
+            }
+
+            @Override
+            public List<String> getJobNames() {
+                List<String> list=new ArrayList<>();
+                list.add("test");
+                return list;
+            }
+
+            @Override
+            public List<JobInstance> findJobInstancesByJobName(String jobName, int start, int count) {
+                return null;
+            }
+
+            @Override
+            public int getJobInstanceCount(String jobName) throws NoSuchJobException {
+                return 0;
+            }
+        };
+
+        Mockito.when(scsbJobService.getJobByName("test")).thenReturn(jobDto);
+        jobExecutionPoller=new JobExecutionPoller(0L,jobExplorer,null,null,scsbJobService);
+
+    }
+    @Test
+    public void testJobExecutionPollerWithDiffMins() throws Exception {
+        JobExplorer jobExplorer=new JobExplorer() {
+            @Override
+            public List<JobInstance> getJobInstances(String jobName, int start, int count) {
+                return null;
+            }
+
+            @Override
+            public JobExecution getJobExecution(Long executionId) {
+                return null;
+            }
+
+            @Override
+            public StepExecution getStepExecution(Long jobExecutionId, Long stepExecutionId) {
+                return null;
+            }
+
+            @Override
+            public JobInstance getJobInstance(Long instanceId) {
+                return null;
+            }
+
+            @Override
+            public List<JobExecution> getJobExecutions(JobInstance jobInstance) {
+                return null;
+            }
+
+            @Override
+            public Set<JobExecution> findRunningJobExecutions(String jobName) {
+                StepContribution contribution = new StepContribution(new StepExecution("StatusReconcilationStep", new JobExecution(new JobInstance(123L, "job"),new JobParameters())));
+                StepExecution execution = MetaDataInstanceFactory.createStepExecution();
+                ChunkContext context = new ChunkContext(new StepContext(execution));
+                Set<JobExecution> set=new HashSet<>();
+                JobExecution jobexe=execution.getJobExecution();
+                Date date=new Date();
+                Calendar calender = Calendar.getInstance();
+                calender.setTime(date);
+                calender.add(Calendar.MINUTE, -1);
+                jobexe.setStartTime(calender.getTime());
+                set.add(jobexe);
+                return set;
+            }
+
+            @Override
+            public List<String> getJobNames() {
+                List<String> list=new ArrayList<>();
+                list.add("test");
+                return list;
+            }
+
+            @Override
+            public List<JobInstance> findJobInstancesByJobName(String jobName, int start, int count) {
+                return null;
+            }
+
+            @Override
+            public int getJobInstanceCount(String jobName) throws NoSuchJobException {
+                return 0;
+            }
+        };
+
+        Mockito.when(scsbJobService.getJobByName("test")).thenReturn(jobDto);
+        jobExecutionPoller=new JobExecutionPoller(0L,jobExplorer,null,null,scsbJobService);
+
+    }
+
 }
