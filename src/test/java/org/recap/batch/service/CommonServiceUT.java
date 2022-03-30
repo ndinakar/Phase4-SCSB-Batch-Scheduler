@@ -2,6 +2,7 @@ package org.recap.batch.service;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -55,10 +56,10 @@ public class CommonServiceUT extends BaseTestCase {
         ResponseEntity<String> responseEntity = new ResponseEntity<>(ScsbConstants.SUCCESS, HttpStatus.OK);
         Mockito.when(commonService.getHttpEntity()).thenCallRealMethod();
         Mockito.when(commonService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(restTemplate.exchange( Matchers.anyString(),
-                Matchers.any(HttpMethod.class),
-                Matchers.<HttpEntity<?>> any(),
-                Matchers.<Class<String>> any())).thenReturn(responseEntity);
+        Mockito.when(restTemplate.exchange( ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.<HttpEntity<?>> any(),
+                ArgumentMatchers.<Class<String>> any())).thenReturn(responseEntity);
         Mockito.when(commonService.executeService(solrClientUrl , ScsbConstants.ACCESSION_URL, HttpMethod.GET)).thenCallRealMethod();
         String status = commonService.executeService(solrClientUrl , ScsbConstants.ACCESSION_URL, HttpMethod.GET);
         assertNotNull(status);
@@ -74,10 +75,10 @@ public class CommonServiceUT extends BaseTestCase {
         ResponseEntity<Map> responseEntity = new ResponseEntity<>(resultMap, HttpStatus.OK);
         Mockito.when(commonService.getHttpEntity()).thenCallRealMethod();
         Mockito.when(commonService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(restTemplate.exchange( Matchers.anyString(),
-                Matchers.any(HttpMethod.class),
-                Matchers.<HttpEntity<?>> any(),
-                Matchers.<Class<Map>> any())).thenReturn(responseEntity);
+        Mockito.when(restTemplate.exchange( ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.<HttpEntity<?>> any(),
+                ArgumentMatchers.<Class<Map>> any())).thenReturn(responseEntity);
         Mockito.when(commonService.executePurge(scsbCircUrl , ScsbConstants.PURGE_ACCESSION_REQUEST_URL)).thenCallRealMethod();
         resultMap = commonService.executePurge(scsbCircUrl , ScsbConstants.PURGE_ACCESSION_REQUEST_URL);
         assertNotNull(resultMap);
@@ -95,16 +96,16 @@ public class CommonServiceUT extends BaseTestCase {
         ResponseEntity<String> responseEntity = new ResponseEntity<>(ScsbConstants.SUCCESS, HttpStatus.OK);
         Mockito.when(commonService.getHttpHeaders()).thenCallRealMethod();
         Mockito.when(commonService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(restTemplate.exchange( Matchers.anyString(),
-                Matchers.any(HttpMethod.class),
-                Matchers.<HttpEntity<?>> any(),
-                Matchers.<Class<String>> any())).thenReturn(responseEntity);
+        Mockito.when(restTemplate.exchange( ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.<HttpEntity<?>> any(),
+                ArgumentMatchers.<Class<String>> any())).thenReturn(responseEntity);
         Mockito.when(commonService.getResponse(solrIndexRequest , solrClientUrl, ScsbConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST)).thenCallRealMethod();
         String status = commonService.getResponse(solrIndexRequest , solrClientUrl, ScsbConstants.MATCHING_ALGORITHM_URL, HttpMethod.POST);
         assertNotNull(status);
         assertEquals(ScsbConstants.SUCCESS, status);
     }
-    @Ignore
+    @Test
     public void testpendingRequest() throws Exception {
         JobDto jobDto=new JobDto();
         jobDto.setJobDescription(ScsbConstants.CHECK_PENDING_REQUEST_IN_DB);

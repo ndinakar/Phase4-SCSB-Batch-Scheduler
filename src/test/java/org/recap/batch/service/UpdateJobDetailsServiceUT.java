@@ -1,10 +1,7 @@
 package org.recap.batch.service;
 
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Matchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.recap.BaseTestCaseUT;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
@@ -48,10 +45,10 @@ public class UpdateJobDetailsServiceUT extends BaseTestCaseUT {
         Mockito.when(scsbJobService.getJobByName(ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS)).thenReturn(jobDto);
         Mockito.when(jobDto.getCronExpression()).thenReturn("* * * * * ? *");
         Mockito.when(commonService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(restTemplate.exchange( Matchers.anyString(),
-                Matchers.any(HttpMethod.class),
-                Matchers.<HttpEntity<?>> any(),
-                Matchers.<Class<String>> any())).thenReturn(responseEntity);
+        Mockito.when(restTemplate.exchange( ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.<HttpEntity<?>> any(),
+                ArgumentMatchers.<Class<String>> any())).thenReturn(responseEntity);
         Mockito.when(responseEntity.getBody()).thenReturn(ScsbConstants.SUCCESS);
         Mockito.when(scsbJobService.updateJob(Mockito.any())).thenReturn(ScsbConstants.SUCCESS);
         String status = updateJobDetailsService.updateJob("solrClientUrl", ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS, new Date(), 1l);

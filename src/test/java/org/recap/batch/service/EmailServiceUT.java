@@ -1,10 +1,7 @@
 package org.recap.batch.service;
 
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Matchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.recap.BaseTestCaseUT;
 import org.recap.ScsbConstants;
 import org.recap.model.EmailPayLoad;
@@ -38,10 +35,10 @@ public class EmailServiceUT extends BaseTestCaseUT {
     @Test
     public void testEmailService() {
         Mockito.when(commonService.getRestTemplate()).thenReturn(restTemplate);
-        Mockito.when(restTemplate.exchange( Matchers.anyString(),
-                Matchers.any(HttpMethod.class),
-                Matchers.<HttpEntity<?>> any(),
-                Matchers.<Class<String>> any())).thenReturn(responseEntity);
+        Mockito.when(restTemplate.exchange( ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.<HttpEntity<?>> any(),
+                ArgumentMatchers.<Class<String>> any())).thenReturn(responseEntity);
         Mockito.when(responseEntity.getBody()).thenReturn(ScsbConstants.SUCCESS);
         String status=emailService.sendEmail("solrClientUrl",emailPayLoad);
         assertEquals(ScsbConstants.SUCCESS,status);

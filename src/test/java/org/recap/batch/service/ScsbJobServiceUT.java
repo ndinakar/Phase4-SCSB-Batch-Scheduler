@@ -3,7 +3,7 @@ package org.recap.batch.service;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCaseUT;
@@ -74,10 +74,10 @@ public class ScsbJobServiceUT extends BaseTestCaseUT {
         Mockito.when(scsbJobService.getHttpEntity()).thenCallRealMethod();
         Mockito.when(scsbJobService.getRestTemplate()).thenReturn(restTemplate);
         ResponseEntity<JobDto> responseEntity = new ResponseEntity<>(jobDto, HttpStatus.OK);
-        Mockito.when(restTemplate.exchange( Matchers.any(),
-                Matchers.any(HttpMethod.class),
-                Matchers.<HttpEntity<?>> any(),
-                Matchers.<Class<JobDto>> any())).thenReturn(responseEntity); Mockito.when(scsbJobService.getJobByName(jobName)).thenCallRealMethod();
+        Mockito.when(restTemplate.exchange( ArgumentMatchers.any(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.<HttpEntity<?>> any(),
+                ArgumentMatchers.<Class<JobDto>> any())).thenReturn(responseEntity); Mockito.when(scsbJobService.getJobByName(jobName)).thenCallRealMethod();
         JobDto job = scsbJobService.getJobByName(jobName);
         assertNotNull(job);
     }
@@ -97,10 +97,10 @@ public class ScsbJobServiceUT extends BaseTestCaseUT {
         Mockito.when(scsbJobService.getHttpEntity()).thenCallRealMethod();
         Mockito.when(scsbJobService.getRestTemplate()).thenReturn(restTemplate);
         ResponseEntity<JobParamDto> responseEntity = new ResponseEntity<>(jobParamDto, HttpStatus.OK);
-        Mockito.when(restTemplate.exchange( Matchers.any(),
-                Matchers.any(HttpMethod.class),
-                Matchers.<HttpEntity<?>> any(),
-                Matchers.<Class<JobParamDto>> any())).thenReturn(responseEntity);
+        Mockito.when(restTemplate.exchange( ArgumentMatchers.any(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.<HttpEntity<?>> any(),
+                ArgumentMatchers.<Class<JobParamDto>> any())).thenReturn(responseEntity);
         Mockito.when(scsbJobService.getJobParamsByJobName(jobName)).thenCallRealMethod();
         JobParamDto jobParam = scsbJobService.getJobParamsByJobName(jobName);
         assertNotNull(jobParam);
@@ -114,10 +114,10 @@ public class ScsbJobServiceUT extends BaseTestCaseUT {
         Mockito.when(scsbJobService.getHttpHeaders()).thenCallRealMethod();
         Mockito.when(scsbJobService.getRestTemplate()).thenReturn(restTemplate);
         ResponseEntity<String> responseEntity = new ResponseEntity<>(ScsbConstants.SUCCESS, HttpStatus.OK);
-        Mockito.when(restTemplate.exchange( Matchers.anyString(),
-                Matchers.any(HttpMethod.class),
-                Matchers.<HttpEntity<?>> any(),
-                Matchers.<Class<String>> any())).thenReturn(responseEntity);
+        Mockito.when(restTemplate.exchange( ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.<HttpEntity<?>> any(),
+                ArgumentMatchers.<Class<String>> any())).thenReturn(responseEntity);
         Mockito.when(scsbJobService.updateJob(jobDto)).thenCallRealMethod();
         String status = scsbJobService.updateJob(jobDto);
         assertNotNull(status);

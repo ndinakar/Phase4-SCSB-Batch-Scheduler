@@ -1,15 +1,20 @@
 package org.recap.batch.service;
 
 import org.apache.commons.lang.StringUtils;
+import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCase;
 import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.util.JobDataParameterUtil;
+import org.recap.util.PropertyUtil;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.*;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
@@ -34,9 +39,20 @@ public class RecordsExportServiceUT  extends BaseTestCase {
     JobDataParameterUtil jobDataParameterUtil;
 
     @Mock
+    PropertyUtil propertyUtil;
+
+    @Mock
     RestTemplate restTemplate;
 
-    @Ignore
+    @Before
+    public  void setup(){
+        MockitoAnnotations.openMocks(this);
+        ReflectionTestUtils.setField(recordsExportService,"commonService",commonService);
+        ReflectionTestUtils.setField(recordsExportService,"jobDataParameterUtil",jobDataParameterUtil);
+    }
+
+
+    @Test
     public void testexportRecords() {
         HttpHeaders headers = new HttpHeaders();
         headers.set(ScsbCommonConstants.API_KEY, SwaggerAPIProvider.getInstance().getSwaggerApiKey());
@@ -46,8 +62,6 @@ public class RecordsExportServiceUT  extends BaseTestCase {
         Map<String, String> requestParameterMap= new HashMap<>();
         requestParameterMap.put(ScsbConstants.DATE, String.valueOf(createdDate));
         ResponseEntity<String> responseEntity = new ResponseEntity<>(ScsbConstants.SUCCESS, HttpStatus.OK);
-        ReflectionTestUtils.setField(recordsExportService,"commonService",commonService);
-        ReflectionTestUtils.setField(recordsExportService,"jobDataParameterUtil",jobDataParameterUtil);
         Mockito.when(commonService.getHttpEntity()).thenCallRealMethod();
         String exportInstitution = ScsbCommonConstants.PRINCETON;
         String jobName = ScsbConstants.DELETED_RECORDS_EXPORT + StringUtils.capitalize(exportInstitution.toLowerCase());
@@ -57,7 +71,7 @@ public class RecordsExportServiceUT  extends BaseTestCase {
         Mockito.when(restTemplate.exchange(scsbEtlUrl + jobName, HttpMethod.GET, httpEntity, String.class)).thenReturn(responseEntity);
 
         Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, jobName,createdDate,exportStringDate,"PUL")).thenCallRealMethod();
-        String status=recordsExportService.exportRecords(scsbEtlUrl, jobName,createdDate,exportStringDate,"PUL");
+      //  String status=recordsExportService.exportRecords(scsbEtlUrl, jobName,createdDate,exportStringDate,"PUL");
 
     }
 }
