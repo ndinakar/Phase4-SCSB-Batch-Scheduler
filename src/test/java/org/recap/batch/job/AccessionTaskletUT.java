@@ -37,7 +37,7 @@ public class AccessionTaskletUT  {
 
     @Before
     public  void setup(){
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test

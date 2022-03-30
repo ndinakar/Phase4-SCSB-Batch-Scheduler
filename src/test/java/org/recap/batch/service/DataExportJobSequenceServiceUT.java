@@ -2,7 +2,8 @@ package org.recap.batch.service;
 
 import org.junit.Before;
 import org.junit.Ignore;
-import org.mockito.Matchers;
+import org.junit.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
@@ -46,11 +47,11 @@ public class DataExportJobSequenceServiceUT extends BaseTestCase  {
     }
 
 
-    @Ignore
+    @Test
     public void testdataExportJobSequenceService() throws Exception {
 
         Date createdDate = new Date(System.currentTimeMillis());
-        String exportStringDate= "2020-07-07";
+        String exportStringDate= new Date(System.currentTimeMillis()).toString();
         Map<String, String> requestParameterMap= new HashMap<>();
         requestParameterMap.put(ScsbConstants.DATE, String.valueOf(createdDate));
         ReflectionTestUtils.setField(dataExportJobSequenceService,"commonService",commonService);
@@ -60,10 +61,10 @@ public class DataExportJobSequenceServiceUT extends BaseTestCase  {
         Mockito.doNothing().when(commonService).setRequestParameterMap(requestParameterMap, exportStringDate, jobDataParameterUtil, createdDate);
        // PowerMockito.when(tem.exchange(scsbEtlUrl + ScsbConstants.DATA_EXPORT_JOB_SEQUENCE_URL, HttpMethod.GET, httpEntity, String.class, requestParameterMap)).thenReturn(responseEntity);
      //   PowerMockito.verifyNew(RestTemplate.class).withNoArguments();
-        Mockito.when(restTemplate.exchange( Matchers.anyString(),
-                Matchers.any(HttpMethod.class),
-                Matchers.<HttpEntity<?>> any(),
-                Matchers.<Class<String>> any())).thenReturn(responseEntity);
+        Mockito.when(restTemplate.exchange( ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.<HttpEntity<?>> any(),
+                ArgumentMatchers.<Class<String>> any())).thenReturn(responseEntity);
         Mockito.when(dataExportJobSequenceService.dataExportJobSequence(scsbEtlUrl,createdDate,exportStringDate)).thenCallRealMethod();
         String status= dataExportJobSequenceService.dataExportJobSequence(scsbEtlUrl,createdDate,exportStringDate);
     }

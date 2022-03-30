@@ -45,7 +45,7 @@ public class DeletedRecordsExportForInstitutionTaskletUT extends BaseTestCaseUT 
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         ReflectionTestUtils.setField(deletedRecordsExportForInstitutionTasklet, "scsbEtlUrl", scsbEtlUrl);
         ReflectionTestUtils.setField(deletedRecordsExportForInstitutionTasklet, "recordsExportService", recordsExportService);
     }

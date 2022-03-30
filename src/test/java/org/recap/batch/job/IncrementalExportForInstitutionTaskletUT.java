@@ -41,7 +41,7 @@ public class IncrementalExportForInstitutionTaskletUT extends BaseTestCaseUT {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         ReflectionTestUtils.setField(incrementalExportForInstitutionTasklet, "scsbEtlUrl", scsbEtlUrl);
         ReflectionTestUtils.setField(incrementalExportForInstitutionTasklet, "recordsExportService", recordsExportService);
     }
