@@ -21,10 +21,10 @@ public class RecordsExportService {
     JobDataParameterUtil jobDataParameterUtil;
     
     @Autowired
-    private CommonService commonService;
+    protected CommonService commonService;
 
     @Autowired
-    private PropertyUtil propertyUtil;
+    protected PropertyUtil propertyUtil;
 
     /**
      * This method makes a rest call to scsb etl microservice to initiate the process of deleted records export for Columbia.

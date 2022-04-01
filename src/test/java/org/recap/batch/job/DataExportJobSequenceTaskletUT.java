@@ -45,7 +45,7 @@ public class DataExportJobSequenceTaskletUT extends BaseTestCaseUT {
 
     @Before
     public  void setup(){
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         ReflectionTestUtils.setField(dataExportJobSequenceTasklet,"scsbEtlUrl",scsbEtlUrl);
         ReflectionTestUtils.setField(dataExportJobSequenceTasklet,"dataExportJobSequenceService",dataExportJobSequenceServiceMock);
     }

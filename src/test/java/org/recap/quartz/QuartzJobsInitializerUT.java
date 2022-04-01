@@ -45,7 +45,7 @@ public class QuartzJobsInitializerUT extends BaseTestCaseUT {
 
     @Before
     public  void setup(){
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         ReflectionTestUtils.setField(mockquartzJobsInitializer,"jobLocator",jobLocator);
         ReflectionTestUtils.setField(mockquartzJobsInitializer,"scheduler",scheduler);
         ReflectionTestUtils.setField(mockquartzJobsInitializer,"jobLauncher",jobLauncher);
