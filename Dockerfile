@@ -1,14 +1,14 @@
-FROM phase4-scsb-base as builder
+FROM scsb-base as builder
 WORKDIR application
 ARG JAR_FILE=build/libs/*.jar
-COPY ${JAR_FILE} phase4-scsb-batch-scheduler.jar
-RUN java -Djarmode=layertools -jar phase4-scsb-batch-scheduler.jar extract
+COPY ${JAR_FILE} scsb-batch-scheduler.jar
+RUN java -Djarmode=layertools -jar scsb-batch-scheduler.jar extract
 
-FROM phase4-scsb-base
+FROM scsb-base
 
 WORKDIR application
 COPY --from=builder application/dependencies/ ./
 COPY --from=builder application/spring-boot-loader/ ./
 COPY --from=builder application/snapshot-dependencies/ ./
-COPY --from=builder application/phase4-scsb-batch-scheduler.jar/ ./
-ENTRYPOINT java -jar -Denvironment=$ENV phase4-scsb-batch-scheduler.jar && bash
+COPY --from=builder application/scsb-batch-scheduler.jar/ ./
+ENTRYPOINT java -jar -Denvironment=$ENV scsb-batch-scheduler.jar && bash
