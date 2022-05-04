@@ -23,7 +23,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'jacoco'
 
 jar {
-	archiveBaseName = 'phase4-scsb-batch-scheduler'
+	archiveBaseName = 'scsb-batch-scheduler'
 	archiveVersion = '0.0.1-SNAPSHOT'
 }
 sourceCompatibility = 1.17
