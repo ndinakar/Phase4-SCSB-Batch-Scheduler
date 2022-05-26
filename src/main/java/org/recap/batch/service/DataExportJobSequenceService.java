@@ -39,4 +39,10 @@ public class DataExportJobSequenceService {
         ResponseEntity<String> responseEntity = new RestTemplate().exchange(scsbEtlUrl + ScsbConstants.DATA_EXPORT_JOB_SEQUENCE_URL, HttpMethod.GET, httpEntity, String.class, requestParameterMap);
         return responseEntity.getBody();
     }
+
+    public String dataExportTriggerJob(String scsbEtlUrl) {
+        HttpEntity httpEntity = commonService.getHttpEntity();
+        ResponseEntity<String> responseEntity = new RestTemplate().exchange(scsbEtlUrl + ScsbConstants.DATA_EXPORT_TRIGGER_JOB_URL, HttpMethod.GET, httpEntity, String.class);
+        return responseEntity.getBody();
+    }
 }
