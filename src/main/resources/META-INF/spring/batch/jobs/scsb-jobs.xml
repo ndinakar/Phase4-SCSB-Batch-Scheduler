@@ -269,4 +269,12 @@
 
     <bean id="startOrStopPollingLongRunningJobsTasklet" class="org.recap.batch.job.StartOrStopPollingLongRunningJobsTasklet"/>
 
+    <batch:job id="DataDumpTriggerJob" restartable="true">
+        <batch:step id="DataDumpTriggerJobStep" allow-start-if-complete="true">
+            <batch:tasklet ref="dataDumpTriggerJob"/>
+        </batch:step>
+    </batch:job>
+
+    <bean id="dataDumpTriggerJob" class="org.recap.batch.job.DataExportTriggerJobTasklet"/>
+
 </beans>

@@ -30,6 +30,7 @@ public class ScsbConstants {
     public static final String REPORT_DELETED_RECORDS_URL = "reportDeleted/records";
     public static final String DATA_EXPORT_ETL_URL = "dataDump/exportDataDump/?institutionCodes={institutionCodes}&requestingInstitutionCode={requestingInstitutionCode}&imsDepositoryCodes={imsDepositoryCodes}&fetchType={fetchType}&outputFormat={outputFormat}&date={date}&emailToAddress={emailToAddress}&userName={userName}";
     public static final String DATA_EXPORT_JOB_SEQUENCE_URL = "dataDumpSequence/exportDataDumpSequence/?date={date}";
+    public static final String DATA_EXPORT_TRIGGER_JOB_URL = "dataDump/exportDataDumpTriggerManually";
 
 
     public static final String ACCESSION_URL = "sharedCollection/ongoingAccessionJob";
