@@ -54,14 +54,14 @@ dependencies {
 	testAnnotationProcessor('org.projectlombok:lombok:1.18.22')
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
 	//implementation("org.springframework.boot:spring-boot-starter-actuaor")
-	implementation('org.apache.camel:camel-activemq:3.14.0')
+	implementation('org.apache.camel:camel-activemq:3.18.0')
 	implementation('org.springframework.boot:spring-boot-starter-web')
-	implementation('org.apache.activemq:activemq-camel:5.15.15')
-	implementation('org.apache.activemq:activemq-pool:5.15.15')
-	implementation('org.apache.activemq:activemq-broker:5.15.15')
-	implementation('org.apache.activemq:activemq-client:5.15.15')
-	implementation('org.apache.camel.springboot:camel-spring-boot-starter:3.14.0')
-	implementation('org.apache.camel:camel-jms:3.14.0')
+	implementation('org.apache.activemq:activemq-camel:5.16.5')
+	implementation('org.apache.activemq:activemq-pool:5.17.1')
+	implementation('org.apache.activemq:activemq-broker:5.17.1')
+	implementation('org.apache.activemq:activemq-client:5.17.1')
+	implementation('org.apache.camel.springboot:camel-spring-boot-starter:3.18.0')
+	implementation('org.apache.camel:camel-jms:3.18.0')
 	implementation 'io.micrometer:micrometer-registry-prometheus'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
