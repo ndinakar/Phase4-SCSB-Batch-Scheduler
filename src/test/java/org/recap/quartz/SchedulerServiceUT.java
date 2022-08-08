@@ -6,10 +6,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.recap.BaseTestCaseUT;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
+
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -52,7 +54,7 @@ public class SchedulerServiceUT extends BaseTestCaseUT {
     public void testScheduleJobScheduledException() throws Exception {
         String jobName = ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS;
         Mockito.when(scheduler.getJobDetail(Mockito.any())).thenReturn(jobDetail);
-        Mockito.when(scheduler.scheduleJob(Mockito.any())).thenThrow(NullPointerException.class);
+        Mockito.when(scheduler.scheduleJob(Mockito.any())).thenThrow(SchedulerException.class);
         String message = schedulerService.scheduleJob(jobName, "0/5 * * * * ? *");
         assertEquals(ScsbConstants.ERROR_JOB_FAILED_SCHEDULING, message);
     }
@@ -112,7 +114,7 @@ public class SchedulerServiceUT extends BaseTestCaseUT {
         String jobName = ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS;
         String scheduleMessage = schedulerService.scheduleJob(jobName, "1 2 3 4 5");
         assertNotNull(scheduleMessage);
-        Mockito.when(scheduler.unscheduleJob(Mockito.any())).thenThrow(NullPointerException.class);
+        Mockito.when(scheduler.unscheduleJob(Mockito.any())).thenThrow(SchedulerException.class);
         String message = schedulerService.unscheduleJob(jobName);
         assertNotNull(message);
         assertEquals(ScsbConstants.ERROR_JOB_FAILED_UNSCHEDULING, message);
