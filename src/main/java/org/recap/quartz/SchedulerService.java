@@ -1,10 +1,7 @@
 package org.recap.quartz;
 
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.JobDetail;
-import org.quartz.JobKey;
-import org.quartz.Scheduler;
-import org.quartz.TriggerKey;
+import org.quartz.*;
 import org.quartz.impl.JobDetailImpl;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.recap.ScsbCommonConstants;
@@ -14,6 +11,8 @@ import org.springframework.batch.core.configuration.JobLocator;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.text.ParseException;
 
 import static org.quartz.CronExpression.isValidExpression;
 
@@ -63,7 +62,7 @@ public class SchedulerService {
                     scheduler.scheduleJob(jobDetailImpl, trigger);
                 }
             }
-        } catch (Exception ex) {
+        } catch (SchedulerException | ParseException ex) {
             log.error(ScsbCommonConstants.LOG_ERROR, ex);
             return ScsbConstants.ERROR_JOB_FAILED_SCHEDULING;
         }
@@ -105,7 +104,7 @@ public class SchedulerService {
         try {
             TriggerKey triggerKey = new TriggerKey(jobName + ScsbConstants.TRIGGER_SUFFIX);
             scheduler.unscheduleJob(triggerKey);
-        } catch (Exception ex) {
+        } catch (SchedulerException ex) {
             log.error(ScsbCommonConstants.LOG_ERROR, ex);
             return ScsbConstants.ERROR_JOB_FAILED_UNSCHEDULING;
         }
