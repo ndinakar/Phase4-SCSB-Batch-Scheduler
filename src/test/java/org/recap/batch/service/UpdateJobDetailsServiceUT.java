@@ -55,4 +55,20 @@ public class UpdateJobDetailsServiceUT extends BaseTestCaseUT {
         assertNotNull(status);
         assertEquals(ScsbConstants.SUCCESS, status);
     }
+
+    @Test
+    public void testUpdateJobDetailsServiceTest() throws Exception {
+        JobDto jobDto = new JobDto();
+        Mockito.when(scsbJobService.getJobByName(ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS)).thenReturn(jobDto);
+        Mockito.when(commonService.getRestTemplate()).thenReturn(restTemplate);
+        Mockito.when(restTemplate.exchange( ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.<HttpEntity<?>> any(),
+                ArgumentMatchers.<Class<String>> any())).thenReturn(responseEntity);
+        Mockito.when(responseEntity.getBody()).thenReturn(ScsbConstants.SUCCESS);
+        Mockito.when(scsbJobService.updateJob(Mockito.any())).thenReturn(ScsbConstants.SUCCESS);
+        String status = updateJobDetailsService.updateJob("solrClientUrl", ScsbCommonConstants.PURGE_EXCEPTION_REQUESTS, new Date(), 1l);
+        assertNotNull(status);
+        assertEquals(ScsbConstants.SUCCESS, status);
+    }
 }

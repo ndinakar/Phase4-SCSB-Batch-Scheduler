@@ -46,6 +46,15 @@ public class JobDataParameterUtilUT extends BaseTestCase {
     }
 
     @Test
+    public void buildJobRequestParameterMapTest() throws Exception {
+        String jobName = ScsbConstants.GENERATE_ACCESSION_REPORT_JOB;
+        JobParamDto jobParamDto = new JobParamDto();
+        when(scsbJobService.getJobParamsByJobName(jobName)).thenReturn(jobParamDto);
+        Map<String, String> parameterMap = jobDataParameterUtil.buildJobRequestParameterMap(ScsbConstants.GENERATE_ACCESSION_REPORT_JOB);
+        assertNotNull(parameterMap);
+    }
+
+    @Test
     public void getDateFormatStringForExport() throws Exception {
         String dateFormatStringForExport = jobDataParameterUtil.getDateFormatStringForExport(new Date());
         assertNotNull(dateFormatStringForExport);

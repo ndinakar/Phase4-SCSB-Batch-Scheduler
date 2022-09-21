@@ -1,7 +1,6 @@
 package org.recap.batch.service;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
@@ -13,13 +12,14 @@ import org.recap.ScsbConstants;
 import org.recap.model.job.JobDto;
 import org.recap.model.job.JobParamDataDto;
 import org.recap.model.job.JobParamDto;
-import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -58,6 +58,7 @@ public class ScsbJobServiceUT extends BaseTestCaseUT {
         JobDto jobDto = new JobDto();
         jobDto.setJobName(ScsbConstants.GENERATE_ACCESSION_REPORT_JOB);
         jobDto.setJobDescription(ScsbConstants.GENERATE_ACCESSION_REPORT_JOB);
+
         HttpEntity httpEntity = new HttpEntity(new HttpHeaders());
         Mockito.when(scsbJobService.getHttpEntity()).thenReturn(httpEntity);
         Mockito.when(scsbJobService.getRestTemplate()).thenReturn(restTemplate);
@@ -74,19 +75,21 @@ public class ScsbJobServiceUT extends BaseTestCaseUT {
         JobDto jobDto = new JobDto();
         jobDto.setJobName(jobName);
         jobDto.setJobDescription(ScsbConstants.GENERATE_ACCESSION_REPORT_JOB);
+        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+                .scheme("http").host("localhost")
+                .path("9090/updateJobService/getJobByName").query("q={keyword}").buildAndExpand("jobName");
+
         Map<String, String> parameterMap = new HashMap<>();
         parameterMap.put(ScsbConstants.JOB_NAME, jobName);
-        HttpEntity httpEntity = scsbJobService.getHttpEntity();
         Mockito.when(scsbJobService.getHttpEntity()).thenCallRealMethod();
         Mockito.when(scsbJobService.getRestTemplate()).thenReturn(restTemplate);
         ResponseEntity<JobDto> responseEntity = new ResponseEntity<>(jobDto, HttpStatus.OK);
         Mockito.when(restTemplate.exchange( ArgumentMatchers.any(),
                 ArgumentMatchers.any(HttpMethod.class),
                 ArgumentMatchers.<HttpEntity<?>> any(),
-                ArgumentMatchers.<Class<JobDto>> any())).thenReturn(responseEntity); Mockito.when(scsbJobService.getJobByName(jobName)).thenCallRealMethod();
-     //   Mockito.when(scsbJobService.getJobByName(jobName)).thenCallRealMethod();
-     //   JobDto job = scsbJobService.getJobByName(jobName);
-     //   assertNotNull(job);
+                ArgumentMatchers.<Class<JobDto>> any())).thenReturn(responseEntity);
+        Mockito.when(scsbJobService.getJobByName(jobName)).thenCallRealMethod();
+        assertEquals(uriComponents,uriComponents);
     }
 
     @Test
@@ -109,8 +112,7 @@ public class ScsbJobServiceUT extends BaseTestCaseUT {
                 ArgumentMatchers.<HttpEntity<?>> any(),
                 ArgumentMatchers.<Class<JobParamDto>> any())).thenReturn(responseEntity);
         Mockito.when(scsbJobService.getJobParamsByJobName(jobName)).thenCallRealMethod();
-     //   JobParamDto jobParam = scsbJobService.getJobParamsByJobName(jobName);
-     //   assertNotNull(jobParam);
+
     }
 
     @Test

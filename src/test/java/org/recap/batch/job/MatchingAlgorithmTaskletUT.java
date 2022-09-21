@@ -165,5 +165,69 @@ public class MatchingAlgorithmTaskletUT  {
         assertEquals(RepeatStatus.FINISHED,status);
     }
 
+    @Test
+    public void testexecute_failTest() throws Exception {
+        StepContribution contribution = new StepContribution(new StepExecution("StatusReconcilationStep", new JobExecution(new JobInstance(25L, "PeriodicLASItemStatusReconciliation"),new JobParameters())));
+        StepExecution execution = MetaDataInstanceFactory.createStepExecution();
+        execution.setCommitCount(2);
+        ChunkContext context = new ChunkContext(new StepContext(execution));
+        JobExecution jobExecution = execution.getJobExecution();
+        Date createdDate = jobExecution.getCreateTime();
+        message.setMessageId("1");
+        message.setBody(ScsbCommonConstants.JOB_ID + ":" + jobExecution.getId());
+        exchange.setIn(message);
+        String resultStatus = null;
+        Map<String, String> requestMap = new HashMap<>();
+        requestMap.put(ScsbCommonConstants.JOB_ID, String.valueOf(jobExecution.getId()));
+        requestMap.put(ScsbCommonConstants.PROCESS_TYPE, ScsbCommonConstants.ONGOING_MATCHING_ALGORITHM_JOB);
+        requestMap.put(ScsbCommonConstants.CREATED_DATE, createdDate.toString());
+        ReflectionTestUtils.setField(matchingAlgorithmTasklet,"producerTemplate",producerTemplate);
+        ReflectionTestUtils.setField(matchingAlgorithmTasklet,"camelContext",camelContext);
+        ReflectionTestUtils.setField(matchingAlgorithmTasklet,"updateJobDetailsService",updateJobDetailsService);
+        Mockito.when(camelContext.getRouteController()).thenReturn(routeController);
+        Mockito.doNothing().when(routeController).startRoute(ScsbCommonConstants.MATCHING_ALGORITHM_JOB_COMPLETION_OUTGOING_QUEUE);
+        Mockito.when(camelContext.getEndpoint(ScsbCommonConstants.MATCHING_ALGORITHM_JOB_COMPLETION_OUTGOING_QUEUE)).thenReturn(endpoint);
+        Mockito.when(endpoint.createPollingConsumer()).thenReturn(consumer);
+        Mockito.when(consumer.receive()).thenReturn(exchange);
+        Mockito.when(exchange.getIn()).thenReturn(message);
+        Mockito.when(message.getBody()).thenReturn(resultStatus);
+        Mockito.doNothing().when(mockmatchingAlgorithmTasklet).updateJob(jobExecution, "Matching Algorithm Tasklet", Boolean.TRUE);
+        RepeatStatus status = matchingAlgorithmTasklet.execute(contribution,context);
+        assertNotNull(status);
+        assertEquals(RepeatStatus.FINISHED,status);
+    }
+
+    @Test
+    public void testexecuteconsumerTest() throws Exception {
+        PollingConsumer consumer = null;
+        StepContribution contribution = new StepContribution(new StepExecution("StatusReconcilationStep", new JobExecution(new JobInstance(25L, "PeriodicLASItemStatusReconciliation"),new JobParameters())));
+        StepExecution execution = MetaDataInstanceFactory.createStepExecution();
+        execution.setCommitCount(2);
+        ChunkContext context = new ChunkContext(new StepContext(execution));
+        JobExecution jobExecution = execution.getJobExecution();
+        Date createdDate = jobExecution.getCreateTime();
+        message.setMessageId("1");
+        message.setBody(ScsbCommonConstants.JOB_ID + ":" + jobExecution.getId());
+        exchange.setIn(message);
+        String resultStatus = null;
+        Map<String, String> requestMap = new HashMap<>();
+        requestMap.put(ScsbCommonConstants.JOB_ID, String.valueOf(jobExecution.getId()));
+        requestMap.put(ScsbCommonConstants.PROCESS_TYPE, ScsbCommonConstants.ONGOING_MATCHING_ALGORITHM_JOB);
+        requestMap.put(ScsbCommonConstants.CREATED_DATE, createdDate.toString());
+        ReflectionTestUtils.setField(matchingAlgorithmTasklet,"producerTemplate",producerTemplate);
+        ReflectionTestUtils.setField(matchingAlgorithmTasklet,"camelContext",camelContext);
+        ReflectionTestUtils.setField(matchingAlgorithmTasklet,"updateJobDetailsService",updateJobDetailsService);
+        Mockito.when(camelContext.getRouteController()).thenReturn(routeController);
+        Mockito.doNothing().when(routeController).startRoute(ScsbCommonConstants.MATCHING_ALGORITHM_JOB_COMPLETION_OUTGOING_QUEUE);
+        Mockito.when(camelContext.getEndpoint(ScsbCommonConstants.MATCHING_ALGORITHM_JOB_COMPLETION_OUTGOING_QUEUE)).thenReturn(endpoint);
+        Mockito.when(endpoint.createPollingConsumer()).thenReturn(consumer);
+        Mockito.when(exchange.getIn()).thenReturn(message);
+        Mockito.when(message.getBody()).thenReturn(resultStatus);
+        Mockito.doNothing().when(mockmatchingAlgorithmTasklet).updateJob(jobExecution, "Matching Algorithm Tasklet", Boolean.TRUE);
+        RepeatStatus status = matchingAlgorithmTasklet.execute(contribution,context);
+        assertNotNull(status);
+        assertEquals(RepeatStatus.FINISHED,status);
+    }
+
 
 }
