@@ -17,8 +17,6 @@ import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.UpdateJobDetailsService;
 import org.recap.util.JobDataParameterUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
@@ -118,6 +116,27 @@ public class JobCommonTaskletUT extends BaseTestCaseUT {
         Mockito.when(message.getBody()).thenReturn(resultStatus);
         String status = jobCommonTasklet.getResultStatus(jobExecution, execution, log, executionContext, ScsbCommonConstants.ACCESSION_JOB_INITIATE_QUEUE, ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE, ScsbConstants.ACCESSION_STATUS_NAME);
         assertEquals(ScsbConstants.FAILURE + " - " + ScsbConstants.FAILURE_QUEUE_MESSAGE,status);
+    }
+
+    @Test
+    public void getResultStatusTest() throws Exception {
+        StepExecution execution = MetaDataInstanceFactory.createStepExecution();
+        execution.setCommitCount(2);
+        JobExecution jobExecution = execution.getJobExecution();
+        ExecutionContext executionContext = jobExecution.getExecutionContext();
+        message.setMessageId("1");
+        message.setBody(ScsbCommonConstants.JOB_ID + ":" + jobExecution.getId());
+        exchange.setIn(message);
+        String resultStatus = null;
+        Mockito.when(camelContext.getRouteController()).thenReturn(routeController);
+        Mockito.doNothing().when(routeController).startRoute(ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE);
+        Mockito.when(camelContext.getEndpoint(ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE)).thenReturn(endpoint);
+        Mockito.when(endpoint.createPollingConsumer()).thenReturn(consumer);
+        Mockito.when(consumer.receive()).thenReturn(exchange);
+        Mockito.when(exchange.getIn()).thenReturn(message);
+        Mockito.when(message.getBody()).thenReturn(resultStatus);
+        String status = jobCommonTasklet.getResultStatus(jobExecution, execution, log, executionContext, ScsbCommonConstants.ACCESSION_JOB_INITIATE_QUEUE, ScsbCommonConstants.ACCESSION_JOB_COMPLETION_OUTGOING_QUEUE, ScsbConstants.ACCESSION_STATUS_NAME);
+
     }
 
     @Test

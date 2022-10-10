@@ -12,8 +12,6 @@ import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.batch.service.RecordsExportService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -83,5 +81,20 @@ public class DeletedRecordsExportTaskletUT extends BaseTestCaseUT {
         assertEquals(RepeatStatus.FINISHED,status);
     }
 
+    @Test
+    public void testExecuteDeletedExportExceptionTest() throws Exception {
+        ReflectionTestUtils.setField(deletedRecordsExportTasklet,"recordsExportService",null);
+        StepExecution execution = MetaDataInstanceFactory.createStepExecution();
+        execution.setCommitCount(2);
+        ChunkContext context = new ChunkContext(new StepContext(execution));
+        JobExecution jobExecution = execution.getJobExecution();
+        String exportStringDate = jobExecution.getJobParameters().getString(ScsbConstants.FROM_DATE);
+        Date createdDate = jobExecution.getCreateTime();
+        String exportInstitution = null;
+        Mockito.when(deletedRecordsExportTasklet.executeDeletedRecordsExport(context,log,exportInstitution,true)).thenCallRealMethod();
+        RepeatStatus status = deletedRecordsExportTasklet.executeDeletedRecordsExport(context,log,exportInstitution,true);
+        assertNotNull(status);
+        assertEquals(RepeatStatus.FINISHED,status);
+    }
 
 }

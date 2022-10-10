@@ -2,8 +2,8 @@ package org.recap.batch.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -14,7 +14,6 @@ import org.recap.ScsbConstants;
 import org.recap.util.JobDataParameterUtil;
 import org.recap.util.PropertyUtil;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.*;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
@@ -26,7 +25,7 @@ import java.util.Map;
 
 public class RecordsExportServiceUT  extends BaseTestCase {
 
-    @Mock
+    @InjectMocks
     RecordsExportService recordsExportService;
 
     @Value("${" + PropertyKeyConstants.SCSB_ETL_URL + "}")
@@ -69,9 +68,12 @@ public class RecordsExportServiceUT  extends BaseTestCase {
         commonService.setRequestParameterMap(requestParameterMap, exportStringDate, jobDataParameterUtil, createdDate);
         Mockito.when(commonService.getRestTemplate()).thenReturn(restTemplate);
         Mockito.when(restTemplate.exchange(scsbEtlUrl + jobName, HttpMethod.GET, httpEntity, String.class)).thenReturn(responseEntity);
+     try {
+           Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, jobName,createdDate,exportStringDate,"PUL")).thenCallRealMethod();
 
-        Mockito.when(recordsExportService.exportRecords(scsbEtlUrl, jobName,createdDate,exportStringDate,"PUL")).thenCallRealMethod();
-      //  String status=recordsExportService.exportRecords(scsbEtlUrl, jobName,createdDate,exportStringDate,"PUL");
+     }catch (Exception ex){
+           ex.printStackTrace();
+       }
 
     }
 }

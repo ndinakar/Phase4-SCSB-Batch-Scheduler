@@ -47,7 +47,7 @@ public class DataExportJobSequenceServiceUT extends BaseTestCaseUT {
     public void testdataExportJobSequenceService() {
 
         Date createdDate = new Date(System.currentTimeMillis());
-        String exportStringDate= "2020-07-07";
+        String exportStringDate= new Date().toString();
         try {
             Map<String, String> requestParameterMap = new HashMap<>();
             requestParameterMap.put(ScsbConstants.DATE, String.valueOf(createdDate));
