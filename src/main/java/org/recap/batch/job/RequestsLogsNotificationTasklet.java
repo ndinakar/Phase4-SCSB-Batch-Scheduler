@@ -29,7 +29,7 @@ public class RequestsLogsNotificationTasklet extends JobCommonTasklet implements
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         try {
             updateJob(jobExecution,"RequestsLogsNotificationTasklet", Boolean.FALSE);
-            commonService.pendingRequest(scsbGatewayUrl, ScsbConstants.GATEWAY_REQUEST_ITEM_BARCODE_NOT_CREATE);
+            commonService.pendingRequest(scsbEtlUrl, ScsbConstants.REQUEST_LOG_FOR_EMAIL_NOTIFICATION);
         } catch (Exception ex) {
             updateExecutionExceptionStatus(stepExecution, executionContext, ex, ScsbConstants.FAILURE);
         }
