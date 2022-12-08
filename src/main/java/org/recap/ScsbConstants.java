@@ -102,6 +102,6 @@ public class ScsbConstants {
     public static final String FAILURE_QUEUE_MESSAGE = "Message undelivered or unreceived.";
     public static final String NO_REQUESTING_INSTITUTION = "Requesting Institution is blank. Please provide requesting institution for export.";
 
-    public static final String REQUEST_LOG_FOR_EMAIL_NOTIFICATION = "/requestsEmailNotification/requestsEmailNotification";
+    public static final String REQUEST_LOG_FOR_EMAIL_NOTIFICATION = "/requestsEmailNotification";
     private ScsbConstants(){}
 }
