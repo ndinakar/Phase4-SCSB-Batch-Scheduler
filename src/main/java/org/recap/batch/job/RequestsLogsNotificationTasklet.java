@@ -23,13 +23,13 @@ public class RequestsLogsNotificationTasklet extends JobCommonTasklet implements
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        log.info("Request Items of barcode not created ...");
+        log.info(ScsbConstants.REQUEST_LOGS_NOTIFICATION);
         StepExecution stepExecution = chunkContext.getStepContext().getStepExecution();
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         try {
             updateJob(jobExecution,"RequestsLogsNotificationTasklet", Boolean.FALSE);
-            commonService.pendingRequest(scsbEtlUrl, ScsbConstants.REQUEST_LOG_FOR_EMAIL_NOTIFICATION);
+            commonService.requestLog(scsbEtlUrl, ScsbConstants.REQUEST_LOG_FOR_EMAIL_NOTIFICATION);
         } catch (Exception ex) {
             updateExecutionExceptionStatus(stepExecution, executionContext, ex, ScsbConstants.FAILURE);
         }

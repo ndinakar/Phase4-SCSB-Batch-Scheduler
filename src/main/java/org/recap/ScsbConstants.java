@@ -103,5 +103,7 @@ public class ScsbConstants {
     public static final String NO_REQUESTING_INSTITUTION = "Requesting Institution is blank. Please provide requesting institution for export.";
 
     public static final String REQUEST_LOG_FOR_EMAIL_NOTIFICATION = "/requestsEmailNotification";
+
+    public static final String REQUEST_LOGS_NOTIFICATION= "execution of requests logs notification";
     private ScsbConstants(){}
 }
