@@ -47,10 +47,6 @@ public class JobCommonTasklet {
     @Value("${" + PropertyKeyConstants.SCSB_ETL_URL + "}")
     protected String scsbEtlUrl;
 
-    @Value("${" + PropertyKeyConstants.SCSB_GATEWAY_URL + "}")
-    protected String scsbGatewayUrl;
-
-
     @Autowired
     protected CamelContext camelContext;
 
