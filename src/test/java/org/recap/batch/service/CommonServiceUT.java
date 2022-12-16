@@ -39,9 +39,6 @@ public class CommonServiceUT extends BaseTestCase {
     @Value("${" + PropertyKeyConstants.SCSB_CIRC_URL + "}")
     String scsbCircUrl;
 
-    @Value("${" + PropertyKeyConstants.SCSB_ETL_URL + "}")
-    String scsbEtlUrl;
-
     @Mock
     RestTemplate restTemplate;
 
@@ -147,24 +144,6 @@ public class CommonServiceUT extends BaseTestCase {
         Mockito.doCallRealMethod().when(commonService).setRequestParameterMap(requestParameterMap,exportStringDate,jobDataParameterUtil,createdDate);
         commonService.setRequestParameterMap(requestParameterMap,exportStringDate,jobDataParameterUtil,createdDate);
         assertTrue(true);
-    }
-
-    @Test
-    public void requestLogTest(){
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity httpEntity = new HttpEntity<>(headers);
-        ResponseEntity<String> responseEntity = new ResponseEntity<>(ScsbConstants.SUCCESS, HttpStatus.OK);
-        Mockito.when(commonService.getHttpHeaders()).thenCallRealMethod();
-        Mockito.when(commonService.getRestTemplate()).thenReturn(restTemplate);
-//        Mockito.when(restTemplate.exchange( ArgumentMatchers.anyString(),
-//                ArgumentMatchers.any(HttpMethod.class),
-//                ArgumentMatchers.<HttpEntity<?>> any(),
-//                ArgumentMatchers.<Class<String>> any())).thenReturn(responseEntity);
-        Mockito.when(commonService.getRestTemplate().exchange(scsbEtlUrl + ScsbConstants.GATEWAY_REQUEST_LOG_FOR_EMAIL_NOTIFICATION, HttpMethod.GET, httpEntity, String.class)).thenReturn(responseEntity);
-//        Mockito.when(commonService.requestLog(scsbEtlUrl, ScsbConstants.GATEWAY_REQUEST_LOG_FOR_EMAIL_NOTIFICATION)).thenReturn(ScsbConstants.SUCCESS);
-//        assertTrue(true);
-        commonService.requestLog(scsbEtlUrl, ScsbConstants.GATEWAY_REQUEST_LOG_FOR_EMAIL_NOTIFICATION);
     }
 
 }
