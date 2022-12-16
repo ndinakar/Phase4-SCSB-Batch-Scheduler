@@ -277,12 +277,12 @@
 
     <bean id="dataDumpTriggerJob" class="org.recap.batch.job.DataExportTriggerJobTasklet"/>
 
-    <batch:job id="RequestsLogsNotification" restartable="true">
-        <batch:step id="RequestsLogsNotificationStep" allow-start-if-complete="true">
-            <batch:tasklet ref="requestsLogsNotificationTasklet"/>
+    <batch:job id="GatewayRequestLogsNotification" restartable="true">
+        <batch:step id="GatewayRequestLogNotificationStep" allow-start-if-complete="true">
+            <batch:tasklet ref="gatewayRequestLogsNotificationTasklet"/>
         </batch:step>
     </batch:job>
 
-    <bean id="requestsLogsNotificationTasklet" class="org.recap.batch.job.RequestsLogsNotificationTasklet"/>
+    <bean id="gatewayRequestsLogsNotificationTasklet" class="org.recap.batch.job.GatewayRequestLogNotificationTasklet"/>
 
 </beans>
