@@ -35,7 +35,7 @@ public class DataExportTriggerJobTasklet extends JobCommonTasklet implements Tas
         ExecutionContext executionContext = jobExecution.getExecutionContext();
         try {
             updateJob(jobExecution,"Data Export Trigger Job Tasklet", Boolean.TRUE);
-            dataExportJobSequenceService.dataExportTriggerJob(scsbEtlUrl);
+            dataExportJobSequenceService.dataExportTriggerJob(scsbEtlUrlFullExport);
         } catch (Exception ex) {
             updateExecutionExceptionStatus(stepExecution, executionContext, ex, ScsbConstants.DATA_EXPORT_STATUS_NAME);
         }
