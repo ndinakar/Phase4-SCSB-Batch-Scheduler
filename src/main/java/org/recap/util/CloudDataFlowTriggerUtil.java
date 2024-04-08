@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.recap.batch.service.CommonService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -28,7 +30,10 @@ public class CloudDataFlowTriggerUtil {
 
     public String launchTask(String taskName) {
         log.info("taskName from DB {}", taskName);
-        HttpEntity httpEntity = commonService.getHttpEntity();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity httpEntity = new HttpEntity(headers);
+        //HttpEntity httpEntity = commonService.getHttpEntity();
         String path = scdfURL + "/tasks/executions/launch?name="+taskName;
         log.info("URI {}", path);
         ResponseEntity<String> responseEntity = new RestTemplate().exchange(path, HttpMethod.POST,httpEntity,String.class);
