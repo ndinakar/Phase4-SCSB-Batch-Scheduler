@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class CloudDataFlowTriggerUtil {
 
-    @Value("scdf.url")
+    @Value("${scdf.url}")
     private String scdfURL;
 
 
