@@ -44,7 +44,7 @@ public class QuartzJobLauncher extends QuartzJobBean {
             JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
             jobParametersBuilder.addLong("time", System.currentTimeMillis());
             cloudDataFlowTriggerUtil.launchTask(jobName);
-            JobExecution jobExecution = jobLauncher.run(job, jobParametersBuilder.toJobParameters());
+            //JobExecution jobExecution = jobLauncher.run(job, jobParametersBuilder.toJobParameters());
             //log.info("{}_{} was completed successfully. Status : {}", job.getName(), jobExecution.getId(), jobExecution.getStatus());
         } catch (Exception exception) {
             log.error(ScsbCommonConstants.LOG_ERROR, exception);
