@@ -34,7 +34,7 @@ public class CloudDataFlowTriggerUtil {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity httpEntity = new HttpEntity(headers);
         //HttpEntity httpEntity = commonService.getHttpEntity();
-        String path = scdfURL + "/tasks/executions/launch?name="+taskName;
+        String path = "http://dataflow-server:9393" + "/tasks/executions/launch?name="+taskName;
         log.info("URI {}", path);
         ResponseEntity<String> responseEntity = new RestTemplate().exchange(path, HttpMethod.POST,httpEntity,String.class);
         log.info("Task {} lanched successfully and response: {}",taskName,responseEntity.toString());
