@@ -8,7 +8,9 @@ import org.recap.ScsbConstants;
 import org.recap.model.ScheduleJobRequest;
 import org.recap.model.ScheduleJobResponse;
 import org.recap.quartz.SchedulerService;
+import org.recap.util.CloudDataFlowTriggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +28,9 @@ public class ScheduleJobsController {
 
     @Autowired
     private SchedulerService schedulerService;
+
+    @Autowired
+    private CloudDataFlowTriggerUtil cloudDataFlowTriggerUtil;
 
     /**
      * This method is exposed as scheduler service for other microservices to schedule or reschedule or unschedule a job,
@@ -55,5 +60,9 @@ public class ScheduleJobsController {
         }
         scheduleJobResponse.setMessage(message);
         return scheduleJobResponse;
+    }
+    @GetMapping(value = "/taskLaunch")
+    public void  scheduleJob() {
+        cloudDataFlowTriggerUtil.launchTask("DataDumpTriggerJob");
     }
 }

@@ -29,7 +29,9 @@ public class CloudDataFlowTriggerUtil {
     public String launchTask(String taskName) {
         log.info("taskName from DB {}", taskName);
         HttpEntity httpEntity = commonService.getHttpEntity();
-        ResponseEntity<String> responseEntity = new RestTemplate().exchange(scdfURL + "/tasks/executions/launch?name="+taskName, HttpMethod.POST,httpEntity,String.class);
+        String path = scdfURL + "/tasks/executions/launch?name="+taskName;
+        log.info("URI {}", path);
+        ResponseEntity<String> responseEntity = new RestTemplate().exchange(path, HttpMethod.POST,httpEntity,String.class);
         log.info("Task {} lanched successfully and response: {}",taskName,responseEntity.toString());
         return responseEntity.getBody();
     }
